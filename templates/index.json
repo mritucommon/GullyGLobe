@@ -1,7 +1,31 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
-      "type": "hero"
+      "type": "hero",
+      "settings": {
+        "image": "shopify://shop_images/ChatGPT_Image_Sep_28_2026_01_59_30_AM.png",
+        "eyebrow": "INDIA, DELIVERED",
+        "heading": "A little closer to home.",
+        "text": "<p>Discover authentic food, fashion, home, jewellery and everyday favourites from India.</p>",
+        "button_label": "Shop India",
+        "button_link": "",
+        "secondary_button_label": "Explore collections",
+        "secondary_button_mobile_label": "Collections",
+        "secondary_button_link": "",
+        "button_primary_bg": "#ffffff",
+        "button_primary_text": "#004a2c",
+        "button_secondary_border": "#ffffff",
+        "button_secondary_text": "#ffffff"
+      }
     },
     "trust_strip": {
       "type": "trust-strip",
@@ -26,44 +50,156 @@
           "type": "item",
           "settings": {
             "icon": "lock",
-            "text": "Secure checkout"
+            "text": "Secure checkout",
+            "mobile_text": ""
           }
         },
         "returns": {
           "type": "item",
           "settings": {
             "icon": "undo",
-            "text": "30-day returns on unopened items"
+            "text": "30-day returns on unopened items",
+            "mobile_text": ""
           }
         }
       },
-      "block_order": ["authentic", "shipping", "checkout", "returns"]
+      "block_order": [
+        "authentic",
+        "shipping",
+        "checkout",
+        "returns"
+      ],
+      "settings": {}
     },
     "explore_india": {
       "type": "explore-india",
       "blocks": {
-        "food": { "type": "category", "settings": { "placeholder_text": "Brass bowls of dal and rice", "label": "Food" } },
-        "fashion": { "type": "category", "settings": { "placeholder_text": "Block-print kurta on a line", "label": "Fashion" } },
-        "jewellery": { "type": "category", "settings": { "placeholder_text": "Silver jhumkas in a palm", "label": "Jewellery" } },
-        "kitchen": { "type": "category", "settings": { "placeholder_text": "Copper and steel on stone", "label": "Kitchen" } },
-        "home": { "type": "category", "settings": { "placeholder_text": "Handwoven cushion, cane chair", "label": "Home" } },
-        "pooja": { "type": "category", "settings": { "placeholder_text": "Diya and marigolds", "label": "Pooja" } },
-        "personal_care": { "type": "category", "settings": { "placeholder_text": "Ubtan in a stone bowl", "label": "Personal Care" } },
-        "festive": { "type": "category", "settings": { "placeholder_text": "Rangoli powder, dusk", "label": "Festive" } },
-        "gifting": { "type": "category", "settings": { "placeholder_text": "Wrapped box, jute twine", "label": "Gifting" } }
+        "food": {
+          "type": "category",
+          "settings": {
+            "placeholder_text": "Brass bowls of dal and rice",
+            "label": "Food",
+            "link": ""
+          }
+        },
+        "fashion": {
+          "type": "category",
+          "settings": {
+            "placeholder_text": "Block-print kurta on a line",
+            "label": "Fashion",
+            "link": ""
+          }
+        },
+        "jewellery": {
+          "type": "category",
+          "settings": {
+            "placeholder_text": "Silver jhumkas in a palm",
+            "label": "Jewellery",
+            "link": ""
+          }
+        },
+        "kitchen": {
+          "type": "category",
+          "settings": {
+            "placeholder_text": "Copper and steel on stone",
+            "label": "Kitchen",
+            "link": ""
+          }
+        },
+        "home": {
+          "type": "category",
+          "settings": {
+            "placeholder_text": "Handwoven cushion, cane chair",
+            "label": "Home",
+            "link": ""
+          }
+        },
+        "pooja": {
+          "type": "category",
+          "settings": {
+            "placeholder_text": "Diya and marigolds",
+            "label": "Pooja",
+            "link": ""
+          }
+        },
+        "personal_care": {
+          "type": "category",
+          "settings": {
+            "placeholder_text": "Ubtan in a stone bowl",
+            "label": "Personal Care",
+            "link": ""
+          }
+        },
+        "festive": {
+          "type": "category",
+          "settings": {
+            "placeholder_text": "Rangoli powder, dusk",
+            "label": "Festive",
+            "link": ""
+          }
+        },
+        "gifting": {
+          "type": "category",
+          "settings": {
+            "placeholder_text": "Wrapped box, jute twine",
+            "label": "Gifting",
+            "link": ""
+          }
+        }
       },
-      "block_order": ["food", "fashion", "jewellery", "kitchen", "home", "pooja", "personal_care", "festive", "gifting"]
+      "block_order": [
+        "food",
+        "fashion",
+        "jewellery",
+        "kitchen",
+        "home",
+        "pooja",
+        "personal_care",
+        "festive",
+        "gifting"
+      ],
+      "settings": {
+        "heading": "Explore India",
+        "subheading": "<p>Everything familiar. Everything worth discovering.</p>",
+        "see_all_link": "",
+        "see_all_label": "See all"
+      }
     },
     "most_loved": {
       "type": "most-loved",
       "blocks": {
-        "tab_food": { "type": "tab", "settings": { "label": "Food", "category": "food" } },
-        "tab_kitchen": { "type": "tab", "settings": { "label": "Kitchen", "category": "kitchen" } },
-        "tab_fashion": { "type": "tab", "settings": { "label": "Fashion", "category": "fashion" } },
-        "tab_pooja": { "type": "tab", "settings": { "label": "Pooja", "category": "pooja" } },
+        "tab_food": {
+          "type": "tab",
+          "settings": {
+            "label": "Food",
+            "category": "food"
+          }
+        },
+        "tab_kitchen": {
+          "type": "tab",
+          "settings": {
+            "label": "Kitchen",
+            "category": "kitchen"
+          }
+        },
+        "tab_fashion": {
+          "type": "tab",
+          "settings": {
+            "label": "Fashion",
+            "category": "fashion"
+          }
+        },
+        "tab_pooja": {
+          "type": "tab",
+          "settings": {
+            "label": "Pooja",
+            "category": "pooja"
+          }
+        },
         "product_achar": {
           "type": "product",
           "settings": {
+            "product": "",
             "title": "Aam ka Achar",
             "placeholder_text": "Jar on a stone counter, soft daylight",
             "category": "food",
@@ -72,18 +208,22 @@
             "rating_count": "1,284",
             "price": "$12.99",
             "compare_price": "$14.99",
-            "variant_info": "500 g"
+            "variant_info": "500 g",
+            "show_quick_view": false
           }
         },
         "product_atta": {
           "type": "product",
           "settings": {
+            "product": "",
             "title": "Khapli Atta",
             "placeholder_text": "Atta, rotis and wheat on linen",
             "category": "food",
+            "badge": "none",
             "rating": "4.7",
             "rating_count": "862",
             "price": "$18.99",
+            "compare_price": "",
             "variant_info": "2 kg",
             "show_quick_view": true
           }
@@ -91,18 +231,23 @@
         "product_thali": {
           "type": "product",
           "settings": {
+            "product": "",
             "title": "Kansa Thali Set",
             "placeholder_text": "Thali set on a dark wood table",
             "category": "kitchen",
+            "badge": "none",
             "rating": "4.9",
             "rating_count": "131",
             "price": "$64",
-            "variant_info": "6 pcs"
+            "compare_price": "",
+            "variant_info": "6 pcs",
+            "show_quick_view": false
           }
         },
         "product_kurta": {
           "type": "product",
           "settings": {
+            "product": "",
             "title": "Chanderi Kurta Set",
             "placeholder_text": "Ivory kurta set on a linen hanger",
             "category": "fashion",
@@ -111,18 +256,40 @@
             "rating_count": "214",
             "price": "$89",
             "compare_price": "$110",
-            "variant_info": "XS — XXL"
+            "variant_info": "XS — XXL",
+            "show_quick_view": false
           }
         }
       },
-      "block_order": ["tab_food", "tab_kitchen", "tab_fashion", "tab_pooja", "product_achar", "product_atta", "product_thali", "product_kurta"],
+      "block_order": [
+        "tab_food",
+        "tab_kitchen",
+        "tab_fashion",
+        "tab_pooja",
+        "product_achar",
+        "product_atta",
+        "product_thali",
+        "product_kurta"
+      ],
       "settings": {
+        "heading": "Most loved",
+        "subheading": "<p>The ones customers come back for.</p>",
         "view_all_link": "shopify://collections/all",
         "view_all_label": "View all"
       }
     },
     "pantry_promo": {
-      "type": "pantry-promo"
+      "type": "pantry-promo",
+      "settings": {
+        "image_position": "left",
+        "placeholder_text": "A steel thali at dinner: dal, jeera rice, bhindi, a spoon of achar",
+        "eyebrow": "The Pantry",
+        "heading": "Some things simply taste like home.",
+        "text": "<p>The atta your mother kneads by feel. Achar from a family recipe. Tea that's strong enough. The staples that are hard to find here and easy to miss.</p>",
+        "mobile_text": "<p>Atta, achar, chai and the staples that are hard to find here and easy to miss.</p>",
+        "button_label": "Shop food from India",
+        "button_link": ""
+      }
     },
     "shop_by_need": {
       "type": "shop-by-need",
@@ -132,7 +299,8 @@
           "settings": {
             "placeholder_text": "Steel dabbas of dal and rice on a pantry shelf",
             "title": "Everyday essentials",
-            "description": "Atta, dal, rice and the daily basics"
+            "description": "Atta, dal, rice and the daily basics",
+            "link": ""
           }
         },
         "tea": {
@@ -140,7 +308,8 @@
           "settings": {
             "placeholder_text": "Chai in kulhads with rusk on a tray",
             "title": "Tea time",
-            "description": "Chai, rusk and something sweet"
+            "description": "Chai, rusk and something sweet",
+            "link": ""
           }
         },
         "festive": {
@@ -148,7 +317,8 @@
           "settings": {
             "placeholder_text": "Diyas and marigolds on marble steps",
             "title": "Festive essentials",
-            "description": "Pooja, décor and diyas"
+            "description": "Pooja, décor and diyas",
+            "link": ""
           }
         },
         "gifting": {
@@ -156,11 +326,21 @@
           "settings": {
             "placeholder_text": "A wrapped box with jute twine and a brass diya",
             "title": "Gifting",
-            "description": "Boxed, wrapped, ready to give"
+            "description": "Boxed, wrapped, ready to give",
+            "link": ""
           }
         }
       },
-      "block_order": ["everyday", "tea", "festive", "gifting"]
+      "block_order": [
+        "everyday",
+        "tea",
+        "festive",
+        "gifting"
+      ],
+      "settings": {
+        "heading": "Shop by need",
+        "subheading": "<p>Start from the moment, not the aisle.</p>"
+      }
     },
     "category_spotlight": {
       "type": "category-spotlight",
@@ -172,7 +352,8 @@
             "eyebrow": "Kitchen & Bartan",
             "title": "The Indian kitchen",
             "description": "Copper, brass, kansa and steel for everyday cooking.",
-            "button_label": "Shop the kitchen"
+            "button_label": "Shop the kitchen",
+            "link": ""
           }
         },
         "fashion": {
@@ -182,11 +363,16 @@
             "eyebrow": "Fashion",
             "title": "Wear India",
             "description": "Kurta sets, sarees and festive wear, handwoven and block printed.",
-            "button_label": "Shop fashion"
+            "button_label": "Shop fashion",
+            "link": ""
           }
         }
       },
-      "block_order": ["kitchen", "fashion"]
+      "block_order": [
+        "kitchen",
+        "fashion"
+      ],
+      "settings": {}
     },
     "better_together": {
       "type": "better-together",
@@ -200,7 +386,8 @@
             "description": "8 essentials · atta, dal, rice, ghee, haldi and more",
             "price": "$89",
             "compare_price": "$104.43",
-            "button_label": "Buy the bundle"
+            "button_label": "Buy the bundle",
+            "link": ""
           }
         },
         "chai": {
@@ -212,7 +399,8 @@
             "description": "4 items · CTC chai, rusk, kulhads, elaichi",
             "price": "$32",
             "compare_price": "$38.47",
-            "button_label": "Buy the bundle"
+            "button_label": "Buy the bundle",
+            "link": ""
           }
         },
         "pickle": {
@@ -224,11 +412,20 @@
             "description": "4 jars · mango, nimbu, mirch, mixed",
             "price": "$39",
             "compare_price": "$44.46",
-            "button_label": "Buy the bundle"
+            "button_label": "Buy the bundle",
+            "link": ""
           }
         }
       },
-      "block_order": ["pantry", "chai", "pickle"]
+      "block_order": [
+        "pantry",
+        "chai",
+        "pickle"
+      ],
+      "settings": {
+        "heading": "Better together",
+        "subheading": "Bundles put together by our team, for less than buying separately."
+      }
     },
     "customer_reviews": {
       "type": "customer-reviews",
@@ -236,32 +433,46 @@
         "priya": {
           "type": "review",
           "settings": {
+            "rating": 5,
             "quote": "The oil, the fennel, the crunch of the mango. The first jar I’ve bought here that doesn’t taste of vinegar.",
             "name": "Priya R.",
             "location": "Edison, NJ",
-            "product_label": "Aam ka Achar"
+            "product_label": "Aam ka Achar",
+            "product_link": ""
           }
         },
         "meera": {
           "type": "review",
           "settings": {
+            "rating": 5,
             "quote": "The Khapli atta makes rotis exactly like home. Soft for a whole day.",
             "name": "Meera K.",
             "location": "Plano, TX",
-            "product_label": "Khapli Atta"
+            "product_label": "Khapli Atta",
+            "product_link": ""
           }
         },
         "rohan": {
           "type": "review",
           "settings": {
+            "rating": 5,
             "quote": "I set the whole thali on the table for Diwali. It looked beautiful and arrived perfectly packed.",
             "name": "Rohan D.",
             "location": "Seattle, WA",
-            "product_label": "Kansa Thali Set"
+            "product_label": "Kansa Thali Set",
+            "product_link": ""
           }
         }
       },
-      "block_order": ["priya", "meera", "rohan"]
+      "block_order": [
+        "priya",
+        "meera",
+        "rohan"
+      ],
+      "settings": {
+        "heading": "From our customers",
+        "subheading": "Verified reviews from homes across the US."
+      }
     },
     "stories_home": {
       "type": "stories-from-home",
@@ -272,7 +483,8 @@
             "placeholder_text": "Diwali table set in a Brooklyn apartment",
             "meta": "Festivals · 7 min read",
             "title": "A first-timer’s guide to hosting Diwali in America",
-            "excerpt": "Menus that travel well, where to find marigolds in October, and how to light diyas safely indoors."
+            "excerpt": "Menus that travel well, where to find marigolds in October, and how to light diyas safely indoors.",
+            "link": ""
           }
         },
         "paratha": {
@@ -281,7 +493,8 @@
             "placeholder_text": "Parathas stacked on a steel plate",
             "meta": "Recipes · 8 min read",
             "title": "Sunday aloo paratha, the way nani made it",
-            "excerpt": "Soft dough, a spiced potato filling and plenty of ghee. Plus which achar to serve alongside."
+            "excerpt": "Soft dough, a spiced potato filling and plenty of ghee. Plus which achar to serve alongside.",
+            "link": ""
           }
         },
         "flours": {
@@ -290,14 +503,35 @@
             "placeholder_text": "Three flours in brass bowls",
             "meta": "Ingredients · 5 min read",
             "title": "Atta, maida, besan: a guide to Indian flours",
-            "excerpt": "What each flour is, what it’s for, and how to store it so it lasts."
+            "excerpt": "What each flour is, what it’s for, and how to store it so it lasts.",
+            "link": ""
           }
         }
       },
-      "block_order": ["diwali", "paratha", "flours"]
+      "block_order": [
+        "diwali",
+        "paratha",
+        "flours"
+      ],
+      "settings": {
+        "heading": "Stories from home",
+        "subheading": "Recipes, festival guides and the stories behind what we sell.",
+        "link_label": "All stories",
+        "mobile_link_label": "All",
+        "link": ""
+      }
     },
     "home_newsletter": {
-      "type": "home-newsletter"
+      "type": "home-newsletter",
+      "settings": {
+        "heading": "Stay connected to home.",
+        "subheading": "New arrivals, festival collections, stories and special drops.",
+        "email_label": "Email address",
+        "placeholder": "name@example.com",
+        "button_label": "Subscribe",
+        "checkbox_label": "Also send me festival reminders on WhatsApp",
+        "note": "Unsubscribe anytime. We never share your details."
+      }
     }
   },
   "order": [
