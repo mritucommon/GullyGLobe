@@ -1,0 +1,573 @@
+{%- liquid
+  assign use_samples = false
+  if blog.articles_count == 0
+    assign use_samples = true
+  endif
+  assign sample_blocks = section.blocks | where: 'type', 'story'
+-%}
+
+<section class="blog-hero">
+  <div class="page-width blog-hero__inner">
+    <svg class="blog-hero__ornament" viewBox="0 0 160 22" aria-hidden="true" focusable="false">
+      <path d="M0 21h63M97 21h63" />
+      <path d="M69 21V12a11 11 0 0 1 22 0v9" />
+      <path d="M74 21v-8a6 6 0 0 1 12 0v8" />
+    </svg>
+    <h1>{{ section.settings.heading }}</h1>
+    {% if section.settings.subheading != blank %}
+      <p class="blog-hero__subheading">{{ section.settings.subheading }}</p>
+    {% endif %}
+
+    <nav class="blog-hero__tags" aria-label="{{ 'sections.main_blog.filter' | t }}">
+      <a class="blog-hero__tag{% if current_tags == blank %} is-active{% endif %}" href="{{ blog.url }}"{% if current_tags == blank %} aria-current="page"{% endif %}>{{ 'sections.main_blog.all' | t }}</a>
+      {% if use_samples %}
+        {% assign sample_tags = section.settings.sample_tags | split: ',' %}
+        {% for tag in sample_tags %}
+          <a class="blog-hero__tag" href="{{ blog.url }}">{{ tag | strip }}</a>
+        {% endfor %}
+      {% else %}
+        {% for tag in blog.all_tags %}
+          {% assign tag_active = false %}
+          {% if current_tags contains tag %}{% assign tag_active = true %}{% endif %}
+          <a class="blog-hero__tag{% if tag_active %} is-active{% endif %}" href="{{ blog.url }}/tagged/{{ tag | handle }}"{% if tag_active %} aria-current="page"{% endif %}>{{ tag }}</a>
+        {% endfor %}
+      {% endif %}
+    </nav>
+  </div>
+</section>
+
+<div class="blog-listing">
+  <div class="page-width">
+    {% if use_samples %}
+      {% for block in sample_blocks %}
+        {% if forloop.first %}
+          <article class="blog-featured" {{ block.shopify_attributes }}>
+            <a class="blog-featured__media" href="{{ blog.url }}">
+              <span class="blog-placeholder">
+                {% render 'icon', name: 'camera' %}
+                <strong>{{ block.settings.placeholder_text }}</strong>
+                <em>{{ 'sections.explore_india.browse_files' | t }}</em>
+              </span>
+            </a>
+            <div class="blog-featured__content">
+              <p class="blog-featured__eyebrow">{{ 'sections.main_blog.featured' | t }} • {{ block.settings.category }}</p>
+              <h2><a href="{{ blog.url }}">{{ block.settings.title }}</a></h2>
+              <p class="blog-featured__excerpt">{{ block.settings.excerpt }}</p>
+              <p class="blog-featured__byline">{{ block.settings.author }} • {{ 'sections.main_blog.min_read' | t: number: block.settings.read_time }}</p>
+              <a class="button blog-featured__button" href="{{ blog.url }}">{{ 'sections.main_blog.read_story' | t }}</a>
+            </div>
+          </article>
+          <div class="blog-grid">
+        {% else %}
+          <article class="blog-card" {{ block.shopify_attributes }}>
+            <a class="blog-card__media" href="{{ blog.url }}">
+              <span class="blog-placeholder">
+                {% render 'icon', name: 'camera' %}
+                <strong>{{ block.settings.placeholder_text }}</strong>
+                <em>{{ 'sections.explore_india.browse_files' | t }}</em>
+              </span>
+            </a>
+            <div class="blog-card__content">
+              <p class="blog-card__meta">{{ block.settings.category }} • {{ 'sections.main_blog.min_read' | t: number: block.settings.read_time }}</p>
+              <h3><a href="{{ blog.url }}">{{ block.settings.title }}</a></h3>
+              <p class="blog-card__excerpt">{{ block.settings.excerpt }}</p>
+            </div>
+          </article>
+        {% endif %}
+        {% if forloop.last and forloop.length > 1 %}</div>{% endif %}
+      {% endfor %}
+    {% else %}
+      {% paginate blog.articles by 13 %}
+        {% for article in blog.articles %}
+          {%- liquid
+            assign word_count = article.content | strip_html | split: ' ' | size
+            assign read_time = word_count | divided_by: 200 | at_least: 1
+            assign category = article.tags.first
+            assign caption = article.metafields.custom.image_caption.value | default: article.title
+            assign excerpt = article.excerpt_or_content | strip_html | truncatewords: 26
+            assign show_featured = false
+            assign open_grid = false
+            assign close_grid = false
+            if paginate.current_page == 1
+              if forloop.first
+                assign show_featured = true
+              endif
+              if forloop.index == 2
+                assign open_grid = true
+              endif
+              if forloop.last and forloop.length > 1
+                assign close_grid = true
+              endif
+            else
+              if forloop.first
+                assign open_grid = true
+              endif
+              if forloop.last
+                assign close_grid = true
+              endif
+            endif
+          -%}
+          {% if show_featured %}
+            <article class="blog-featured">
+              <a class="blog-featured__media" href="{{ article.url }}">
+                {% if article.image %}
+                  {{ article.image | image_url: width: 1300 | image_tag: loading: 'eager', widths: '500, 800, 1100, 1300', sizes: '(min-width: 850px) 50vw, 100vw', alt: article.image.alt | default: article.title }}
+                {% else %}
+                  <span class="blog-placeholder">
+                    {% render 'icon', name: 'camera' %}
+                    <strong>{{ caption }}</strong>
+                    <em>{{ 'sections.explore_india.browse_files' | t }}</em>
+                  </span>
+                {% endif %}
+              </a>
+              <div class="blog-featured__content">
+                <p class="blog-featured__eyebrow">{{ 'sections.main_blog.featured' | t }}{% if category %} • {{ category }}{% endif %}</p>
+                <h2><a href="{{ article.url }}">{{ article.title }}</a></h2>
+                <p class="blog-featured__excerpt">{{ excerpt }}</p>
+                <p class="blog-featured__byline">{{ article.author }} • {{ 'sections.main_blog.min_read' | t: number: read_time }}</p>
+                <a class="button blog-featured__button" href="{{ article.url }}">{{ 'sections.main_blog.read_story' | t }}</a>
+              </div>
+            </article>
+          {% else %}
+            {% if open_grid %}<div class="blog-grid">{% endif %}
+            <article class="blog-card">
+              <a class="blog-card__media" href="{{ article.url }}">
+                {% if article.image %}
+                  {{ article.image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '360, 600, 900', sizes: '(min-width: 850px) 33vw, 100vw', alt: article.image.alt | default: article.title }}
+                {% else %}
+                  <span class="blog-placeholder">
+                    {% render 'icon', name: 'camera' %}
+                    <strong>{{ caption }}</strong>
+                    <em>{{ 'sections.explore_india.browse_files' | t }}</em>
+                  </span>
+                {% endif %}
+              </a>
+              <div class="blog-card__content">
+                <p class="blog-card__meta">{% if category %}{{ category }} • {% endif %}{{ 'sections.main_blog.min_read' | t: number: read_time }}</p>
+                <h3><a href="{{ article.url }}">{{ article.title }}</a></h3>
+                <p class="blog-card__excerpt">{{ excerpt }}</p>
+              </div>
+            </article>
+          {% endif %}
+          {% if close_grid %}</div>{% endif %}
+        {% endfor %}
+
+        {% if paginate.pages > 1 %}
+          <nav class="blog-pagination" aria-label="{{ 'general.pagination.page' | t: number: paginate.current_page }}">
+            {{ paginate | default_pagination: next: '→', previous: '←' }}
+          </nav>
+        {% endif %}
+      {% endpaginate %}
+    {% endif %}
+  </div>
+</div>
+
+{% stylesheet %}
+  .blog-hero {
+    padding: 96px 0 62px;
+    background: var(--color-background);
+  }
+
+  .blog-hero__inner {
+    display: grid;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .blog-hero__ornament {
+    width: 160px;
+    height: 22px;
+    margin-bottom: 18px;
+    fill: none;
+    stroke: var(--color-secondary);
+    stroke-width: 1.4;
+  }
+
+  .blog-hero h1 {
+    color: var(--color-primary-dark);
+    font-size: clamp(3rem, 6.2vw, 5.4rem);
+    line-height: 0.95;
+  }
+
+  .blog-hero__subheading {
+    max-width: 48ch;
+    margin-top: 26px;
+    color: var(--color-text-secondary);
+    font-size: 1.15rem;
+    line-height: 1.65;
+  }
+
+  .blog-hero__tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 26px;
+  }
+
+  .blog-hero__tag {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    padding: 0 20px;
+    color: var(--color-text);
+    background: var(--color-surface);
+    font-size: 0.95rem;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: border-color 120ms ease;
+  }
+
+  .blog-hero__tag:hover {
+    border-color: var(--color-primary);
+  }
+
+  .blog-hero__tag.is-active {
+    border-color: var(--color-primary);
+    color: var(--color-surface);
+    background: var(--color-primary);
+  }
+
+  .blog-listing {
+    padding: 80px 0 96px;
+    background: var(--color-surface);
+  }
+
+  .blog-placeholder {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    gap: 10px;
+    padding: 24px;
+    color: var(--color-text-secondary);
+    text-align: center;
+  }
+
+  .blog-placeholder .icon {
+    width: 28px;
+    height: 28px;
+    color: color-mix(in srgb, var(--color-primary-dark) 52%, transparent);
+  }
+
+  .blog-placeholder strong {
+    max-width: 34ch;
+    color: var(--color-text);
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.35;
+  }
+
+  .blog-placeholder em {
+    border-bottom: 1px solid currentColor;
+    color: var(--color-text);
+    font-size: 0.8rem;
+    font-style: normal;
+    line-height: 1;
+  }
+
+  .blog-featured__media,
+  .blog-card__media {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border: 1px dashed color-mix(in srgb, var(--color-primary-dark) 34%, transparent);
+    border-radius: 12px;
+    background: var(--color-image-ground);
+    text-decoration: none;
+  }
+
+  .blog-featured__media::before,
+  .blog-card__media::before {
+    content: "";
+    display: block;
+  }
+
+  .blog-featured__media::before {
+    padding-top: 68.6%;
+  }
+
+  .blog-card__media::before {
+    padding-top: 75%;
+  }
+
+  .blog-featured__media img,
+  .blog-card__media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .blog-featured {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 72px;
+    margin-bottom: 96px;
+  }
+
+  .blog-featured__content {
+    display: grid;
+    justify-items: start;
+  }
+
+  .blog-featured__eyebrow {
+    color: var(--color-primary);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .blog-featured h2 {
+    max-width: 17ch;
+    margin-top: 14px;
+    color: var(--color-primary-dark);
+    font-size: clamp(2.4rem, 3.6vw, 3.4rem);
+    line-height: 1.02;
+  }
+
+  .blog-featured h2 a,
+  .blog-card h3 a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .blog-featured__excerpt {
+    max-width: 46ch;
+    margin-top: 22px;
+    color: var(--color-text-secondary);
+    font-size: 1.1rem;
+    line-height: 1.7;
+  }
+
+  .blog-featured__byline {
+    margin-top: 14px;
+    color: var(--color-text);
+    font-size: 0.95rem;
+  }
+
+  .blog-featured__button {
+    min-height: 56px;
+    margin-top: 24px;
+    padding: 0 30px;
+    font-size: 0.86rem;
+  }
+
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 56px 32px;
+  }
+
+  .blog-card {
+    display: grid;
+    align-content: start;
+    gap: 18px;
+  }
+
+  .blog-card__content {
+    display: grid;
+    gap: 12px;
+  }
+
+  .blog-card__meta {
+    color: var(--color-text-secondary);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .blog-card h3 {
+    color: var(--color-primary-dark);
+    font-size: clamp(1.55rem, 2vw, 1.95rem);
+    line-height: 1.12;
+  }
+
+  .blog-card__excerpt {
+    max-width: 44ch;
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .blog-pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 56px;
+    font-size: 1rem;
+  }
+
+  .blog-pagination span,
+  .blog-pagination a {
+    display: inline-flex;
+    min-width: 40px;
+    justify-content: center;
+    padding: 8px 10px;
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .blog-pagination .current {
+    color: var(--color-primary);
+    font-weight: 700;
+  }
+
+  @media (max-width: 849px) {
+    .blog-hero {
+      padding: 28px 0 24px;
+    }
+
+    .blog-hero__inner {
+      justify-items: start;
+      text-align: left;
+    }
+
+    .blog-hero__ornament {
+      width: 120px;
+      height: 17px;
+      margin-bottom: 12px;
+    }
+
+    .blog-hero h1 {
+      font-size: clamp(2.2rem, 10vw, 2.8rem);
+    }
+
+    .blog-hero__subheading {
+      margin-top: 12px;
+      font-size: 0.98rem;
+      line-height: 1.55;
+    }
+
+    .blog-hero__tags {
+      width: 100%;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      gap: 8px;
+      margin-top: 18px;
+      padding-bottom: 4px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .blog-hero__tags::-webkit-scrollbar {
+      display: none;
+    }
+
+    .blog-hero__tag {
+      min-height: 40px;
+      padding: 0 16px;
+      font-size: 0.9rem;
+    }
+
+    .blog-listing {
+      padding: 24px 0 32px;
+    }
+
+    .blog-featured {
+      grid-template-columns: 1fr;
+      gap: 18px;
+      margin-bottom: 36px;
+    }
+
+    .blog-featured__media::before {
+      padding-top: 75%;
+    }
+
+    .blog-featured h2 {
+      margin-top: 10px;
+      font-size: clamp(1.7rem, 7.5vw, 2.2rem);
+    }
+
+    .blog-featured__excerpt {
+      margin-top: 12px;
+      font-size: 0.98rem;
+      line-height: 1.6;
+    }
+
+    .blog-featured__byline {
+      margin-top: 10px;
+      font-size: 0.9rem;
+    }
+
+    .blog-featured__button {
+      width: 100%;
+      min-height: 50px;
+      margin-top: 18px;
+      font-size: 0.84rem;
+    }
+
+    .blog-grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    .blog-card {
+      gap: 14px;
+    }
+
+    .blog-card__content {
+      gap: 8px;
+    }
+
+    .blog-card h3 {
+      font-size: clamp(1.4rem, 6.5vw, 1.7rem);
+    }
+
+    .blog-card__excerpt {
+      font-size: 0.95rem;
+    }
+
+    .blog-placeholder strong {
+      font-size: 0.9rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.main_blog.name",
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "t:labels.heading",
+      "default": "Stories from home"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "t:labels.subheading",
+      "default": "Recipes, festival guides, ingredient notes and the makers behind what we sell."
+    },
+    {
+      "type": "text",
+      "id": "sample_tags",
+      "label": "t:labels.sample_tags",
+      "info": "t:labels.sample_info",
+      "default": "Recipes, Festivals, Ingredients, Style, Home"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "story",
+      "name": "t:sections.main_blog.sample_story",
+      "settings": [
+        { "type": "text", "id": "placeholder_text", "label": "t:labels.placeholder_text" },
+        { "type": "text", "id": "category", "label": "t:labels.category" },
+        { "type": "range", "id": "read_time", "label": "t:labels.read_time", "min": 1, "max": 30, "step": 1, "default": 5 },
+        { "type": "text", "id": "title", "label": "t:labels.title" },
+        { "type": "textarea", "id": "excerpt", "label": "t:labels.description" },
+        { "type": "text", "id": "author", "label": "t:labels.author" }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-article",
+      "settings": {
+        "related_count": 3
+      }
+    }
+  },
+  "order": ["main"]
+}

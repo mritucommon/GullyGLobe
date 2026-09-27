@@ -1,0 +1,733 @@
+<section class="most-loved" id="MostLoved-{{ section.id }}">
+  <div class="page-width">
+    <div class="most-loved__header">
+      <h2>{{ section.settings.heading }}</h2>
+      {% if section.settings.subheading != blank %}
+        <p class="most-loved__subheading">{{ section.settings.subheading }}</p>
+      {% endif %}
+    </div>
+
+    {% assign tab_blocks = section.blocks | where: 'type', 'tab' %}
+    {% if tab_blocks.size > 0 %}
+      <div class="most-loved__tabs" role="tablist">
+        <button type="button" class="most-loved__tab is-active" data-filter-tab data-category="all">{{ 'sections.most_loved.all' | t }}</button>
+        {% for tab in tab_blocks %}
+          <button type="button" class="most-loved__tab" data-filter-tab data-category="{{ tab.settings.category | handle }}">{{ tab.settings.label }}</button>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% assign product_blocks = section.blocks | where: 'type', 'product' %}
+    <div class="most-loved__grid" data-filter-grid>
+      {% for block in product_blocks %}
+        <article class="most-loved-card" data-filter-item data-category="{{ block.settings.category | handle }}" {{ block.shopify_attributes }}>
+          <div class="most-loved-card__media">
+            {% if block.settings.badge != 'none' %}
+              <span class="most-loved-card__badge">{{ block.settings.badge }}</span>
+            {% endif %}
+            <button type="button" class="most-loved-card__wishlist" aria-label="{{ 'sections.header.wishlist' | t }}" aria-pressed="false">
+              {% render 'icon', name: 'heart' %}
+            </button>
+
+            {% if block.settings.product.featured_image %}
+              {{ block.settings.product.featured_image | image_url: width: 700 | image_tag: loading: 'lazy', widths: '240, 360, 520, 700', sizes: '(min-width: 990px) 25vw, 50vw', alt: block.settings.product.featured_image.alt | default: block.settings.product.title }}
+            {% else %}
+              <div class="most-loved-card__placeholder-wrap">
+                {% render 'icon', name: 'camera' %}
+                {% if block.settings.placeholder_text != blank %}
+                  <strong>{{ block.settings.placeholder_text }}</strong>
+                {% endif %}
+                <span class="most-loved-card__browse">{{ 'sections.explore_india.browse_files' | t }}</span>
+              </div>
+            {% endif %}
+
+            {% if block.settings.show_quick_view %}
+              <button type="button" class="most-loved-card__quick-view">{{ 'sections.most_loved.quick_view' | t }}</button>
+            {% endif %}
+          </div>
+
+          <div class="most-loved-card__content">
+            <h3 class="most-loved-card__title">
+              <a href="{{ block.settings.product.url | default: routes.all_products_collection_url }}">{{ block.settings.product.title | default: block.settings.title }}</a>
+            </h3>
+
+            {% if block.settings.rating != blank %}
+              <div class="most-loved-card__rating">
+                {% render 'icon', name: 'star' %}
+                <span>{{ block.settings.rating }}</span>
+                {% if block.settings.rating_count != blank %}
+                  <span class="most-loved-card__rating-count">({{ block.settings.rating_count }})</span>
+                {% endif %}
+              </div>
+            {% endif %}
+
+            <div class="most-loved-card__price-row">
+              <div class="most-loved-card__price">
+                {% if block.settings.product != blank %}
+                  {% if block.settings.product.compare_at_price > block.settings.product.price %}
+                    <span class="most-loved-card__sale">{{ block.settings.product.price | money }}</span>
+                    <s>{{ block.settings.product.compare_at_price | money }}</s>
+                  {% else %}
+                    <span>{{ block.settings.product.price | money }}</span>
+                  {% endif %}
+                {% elsif block.settings.price != blank %}
+                  <span{% if block.settings.compare_price != blank %} class="most-loved-card__sale"{% endif %}>{{ block.settings.price }}</span>
+                  {% if block.settings.compare_price != blank %}
+                    <s>{{ block.settings.compare_price }}</s>
+                  {% endif %}
+                {% endif %}
+              </div>
+              {% if block.settings.variant_info != blank %}
+                <span class="most-loved-card__variant">{{ block.settings.variant_info }}</span>
+              {% endif %}
+            </div>
+
+            {% if block.settings.product != blank %}
+              {% form 'product', block.settings.product, class: 'most-loved-card__form' %}
+                <input type="hidden" name="id" value="{{ block.settings.product.selected_or_first_available_variant.id }}">
+                <button type="submit" class="button most-loved-card__cart" {% unless block.settings.product.available %}disabled{% endunless %}>
+                  {{ 'sections.main_product.add_to_cart' | t }}
+                </button>
+              {% endform %}
+            {% else %}
+              <button type="button" class="button button--secondary most-loved-card__cart" disabled>{{ 'sections.main_product.add_to_cart' | t }}</button>
+            {% endif %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+
+    {% if section.settings.view_all_link != blank %}
+      <div class="most-loved__footer">
+        <a class="button button--secondary most-loved__view-all" href="{{ section.settings.view_all_link }}">
+          {% if section.settings.view_all_label != blank %}
+            {{ section.settings.view_all_label }}
+          {% else %}
+            {{ 'sections.most_loved.view_all' | t }}
+          {% endif %}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% stylesheet %}
+  .most-loved {
+    padding: 64px 0;
+    background: var(--color-surface);
+  }
+
+  .most-loved__header {
+    display: grid;
+    justify-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+
+  .most-loved h2 {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    letter-spacing: 0.02em;
+  }
+
+  .most-loved__subheading {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+  }
+
+  .most-loved__tabs {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    border-bottom: 1px solid var(--color-divider);
+    margin-bottom: 28px;
+    padding-bottom: 14px;
+  }
+
+  .most-loved__tab {
+    position: relative;
+    border: 0;
+    padding: 0 0 14px;
+    background: transparent;
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: 0.86rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .most-loved__tab.is-active {
+    color: var(--color-primary);
+  }
+
+  .most-loved__tab.is-active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -15px;
+    height: 2px;
+    background: var(--color-primary);
+  }
+
+  .most-loved__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  .most-loved-card[hidden] {
+    display: none;
+  }
+
+  .most-loved-card {
+    display: grid;
+    gap: 14px;
+  }
+
+  .most-loved-card__media {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-card);
+    background: var(--color-image-ground);
+  }
+
+  .most-loved-card__media::before {
+    content: "";
+    display: block;
+    padding-top: 100%;
+  }
+
+  .most-loved-card__media img,
+  .most-loved-card__placeholder-wrap {
+    position: absolute;
+    inset: 0;
+  }
+
+  .most-loved-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .most-loved-card__placeholder-wrap {
+    display: grid;
+    justify-items: center;
+    align-content: center;
+    gap: 8px;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .most-loved-card__placeholder-wrap .icon {
+    width: 26px;
+    height: 26px;
+    color: color-mix(in srgb, var(--color-primary-dark) 55%, transparent);
+  }
+
+  .most-loved-card__placeholder-wrap strong {
+    color: var(--color-text-secondary);
+    font-size: 0.92rem;
+    font-weight: 500;
+  }
+
+  .most-loved-card__browse {
+    border-bottom: 1px solid currentColor;
+    color: var(--color-primary-dark);
+    font-size: 0.82rem;
+  }
+
+  .most-loved-card__badge {
+    position: absolute;
+    left: 12px;
+    top: 12px;
+    z-index: 2;
+    border-radius: 2px;
+    padding: 4px 8px;
+    color: var(--color-primary-dark);
+    background: var(--color-surface);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .most-loved-card__wishlist {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    z-index: 2;
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 999px;
+    background: var(--color-surface);
+    color: var(--color-text);
+    cursor: pointer;
+    box-shadow: 0 2px 6px color-mix(in srgb, var(--color-primary-dark) 14%, transparent);
+  }
+
+  .most-loved-card__wishlist .icon {
+    width: 17px;
+    height: 17px;
+  }
+
+  .most-loved-card__wishlist.is-active {
+    color: var(--color-sale);
+  }
+
+  .most-loved-card__wishlist.is-active .icon {
+    fill: currentColor;
+    stroke: currentColor;
+  }
+
+  .most-loved-card__quick-view {
+    position: absolute;
+    left: 50%;
+    bottom: 16px;
+    z-index: 2;
+    border: 0;
+    border-radius: 999px;
+    padding: 12px 22px;
+    color: var(--color-primary-dark);
+    background: var(--color-surface);
+    font-family: var(--font-body);
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(-50%, 6px);
+    transition: opacity 140ms ease, transform 140ms ease, visibility 140ms;
+  }
+
+  .most-loved-card__media:hover .most-loved-card__quick-view,
+  .most-loved-card__media:focus-within .most-loved-card__quick-view {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, 0);
+  }
+
+  .most-loved-card__content {
+    display: grid;
+    gap: 6px;
+  }
+
+  .most-loved-card__title {
+    margin: 0;
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: 1.25;
+    text-transform: none;
+  }
+
+  .most-loved-card__title a {
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .most-loved-card__rating {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--color-text);
+    font-size: 0.86rem;
+    font-weight: 700;
+  }
+
+  .most-loved-card__rating .icon {
+    width: 14px;
+    height: 14px;
+    color: #f6b400;
+    fill: currentColor;
+    stroke: none;
+  }
+
+  .most-loved-card__rating-count {
+    color: var(--color-text-secondary);
+    font-weight: 400;
+  }
+
+  .most-loved-card__price-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .most-loved-card__price {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    color: var(--color-text);
+    font-size: 1.05rem;
+    font-weight: 800;
+  }
+
+  .most-loved-card__price s {
+    color: var(--color-text-secondary);
+    font-size: 0.86rem;
+    font-weight: 400;
+  }
+
+  .most-loved-card__sale {
+    color: var(--color-text);
+  }
+
+  .most-loved-card__variant {
+    color: var(--color-text-secondary);
+    font-size: 0.82rem;
+  }
+
+  .most-loved-card__form {
+    margin: 4px 0 0;
+  }
+
+  .most-loved-card__cart {
+    width: 100%;
+    min-height: 52px;
+    border: 1.5px solid var(--color-primary);
+    border-radius: var(--radius-control);
+    color: var(--color-primary);
+    background: var(--color-surface);
+    font-size: 0.84rem;
+    letter-spacing: 0.14em;
+  }
+
+  .most-loved__footer {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+  }
+
+  .most-loved__view-all {
+    min-width: 148px;
+    min-height: 54px;
+    border: 1.5px solid var(--color-primary);
+    color: var(--color-primary);
+    background: var(--color-surface);
+    font-size: 0.84rem;
+    letter-spacing: 0.14em;
+  }
+
+  @media (max-width: 849px) {
+    .most-loved {
+      padding: 24px 0;
+    }
+
+    .most-loved__header {
+      justify-items: start;
+      gap: 4px;
+      margin-bottom: 14px;
+      text-align: left;
+    }
+
+    .most-loved h2 {
+      font-size: clamp(1.4rem, 6vw, 1.9rem);
+    }
+
+    .most-loved__subheading {
+      display: none;
+    }
+
+    .most-loved__tabs {
+      justify-content: flex-start;
+      gap: 10px;
+      border-bottom: 0;
+      padding-bottom: 4px;
+      overflow-x: auto;
+    }
+
+    .most-loved__tab {
+      flex: 0 0 auto;
+      border: 1px solid var(--color-primary);
+      border-radius: 999px;
+      padding: 10px 18px;
+      color: var(--color-primary-dark);
+      font-size: 0.82rem;
+      scroll-snap-align: start;
+    }
+
+    .most-loved__tab.is-active {
+      color: var(--color-surface);
+      background: var(--color-primary);
+    }
+
+    .most-loved__tab.is-active::after {
+      display: none;
+    }
+
+    .most-loved__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .most-loved-card {
+      gap: 8px;
+    }
+
+    .most-loved-card__quick-view {
+      display: none;
+    }
+
+    .most-loved-card__title {
+      font-size: 0.95rem;
+    }
+
+    .most-loved-card__price {
+      font-size: 0.98rem;
+    }
+
+    .most-loved-card__placeholder-wrap strong {
+      font-size: 0.85rem;
+    }
+
+    .most-loved-card__browse {
+      font-size: 0.78rem;
+    }
+
+    .most-loved-card__cart {
+      min-height: 46px;
+      font-size: 0.78rem;
+    }
+
+    .most-loved__footer {
+      margin-top: 20px;
+    }
+
+    .most-loved__view-all {
+      width: 100%;
+      min-width: 0;
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  document.querySelectorAll('.most-loved').forEach(function (section) {
+    var tabs = section.querySelectorAll('[data-filter-tab]');
+    var items = section.querySelectorAll('[data-filter-item]');
+
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        tabs.forEach(function (t) { t.classList.remove('is-active'); });
+        tab.classList.add('is-active');
+
+        var category = tab.getAttribute('data-category');
+        items.forEach(function (item) {
+          var match = category === 'all' || item.getAttribute('data-category') === category;
+          item.hidden = !match;
+        });
+      });
+    });
+
+    section.querySelectorAll('.most-loved-card__wishlist').forEach(function (button) {
+      button.addEventListener('click', function () {
+        var pressed = button.getAttribute('aria-pressed') === 'true';
+        button.setAttribute('aria-pressed', String(!pressed));
+        button.classList.toggle('is-active', !pressed);
+      });
+    });
+  });
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "t:sections.most_loved.name",
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "t:labels.heading",
+      "default": "Most loved"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "t:labels.subheading",
+      "default": "<p>The ones customers come back for.</p>"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "t:labels.view_all_link"
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "t:labels.view_all_label",
+      "default": "View all"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "t:sections.most_loved.tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "t:labels.label",
+          "default": "Food"
+        },
+        {
+          "type": "text",
+          "id": "category",
+          "label": "t:labels.category",
+          "info": "t:labels.category_info",
+          "default": "food"
+        }
+      ]
+    },
+    {
+      "type": "product",
+      "name": "t:sections.most_loved.product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "t:labels.product"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:labels.title",
+          "info": "t:labels.title_info"
+        },
+        {
+          "type": "text",
+          "id": "placeholder_text",
+          "label": "t:labels.placeholder_text"
+        },
+        {
+          "type": "text",
+          "id": "category",
+          "label": "t:labels.category",
+          "info": "t:labels.category_info"
+        },
+        {
+          "type": "select",
+          "id": "badge",
+          "label": "t:labels.badge",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "bestseller", "label": "Bestseller" },
+            { "value": "new", "label": "New" }
+          ],
+          "default": "none"
+        },
+        {
+          "type": "text",
+          "id": "rating",
+          "label": "t:labels.rating",
+          "info": "t:labels.rating_info"
+        },
+        {
+          "type": "text",
+          "id": "rating_count",
+          "label": "t:labels.rating_count"
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "t:labels.price",
+          "info": "t:labels.price_info"
+        },
+        {
+          "type": "text",
+          "id": "compare_price",
+          "label": "t:labels.compare_price"
+        },
+        {
+          "type": "text",
+          "id": "variant_info",
+          "label": "t:labels.variant_info"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_quick_view",
+          "label": "t:labels.show_quick_view",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.most_loved.name",
+      "blocks": [
+        { "type": "tab", "settings": { "label": "Food", "category": "food" } },
+        { "type": "tab", "settings": { "label": "Kitchen", "category": "kitchen" } },
+        { "type": "tab", "settings": { "label": "Fashion", "category": "fashion" } },
+        { "type": "tab", "settings": { "label": "Pooja", "category": "pooja" } },
+        {
+          "type": "product",
+          "settings": {
+            "title": "Aam ka Achar",
+            "placeholder_text": "Jar on a stone counter, soft daylight",
+            "category": "food",
+            "badge": "bestseller",
+            "rating": "4.8",
+            "rating_count": "1,284",
+            "price": "$12.99",
+            "compare_price": "$14.99",
+            "variant_info": "500 g"
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "title": "Khapli Atta",
+            "placeholder_text": "Atta, rotis and wheat on linen",
+            "category": "food",
+            "rating": "4.7",
+            "rating_count": "862",
+            "price": "$18.99",
+            "variant_info": "2 kg",
+            "show_quick_view": true
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "title": "Kansa Thali Set",
+            "placeholder_text": "Thali set on a dark wood table",
+            "category": "kitchen",
+            "rating": "4.9",
+            "rating_count": "131",
+            "price": "$64",
+            "variant_info": "6 pcs"
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "title": "Chanderi Kurta Set",
+            "placeholder_text": "Ivory kurta set on a linen hanger",
+            "category": "fashion",
+            "badge": "new",
+            "rating": "4.6",
+            "rating_count": "214",
+            "price": "$89",
+            "compare_price": "$110",
+            "variant_info": "XS — XXL"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

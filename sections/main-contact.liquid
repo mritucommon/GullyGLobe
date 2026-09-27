@@ -1,0 +1,1051 @@
+<section class="contact-page">
+  <div class="contact-page__hero">
+    <div class="page-width">
+      {% if section.settings.eyebrow != blank %}
+        <p class="contact-page__eyebrow">{{ section.settings.eyebrow }}</p>
+      {% endif %}
+      <h1>{{ section.settings.heading }}</h1>
+      {% if section.settings.text != blank %}
+        <p class="contact-page__text contact-page__text-desktop">{{ section.settings.text }}</p>
+      {% endif %}
+      {% if section.settings.mobile_text != blank %}
+        <p class="contact-page__text contact-page__text-mobile">{{ section.settings.mobile_text }}</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="contact-page__cards-wrap">
+    <div class="page-width">
+      <div class="contact-page__cards">
+        {% for block in section.blocks %}
+          <article class="contact-card" {{ block.shopify_attributes }}>
+            <span class="contact-card__icon">
+              {% render 'icon', name: block.settings.icon %}
+            </span>
+            <h2>{{ block.settings.heading }}</h2>
+            {% if block.settings.text != blank %}
+              <p>{{ block.settings.text }}</p>
+            {% endif %}
+            {% if block.settings.link_label != blank %}
+              <a href="{{ block.settings.link_url | default: routes.root_url }}">{{ block.settings.link_label }}</a>
+            {% endif %}
+          </article>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-form-section">
+    <div class="page-width contact-form-section__inner">
+      <div class="contact-form-section__main">
+        <h2>{{ section.settings.form_heading }}</h2>
+
+        {% form 'contact', class: 'contact-form' %}
+          {% if form.posted_successfully? %}
+            <p class="contact-form__success" role="status">{{ section.settings.success_message }}</p>
+          {% endif %}
+          {{ form.errors | default_errors }}
+
+          <div class="contact-form__topics" aria-label="Message topic">
+            {% assign topics = section.settings.topics | split: ',' %}
+            {% for topic in topics %}
+              {% assign clean_topic = topic | strip %}
+              <label>
+                <input type="radio" name="contact[topic]" value="{{ clean_topic | escape }}" {% if forloop.first %}checked{% endif %}>
+                <span>{{ clean_topic }}</span>
+              </label>
+            {% endfor %}
+          </div>
+
+          <div class="contact-form__grid">
+            <label>
+              <span>Full name</span>
+              <input type="text" name="contact[name]" value="{% if form.name %}{{ form.name }}{% endif %}" placeholder="{{ section.settings.name_placeholder }}" autocomplete="name">
+            </label>
+            <label>
+              <span>Email</span>
+              <input type="email" name="contact[email]" value="{% if form.email %}{{ form.email }}{% endif %}" placeholder="{{ section.settings.email_placeholder }}" autocomplete="email" autocorrect="off" autocapitalize="off" required>
+            </label>
+          </div>
+
+          <label>
+            <span>Order number</span>
+            <input type="text" name="contact[order_number]" placeholder="{{ section.settings.order_placeholder }}">
+          </label>
+
+          <label>
+            <span>Message</span>
+            <textarea name="contact[body]" placeholder="{{ section.settings.message_placeholder }}" rows="7" required>{% if form.body %}{{ form.body }}{% endif %}</textarea>
+          </label>
+
+          <label class="contact-form__whatsapp">
+            <input type="checkbox" name="contact[reply_on_whatsapp]" value="Yes">
+            <span>{{ section.settings.whatsapp_label }}</span>
+          </label>
+
+          <div class="contact-form__submit-row">
+            <button class="button" type="submit">{{ section.settings.button_label }}</button>
+            <p>{{ section.settings.form_note }}</p>
+          </div>
+        {% endform %}
+      </div>
+
+      <aside class="contact-form-section__side">
+        <div class="contact-form-section__image">
+          {% render 'icon', name: 'camera' %}
+          <strong>{{ section.settings.side_image_text }}</strong>
+          <span>{{ section.settings.side_image_link }}</span>
+        </div>
+
+        <div class="contact-form-section__info">
+          <div>
+            {% render 'icon', name: 'home' %}
+            <p><strong>{{ section.settings.location_title }}</strong>{{ section.settings.location_text | newline_to_br }}</p>
+          </div>
+          <div>
+            {% render 'icon', name: 'clock' %}
+            <p><strong>{{ section.settings.hours_title }}</strong>{{ section.settings.hours_text | newline_to_br }}</p>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <div class="contact-faq">
+    <div class="page-width">
+      <h2>{{ section.settings.faq_heading }}</h2>
+      <div class="contact-faq__panel">
+        {% assign faq_blocks = section.blocks | where: 'type', 'faq' %}
+        {% for block in faq_blocks %}
+          <details class="contact-faq__item" {% if forloop.first %}open{% endif %} {{ block.shopify_attributes }}>
+            <summary>
+              <span>{{ block.settings.question }}</span>
+              <em aria-hidden="true"></em>
+            </summary>
+            <div class="contact-faq__answer">{{ block.settings.answer }}</div>
+          </details>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .contact-page {
+    background: var(--color-surface);
+  }
+
+  .contact-page__hero {
+    display: grid;
+    place-items: center;
+    min-height: 364px;
+    padding: 76px 0 82px;
+    background: var(--color-background);
+    text-align: center;
+  }
+
+  .contact-page__eyebrow {
+    margin: 0 0 14px;
+    color: var(--color-primary);
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .contact-page h1 {
+    margin: 0;
+    color: var(--color-primary-dark);
+    font-family: var(--font-display);
+    font-size: clamp(4.3rem, 5.8vw, 5.55rem);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    line-height: 0.9;
+    text-transform: uppercase;
+  }
+
+  .contact-page__text {
+    max-width: 58ch;
+    margin: 28px auto 0;
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.55;
+  }
+
+  .contact-page__text-mobile {
+    display: none;
+  }
+
+  .contact-page__cards-wrap {
+    padding: 80px 0 76px;
+  }
+
+  .contact-page__cards {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 27px;
+  }
+
+  .contact-card {
+    min-height: 248px;
+    display: grid;
+    align-content: start;
+    justify-items: start;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 28px 27px 29px;
+    background: var(--color-surface);
+  }
+
+  .contact-card__icon {
+    width: 52px;
+    height: 52px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    color: var(--color-primary);
+    background: var(--color-background);
+  }
+
+  .contact-card__icon .icon {
+    width: 22px;
+    height: 22px;
+    stroke-width: 1.8;
+  }
+
+  .contact-card h2 {
+    margin: 17px 0 11px;
+    color: var(--color-primary-dark);
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    line-height: 0.96;
+    text-transform: uppercase;
+  }
+
+  .contact-card p {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 0.96rem;
+    line-height: 1.5;
+  }
+
+  .contact-card a {
+    display: inline-flex;
+    margin-top: 13px;
+    color: var(--color-primary);
+    font-size: 0.95rem;
+    font-weight: 800;
+    line-height: 1.2;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 7px;
+  }
+
+  .contact-form-section {
+    padding: 56px 0 76px;
+    background: var(--color-surface);
+  }
+
+  .contact-form-section__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 2.25fr) minmax(290px, 0.8fr);
+    gap: 90px;
+    align-items: start;
+  }
+
+  .contact-form-section__main h2 {
+    margin: 0 0 27px;
+    color: var(--color-primary-dark);
+    font-family: var(--font-display);
+    font-size: clamp(2.7rem, 4vw, 3.35rem);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    line-height: 0.95;
+    text-transform: uppercase;
+  }
+
+  .contact-form {
+    display: grid;
+    gap: 18px;
+  }
+
+  .contact-form__topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+  }
+
+  .contact-form__topics label {
+    cursor: pointer;
+  }
+
+  .contact-form__topics input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .contact-form__topics span {
+    min-height: 45px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    padding: 0 20px;
+    color: #001d19;
+    background: var(--color-surface);
+    font-size: 0.94rem;
+    transition: color 160ms ease, background 160ms ease, border-color 160ms ease;
+  }
+
+  .contact-form__topics input:checked + span {
+    border-color: var(--color-primary);
+    color: var(--color-surface);
+    background: var(--color-primary);
+  }
+
+  .contact-form__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .contact-form label {
+    display: grid;
+    gap: 8px;
+    color: #001d19;
+    font-size: 0.88rem;
+    font-weight: 700;
+  }
+
+  .contact-form input:not([type="checkbox"]):not([type="radio"]),
+  .contact-form textarea {
+    width: 100%;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 0 17px;
+    color: var(--color-text);
+    background: var(--color-surface);
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: 0;
+    outline: 0;
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+  }
+
+  .contact-form input:not([type="checkbox"]):not([type="radio"]) {
+    min-height: 56px;
+  }
+
+  .contact-form textarea {
+    min-height: 186px;
+    padding-top: 17px;
+    resize: vertical;
+  }
+
+  .contact-form input:focus,
+  .contact-form textarea:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 12%, transparent);
+  }
+
+  .contact-form input::placeholder,
+  .contact-form textarea::placeholder {
+    color: var(--color-text-secondary);
+    opacity: 1;
+  }
+
+  .contact-form__whatsapp {
+    width: fit-content;
+    display: flex !important;
+    grid-template-columns: none !important;
+    align-items: center;
+    gap: 14px !important;
+    margin-top: 10px;
+    font-size: 1rem !important;
+    font-weight: 400 !important;
+  }
+
+  .contact-form__whatsapp input {
+    width: 19px;
+    height: 19px;
+    margin: 0;
+    accent-color: var(--color-primary);
+  }
+
+  .contact-form__submit-row {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-top: 15px;
+  }
+
+  .contact-form__submit-row .button {
+    min-width: 208px;
+    min-height: 60px;
+    border-radius: 5px;
+    letter-spacing: 0.14em;
+  }
+
+  .contact-form__submit-row p,
+  .contact-form__success {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+  }
+
+  .contact-form-section__side {
+    display: grid;
+    gap: 20px;
+    padding-top: 4px;
+  }
+
+  .contact-form-section__image {
+    min-height: 255px;
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    gap: 9px;
+    border: 1px dashed color-mix(in srgb, var(--color-primary) 50%, transparent);
+    border-radius: 8px;
+    background: var(--color-image-ground);
+    text-align: center;
+  }
+
+  .contact-form-section__image .icon {
+    width: 30px;
+    height: 30px;
+    color: color-mix(in srgb, var(--color-primary-dark) 52%, transparent);
+  }
+
+  .contact-form-section__image strong {
+    color: var(--color-text-secondary);
+    font-size: 0.98rem;
+    font-weight: 700;
+  }
+
+  .contact-form-section__image span {
+    border-bottom: 1px solid currentColor;
+    color: var(--color-primary-dark);
+    font-size: 0.82rem;
+  }
+
+  .contact-form-section__info {
+    display: grid;
+    gap: 18px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 26px;
+  }
+
+  .contact-form-section__info div {
+    display: grid;
+    grid-template-columns: 24px minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .contact-form-section__info .icon {
+    width: 22px;
+    height: 22px;
+    color: var(--color-primary);
+  }
+
+  .contact-form-section__info p {
+    margin: 0;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+  }
+
+  .contact-form-section__info strong {
+    display: block;
+    margin-bottom: 3px;
+    color: #001d19;
+  }
+
+  .contact-faq {
+    padding: 82px 0 96px;
+    background: var(--color-background);
+  }
+
+  .contact-faq .page-width {
+    max-width: 860px;
+  }
+
+  .contact-faq h2 {
+    margin: 0 0 33px;
+    color: var(--color-primary-dark);
+    font-family: var(--font-display);
+    font-size: clamp(2.7rem, 4vw, 3.35rem);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    line-height: 0.95;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .contact-faq__panel {
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 0 27px;
+    background: var(--color-surface);
+  }
+
+  .contact-faq__item {
+    border-bottom: 1px solid var(--color-divider);
+  }
+
+  .contact-faq__item:last-child {
+    border-bottom: 0;
+  }
+
+  .contact-faq__item summary {
+    min-height: 66px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    color: #001d19;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 800;
+    list-style: none;
+  }
+
+  .contact-faq__item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .contact-faq__item summary em {
+    position: relative;
+    width: 16px;
+    height: 16px;
+    flex: 0 0 16px;
+    font-style: normal;
+  }
+
+  .contact-faq__item summary em::before,
+  .contact-faq__item summary em::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 16px;
+    height: 2px;
+    background: var(--color-primary);
+    transform: translateY(-50%);
+  }
+
+  .contact-faq__item summary em::after {
+    transform: translateY(-50%) rotate(90deg);
+  }
+
+  .contact-faq__item[open] summary em::after {
+    opacity: 0;
+  }
+
+  .contact-faq__answer {
+    max-width: 78ch;
+    padding: 0 0 24px;
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+
+  @media (max-width: 749px) {
+    .contact-page__hero {
+      display: block;
+      min-height: 0;
+      padding: 22px 0 19px;
+      text-align: left;
+    }
+
+    .contact-page__hero .page-width,
+    .contact-page__cards-wrap .page-width {
+      width: calc(100% - 32px);
+    }
+
+    .contact-page__eyebrow {
+      display: none;
+    }
+
+    .contact-page h1 {
+      font-size: clamp(2.1rem, 10vw, 2.95rem);
+      line-height: 0.95;
+    }
+
+    .contact-page__text {
+      max-width: none;
+      margin-top: 10px;
+      font-size: 0.88rem;
+      line-height: 1.45;
+    }
+
+    .contact-page__text-desktop {
+      display: none;
+    }
+
+    .contact-page__text-mobile {
+      display: block;
+    }
+
+    .contact-page__cards-wrap {
+      padding: 16px 0 28px;
+    }
+
+    .contact-page__cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 9px;
+    }
+
+    .contact-card {
+      min-height: 108px;
+      border-radius: 8px;
+      padding: 14px 13px 12px;
+    }
+
+    .contact-card__icon {
+      width: 36px;
+      height: 36px;
+    }
+
+    .contact-card__icon .icon {
+      width: 17px;
+      height: 17px;
+    }
+
+    .contact-card h2 {
+      margin: 11px 0 6px;
+      font-size: 1.08rem;
+      line-height: 1;
+    }
+
+    .contact-card p {
+      font-size: 0.68rem;
+      line-height: 1.35;
+    }
+
+    .contact-card a {
+      display: none;
+    }
+
+    .contact-form-section {
+      padding: 16px 0 32px;
+    }
+
+    .contact-form-section__inner {
+      width: calc(100% - 60px);
+      display: block;
+    }
+
+    .contact-form-section__main h2 {
+      margin-bottom: 16px;
+      font-size: clamp(1.78rem, 8vw, 2.2rem);
+      line-height: 1;
+    }
+
+    .contact-form {
+      gap: 13px;
+    }
+
+    .contact-form__topics {
+      flex-wrap: nowrap;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 1px;
+      scroll-snap-type: x mandatory;
+    }
+
+    .contact-form__topics::-webkit-scrollbar {
+      display: none;
+    }
+
+    .contact-form__topics label {
+      flex: 0 0 auto;
+      scroll-snap-align: start;
+    }
+
+    .contact-form__topics span {
+      min-height: 35px;
+      padding: 0 16px;
+      font-size: 0.77rem;
+    }
+
+    .contact-form__grid {
+      grid-template-columns: 1fr;
+      gap: 13px;
+    }
+
+    .contact-form label {
+      gap: 6px;
+      font-size: 0.72rem;
+    }
+
+    .contact-form input:not([type="checkbox"]):not([type="radio"]) {
+      min-height: 42px;
+    }
+
+    .contact-form input:not([type="checkbox"]):not([type="radio"]),
+    .contact-form textarea {
+      border-radius: 6px;
+      padding-inline: 13px;
+      font-size: 0.87rem;
+    }
+
+    .contact-form textarea {
+      min-height: 123px;
+      padding-top: 13px;
+    }
+
+    .contact-form__whatsapp {
+      display: none !important;
+    }
+
+    .contact-form__submit-row {
+      display: block;
+      margin-top: 0;
+    }
+
+    .contact-form__submit-row .button {
+      width: 100%;
+      min-height: 45px;
+      font-size: 0.75rem;
+    }
+
+    .contact-form__submit-row p {
+      display: none;
+    }
+
+    .contact-form-section__side {
+      margin-top: 23px;
+      padding-top: 0;
+    }
+
+    .contact-form-section__image {
+      display: none;
+    }
+
+    .contact-form-section__info {
+      gap: 12px;
+      padding: 16px;
+      border-radius: 8px;
+    }
+
+    .contact-form-section__info div {
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+    }
+
+    .contact-form-section__info .icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    .contact-form-section__info p {
+      font-size: 0.72rem;
+      line-height: 1.35;
+    }
+
+    .contact-form-section__info strong {
+      display: inline;
+      margin: 0;
+      font-weight: 400;
+    }
+
+    .contact-faq {
+      padding: 31px 0 48px;
+      background: var(--color-surface);
+    }
+
+    .contact-faq .page-width {
+      width: calc(100% - 56px);
+      max-width: none;
+    }
+
+    .contact-faq h2 {
+      margin-bottom: 25px;
+      font-size: clamp(2.45rem, 12vw, 3.25rem);
+      line-height: 0.95;
+      text-align: left;
+    }
+
+    .contact-faq__panel {
+      border: 0;
+      border-radius: 0;
+      padding: 0;
+      background: transparent;
+    }
+
+    .contact-faq__item {
+      border-bottom: 1px solid var(--color-divider);
+    }
+
+    .contact-faq__item:first-child {
+      border-top: 1px solid var(--color-divider);
+    }
+
+    .contact-faq__item summary {
+      min-height: 84px;
+      align-items: center;
+      font-size: 1.42rem;
+      line-height: 1.15;
+    }
+
+    .contact-faq__item summary em,
+    .contact-faq__item summary em::before,
+    .contact-faq__item summary em::after {
+      width: 26px;
+      flex-basis: 26px;
+    }
+
+    .contact-faq__answer {
+      padding: 0 0 32px;
+      font-size: 1.55rem;
+      line-height: 1.55;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Main contact",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "We're here to help"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Contact us"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Desktop text",
+      "default": "Questions about an order, a product or sourcing? Our team in New Jersey replies within one business day."
+    },
+    {
+      "type": "text",
+      "id": "mobile_text",
+      "label": "Mobile text",
+      "default": "We reply within one business day."
+    },
+    {
+      "type": "text",
+      "id": "form_heading",
+      "label": "Form heading",
+      "default": "Send us a message"
+    },
+    {
+      "type": "text",
+      "id": "topics",
+      "label": "Topics",
+      "default": "Order, Product question, Returns, Wholesale, Other"
+    },
+    {
+      "type": "text",
+      "id": "name_placeholder",
+      "label": "Name placeholder",
+      "default": "Ananya Iyer"
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Email placeholder",
+      "default": "name@example.com"
+    },
+    {
+      "type": "text",
+      "id": "order_placeholder",
+      "label": "Order placeholder",
+      "default": "GG-10482"
+    },
+    {
+      "type": "text",
+      "id": "message_placeholder",
+      "label": "Message placeholder",
+      "default": "How can we help?"
+    },
+    {
+      "type": "text",
+      "id": "whatsapp_label",
+      "label": "WhatsApp checkbox label",
+      "default": "Reply to me on WhatsApp instead"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Send message"
+    },
+    {
+      "type": "text",
+      "id": "form_note",
+      "label": "Form note",
+      "default": "We reply within one business day."
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Success message",
+      "default": "Thank you. We will reply within one business day."
+    },
+    {
+      "type": "text",
+      "id": "side_image_text",
+      "label": "Side image text",
+      "default": "Photo of your office or team"
+    },
+    {
+      "type": "text",
+      "id": "side_image_link",
+      "label": "Side image link text",
+      "default": "or browse files"
+    },
+    {
+      "type": "text",
+      "id": "location_title",
+      "label": "Location title",
+      "default": "Gully Globe"
+    },
+    {
+      "type": "textarea",
+      "id": "location_text",
+      "label": "Location text",
+      "default": "221 Washington St, Hoboken, NJ 07030"
+    },
+    {
+      "type": "text",
+      "id": "hours_title",
+      "label": "Hours title",
+      "default": "Support hours"
+    },
+    {
+      "type": "textarea",
+      "id": "hours_text",
+      "label": "Hours text",
+      "default": "Mon - Fri, 9am - 6pm ET\nSat, 10am - 2pm ET"
+    },
+    {
+      "type": "text",
+      "id": "faq_heading",
+      "label": "FAQ heading",
+      "default": "Quick answers"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "method",
+      "name": "Contact method",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "mail", "label": "Email" },
+            { "value": "message-circle", "label": "Message" },
+            { "value": "phone", "label": "Phone" },
+            { "value": "package", "label": "Package" }
+          ],
+          "default": "mail"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Email"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "hello@gullyglobe.com. Best for orders and detailed questions."
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Link label",
+          "default": "Write to us"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link"
+        }
+      ]
+    },
+    {
+      "type": "faq",
+      "name": "FAQ item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "Where is my order?"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "Answer",
+          "default": "Most orders arrive in 3-6 business days. Your tracking link is in your shipping email and in your account under Orders."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Main contact",
+      "blocks": [
+        {
+          "type": "method",
+          "settings": {
+            "icon": "mail",
+            "heading": "Email",
+            "text": "hello@gullyglobe.com. Best for orders and detailed questions.",
+            "link_label": "Write to us"
+          }
+        },
+        {
+          "type": "method",
+          "settings": {
+            "icon": "message-circle",
+            "heading": "WhatsApp",
+            "text": "Chat with us, Mon - Sat. Quick questions and order updates.",
+            "link_label": "Start a chat"
+          }
+        },
+        {
+          "type": "method",
+          "settings": {
+            "icon": "phone",
+            "heading": "Phone",
+            "text": "+1 (201) 555-0148, Mon - Fri, 9am - 6pm ET.",
+            "link_label": "Call us"
+          }
+        },
+        {
+          "type": "method",
+          "settings": {
+            "icon": "package",
+            "heading": "Track an order",
+            "text": "See where your parcel is without waiting for a reply.",
+            "link_label": "Track order"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

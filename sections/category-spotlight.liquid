@@ -1,0 +1,273 @@
+<section class="category-spotlight">
+  <div class="page-width">
+    <div class="category-spotlight__grid">
+      {% for block in section.blocks %}
+        <div class="category-spotlight__card" {{ block.shopify_attributes }}>
+          <div class="category-spotlight__media">
+            {% if block.settings.image %}
+              {{ block.settings.image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '400, 700, 900', sizes: '(min-width: 850px) 50vw, 100vw', alt: block.settings.image.alt }}
+            {% else %}
+              <div class="category-spotlight__placeholder-wrap">
+                {% render 'icon', name: 'camera' %}
+                {% if block.settings.placeholder_text != blank %}
+                  <strong>{{ block.settings.placeholder_text }}</strong>
+                {% endif %}
+                <span>{{ 'sections.pantry_promo.browse_files' | t }}</span>
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="category-spotlight__content">
+            {% if block.settings.eyebrow != blank %}
+              <p class="category-spotlight__eyebrow">{{ block.settings.eyebrow }}</p>
+            {% endif %}
+            <h3>{{ block.settings.title }}</h3>
+            {% if block.settings.description != blank %}
+              <p class="category-spotlight__description">{{ block.settings.description }}</p>
+            {% endif %}
+            {% if block.settings.button_label != blank %}
+              <a class="button category-spotlight__button" href="{{ block.settings.link | default: routes.all_products_collection_url }}">{{ block.settings.button_label }}</a>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .category-spotlight {
+    padding: 64px 0;
+    background: var(--color-surface);
+  }
+
+  .category-spotlight__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  .category-spotlight__card {
+    position: relative;
+    min-height: 780px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px dashed color-mix(in srgb, var(--color-primary-dark) 30%, transparent);
+    border-radius: var(--radius-card);
+    background: linear-gradient(180deg, var(--color-image-ground) 0%, var(--color-primary) 100%);
+  }
+
+  .category-spotlight__media {
+    flex: 1;
+    display: flex;
+  }
+
+  .category-spotlight__placeholder-wrap {
+    flex: 1;
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    gap: 10px;
+    padding: 40px;
+    text-align: center;
+  }
+
+  .category-spotlight__placeholder-wrap .icon {
+    width: 28px;
+    height: 28px;
+    color: color-mix(in srgb, var(--color-primary-dark) 55%, transparent);
+  }
+
+  .category-spotlight__placeholder-wrap strong {
+    max-width: 34ch;
+    color: var(--color-primary-dark);
+    font-size: 0.98rem;
+    font-weight: 700;
+  }
+
+  .category-spotlight__placeholder-wrap span {
+    border-bottom: 1px solid currentColor;
+    color: var(--color-primary-dark);
+    font-size: 0.85rem;
+  }
+
+  .category-spotlight__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .category-spotlight__content {
+    display: grid;
+    justify-items: start;
+    gap: 10px;
+    padding: 30px 34px 34px;
+  }
+
+  .category-spotlight__eyebrow {
+    margin: 0;
+    color: color-mix(in srgb, var(--color-surface) 65%, transparent);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .category-spotlight h3 {
+    margin: 0;
+    color: var(--color-surface);
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    line-height: 1;
+  }
+
+  .category-spotlight__description {
+    margin: 0;
+    max-width: 40ch;
+    color: color-mix(in srgb, var(--color-surface) 88%, transparent);
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .category-spotlight__button {
+    margin-top: 8px;
+    border-color: var(--color-surface);
+    color: var(--color-primary-dark);
+    background: var(--color-surface);
+  }
+
+  .category-spotlight__button:hover {
+    color: var(--color-surface);
+    background: transparent;
+  }
+
+  @media (max-width: 849px) {
+    .category-spotlight {
+      padding: 24px 0;
+    }
+
+    .category-spotlight__grid {
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    .category-spotlight__card {
+      min-height: 520px;
+    }
+
+    .category-spotlight__placeholder-wrap {
+      padding: 26px;
+    }
+
+    .category-spotlight__content {
+      gap: 6px;
+      padding: 20px 20px 24px;
+    }
+
+    .category-spotlight__eyebrow {
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+    }
+
+    .category-spotlight h3 {
+      font-size: clamp(1.5rem, 7vw, 2rem);
+    }
+
+    .category-spotlight__description {
+      font-size: 0.95rem;
+    }
+
+    .category-spotlight__button {
+      width: 100%;
+      min-height: 50px;
+      border-color: var(--color-surface);
+      color: var(--color-primary-dark);
+      background: var(--color-surface);
+      font-size: 0.82rem;
+    }
+
+    .category-spotlight__button:hover {
+      color: var(--color-surface);
+      background: transparent;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.category_spotlight.name",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "t:sections.category_spotlight.card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:labels.image"
+        },
+        {
+          "type": "text",
+          "id": "placeholder_text",
+          "label": "t:labels.placeholder_text"
+        },
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "t:labels.eyebrow_text"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:labels.title",
+          "default": "Category"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "t:labels.description"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "t:labels.button_label"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "t:labels.link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.category_spotlight.name",
+      "blocks": [
+        {
+          "type": "card",
+          "settings": {
+            "placeholder_text": "Copper handi, brass lota and a steel dabba on honed stone",
+            "eyebrow": "Kitchen & Bartan",
+            "title": "The Indian kitchen",
+            "description": "Copper, brass, kansa and steel for everyday cooking.",
+            "button_label": "Shop the kitchen"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "placeholder_text": "Woman in a sage chanderi kurta set on a jharokha balcony",
+            "eyebrow": "Fashion",
+            "title": "Wear India",
+            "description": "Kurta sets, sarees and festive wear, handwoven and block printed.",
+            "button_label": "Shop fashion"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

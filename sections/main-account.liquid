@@ -1,0 +1,485 @@
+{% liquid
+  assign first_name = customer.first_name | default: 'Ananya'
+  assign city = customer.default_address.city | default: 'Hoboken'
+  assign province = customer.default_address.province_code | default: 'NJ'
+  assign member_year = customer.created_at | date: '%Y' | default: '2025'
+%}
+
+<section class="account-page">
+  <div class="page-width account-page__inner">
+    <aside class="account-page__nav" aria-label="My account">
+      <p>My account</p>
+      <a class="is-active" href="{{ routes.account_url }}">Overview</a>
+      <a href="{{ routes.account_url }}#orders">Orders &amp; tracking</a>
+      <a href="/pages/wishlist">Wishlist (3)</a>
+      <a href="{{ routes.account_url }}#buy-again">Buy again</a>
+      <a href="{{ routes.account_addresses_url }}">Addresses</a>
+      <a href="{{ routes.account_url }}#payment">Payment methods</a>
+      <a href="{{ routes.account_url }}#communication">Communication</a>
+      <a href="{{ routes.account_logout_url }}">Sign out</a>
+    </aside>
+
+    <div class="account-page__content">
+      <header class="account-page__header">
+        <h1>Welcome back, {{ first_name }}.</h1>
+        <p>Member since {{ member_year }} &bull; {{ city }}, {{ province }}</p>
+      </header>
+
+      <article class="account-order" id="orders">
+        <div class="account-order__top">
+          <h2>Order GG-10482 &bull; On its way</h2>
+          <span>Placed Sep 18 &bull; $44.46</span>
+        </div>
+        <div class="account-order__steps" aria-label="Order progress">
+          <div class="is-complete"><strong>Ordered</strong><span>Sep 18</span></div>
+          <div class="is-complete"><strong>Packed</strong><span>Sep 21</span></div>
+          <div class="is-active"><strong>In transit</strong><span>Now</span></div>
+          <div><strong>Delivered</strong><span>Est. Sep 29</span></div>
+        </div>
+        <div class="account-order__bottom">
+          <div class="account-order__thumbs" aria-hidden="true">
+            <span>or<br>browse<br>files</span>
+            <span>or<br>browse<br>files</span>
+            <span>or<br>browse<br>files</span>
+          </div>
+          <a class="button button--outline" href="{{ routes.account_url }}#orders">Track order</a>
+        </div>
+      </article>
+
+      <section class="account-restock" id="buy-again">
+        <div class="account-restock__heading">
+          <h2>Restock your essentials</h2>
+          <p>Usually reordered every 4-6 weeks</p>
+        </div>
+        <div class="account-restock__grid">
+          <article class="account-restock-card">
+            <span>or<br>browse<br>files</span>
+            <div>
+              <h3>Assam CTC Chai</h3>
+              <p>$9.49 &bull; 250 g</p>
+            </div>
+            <button class="button button--outline" type="button">Buy again</button>
+          </article>
+          <article class="account-restock-card">
+            <span>or<br>browse<br>files</span>
+            <div>
+              <h3>Khapli Atta</h3>
+              <p>$18.99 &bull; 2 kg</p>
+            </div>
+            <button class="button button--outline" type="button">Buy again</button>
+          </article>
+          <article class="account-restock-card">
+            <span>or<br>browse<br>files</span>
+            <div>
+              <h3>Lakadong Haldi</h3>
+              <p>$7.49 &bull; 200 g</p>
+            </div>
+            <button class="button button--outline" type="button">Buy again</button>
+          </article>
+        </div>
+      </section>
+
+      <div class="account-page__lower">
+        <section class="account-reminder">
+          <p>Festival reminder</p>
+          <h2>Diwali is Sunday, November 8.</h2>
+          <span>Order pooja and decor by Oct 30 for delivery in time.</span>
+        </section>
+
+        <section class="account-address">
+          <p>Default address</p>
+          {% if customer.default_address %}
+            <address>
+              {{ customer.default_address.name }}<br>
+              {{ customer.default_address.address1 }}{% if customer.default_address.address2 != blank %}, {{ customer.default_address.address2 }}{% endif %}<br>
+              {{ customer.default_address.city }}, {{ customer.default_address.province_code }} {{ customer.default_address.zip }}
+            </address>
+          {% else %}
+            <address>
+              Ananya Iyer<br>
+              221 Washington St, Apt 4B<br>
+              Hoboken, NJ 07030
+            </address>
+          {% endif %}
+          <a href="{{ routes.account_addresses_url }}">Edit</a>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .account-page {
+    padding: 18px 0 44px;
+    background: var(--color-surface);
+  }
+
+  .account-page__inner {
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr);
+    gap: 64px;
+  }
+
+  .account-page__nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .account-page__nav p,
+  .account-restock__heading h2,
+  .account-reminder h2 {
+    margin: 0;
+    color: var(--color-primary-dark);
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 0.95;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .account-page__nav p {
+    margin-bottom: 8px;
+    font-size: 1rem;
+    letter-spacing: 0.2em;
+  }
+
+  .account-page__nav a {
+    border-radius: 7px;
+    padding: 14px 16px;
+    color: var(--color-text);
+    text-decoration: none;
+    transition: background 180ms ease, color 180ms ease, transform 180ms ease;
+  }
+
+  .account-page__nav a:hover,
+  .account-page__nav a.is-active {
+    color: #001d19;
+    background: var(--color-background);
+  }
+
+  .account-page__header h1 {
+    margin: 0;
+    color: var(--color-primary-dark);
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 4.6vw, 4.25rem);
+    font-weight: 400;
+    line-height: 0.9;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+  }
+
+  .account-page__header p {
+    margin: 18px 0 48px;
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+  }
+
+  .account-order,
+  .account-restock-card,
+  .account-address {
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background: var(--color-surface);
+  }
+
+  .account-order {
+    padding: 38px 38px 36px;
+  }
+
+  .account-order__top,
+  .account-restock__heading,
+  .account-page__lower {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .account-order__top h2 {
+    margin: 0;
+    color: #001d19;
+    font-size: 1.25rem;
+    line-height: 1.2;
+  }
+
+  .account-order__top span,
+  .account-restock__heading p,
+  .account-address address,
+  .account-address a {
+    color: var(--color-text-secondary);
+    font-style: normal;
+  }
+
+  .account-order__steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 28px;
+  }
+
+  .account-order__steps div {
+    border-top: 3px solid var(--color-border);
+    padding-top: 14px;
+  }
+
+  .account-order__steps .is-complete,
+  .account-order__steps .is-active {
+    border-color: var(--color-primary);
+  }
+
+  .account-order__steps strong,
+  .account-order__steps span {
+    display: block;
+  }
+
+  .account-order__steps strong {
+    margin-bottom: 10px;
+    color: #001d19;
+    font-size: 0.9rem;
+  }
+
+  .account-order__steps span {
+    color: var(--color-text-secondary);
+    font-size: 0.86rem;
+  }
+
+  .account-order__bottom {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-top: 28px;
+  }
+
+  .account-order__thumbs,
+  .account-restock-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .account-order__thumbs span,
+  .account-restock-card > span {
+    width: 64px;
+    height: 64px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px dashed color-mix(in srgb, var(--color-primary) 45%, transparent);
+    border-radius: 5px;
+    color: var(--color-text-secondary);
+    background: var(--color-card);
+    font-size: 0.78rem;
+    line-height: 1.1;
+    text-align: center;
+    text-decoration: underline;
+  }
+
+  .account-order .button {
+    min-width: 168px;
+  }
+
+  .account-restock {
+    margin-top: 52px;
+  }
+
+  .account-restock__heading {
+    margin-bottom: 24px;
+    align-items: end;
+  }
+
+  .account-restock__heading h2,
+  .account-reminder h2 {
+    font-size: clamp(2rem, 3vw, 2.4rem);
+  }
+
+  .account-restock__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .account-restock-card {
+    min-height: 102px;
+    padding: 14px;
+  }
+
+  .account-restock-card div {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .account-restock-card h3,
+  .account-restock-card p {
+    margin: 0;
+  }
+
+  .account-restock-card h3 {
+    color: #001d19;
+    font-size: 1rem;
+  }
+
+  .account-restock-card p {
+    margin-top: 3px;
+    color: var(--color-text-secondary);
+  }
+
+  .account-restock-card .button {
+    min-width: 114px;
+    min-height: 45px;
+    padding-inline: 18px;
+  }
+
+  .account-page__lower {
+    margin-top: 50px;
+  }
+
+  .account-reminder,
+  .account-address {
+    flex: 1;
+    min-height: 188px;
+    padding: 28px;
+  }
+
+  .account-reminder {
+    border-radius: 8px;
+    color: var(--color-surface);
+    background: var(--color-primary);
+  }
+
+  .account-reminder p,
+  .account-address p {
+    margin: 0 0 14px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .account-reminder h2 {
+    color: var(--color-surface);
+  }
+
+  .account-reminder span {
+    display: block;
+    margin-top: 18px;
+  }
+
+  .account-address p {
+    color: var(--color-text-secondary);
+  }
+
+  .account-address address {
+    margin-bottom: 16px;
+    color: #001d19;
+    line-height: 1.55;
+  }
+
+  .account-address a {
+    color: var(--color-primary-dark);
+  }
+
+  @media (max-width: 749px) {
+    .account-page {
+      padding: 20px 0 104px;
+    }
+
+    .account-page__inner {
+      width: calc(100% - 32px);
+      display: block;
+    }
+
+    .account-page__nav {
+      display: none;
+    }
+
+    .account-page__header h1 {
+      font-size: clamp(2.2rem, 11vw, 3rem);
+      line-height: 0.95;
+    }
+
+    .account-page__header p {
+      margin: 8px 0 24px;
+      font-size: 0.9rem;
+    }
+
+    .account-order {
+      padding: 18px;
+    }
+
+    .account-order__top,
+    .account-order__bottom,
+    .account-restock__heading,
+    .account-page__lower {
+      display: block;
+    }
+
+    .account-order__top h2 {
+      font-size: 1rem;
+    }
+
+    .account-order__top span {
+      display: block;
+      margin-top: 7px;
+      font-size: 0.86rem;
+    }
+
+    .account-order__steps {
+      grid-template-columns: repeat(2, 1fr);
+      margin-top: 20px;
+    }
+
+    .account-order__thumbs {
+      margin-bottom: 18px;
+    }
+
+    .account-order .button {
+      width: 100%;
+    }
+
+    .account-restock {
+      margin-top: 36px;
+    }
+
+    .account-restock__heading h2,
+    .account-reminder h2 {
+      font-size: var(--section-heading-mobile-size);
+    }
+
+    .account-restock__heading p {
+      margin-top: 6px;
+      font-size: 0.9rem;
+    }
+
+    .account-restock__grid {
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .account-restock-card {
+      padding: 12px;
+      gap: 12px;
+    }
+
+    .account-restock-card .button {
+      min-width: 100px;
+      padding-inline: 12px;
+    }
+
+    .account-reminder,
+    .account-address {
+      min-height: 0;
+      margin-top: 16px;
+      padding: 22px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Main account",
+  "settings": []
+}
+{% endschema %}

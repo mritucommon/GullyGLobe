@@ -1,0 +1,1322 @@
+<header class="site-header">
+  <input class="site-header__drawer-toggle" type="checkbox" id="MobileMenuToggle">
+  <input class="site-header__food-toggle" type="checkbox" id="MobileFoodToggle">
+  <div class="site-header__inner">
+    <label class="site-header__menu" for="MobileMenuToggle" aria-label="{{ 'sections.header.menu' | t }}">
+      {% render 'icon', name: 'menu' %}
+    </label>
+
+    <a class="site-header__logo" href="{{ routes.root_url }}" aria-label="{{ shop.name }}">
+      <span class="site-header__mark">{% render 'icon', name: 'shopping-bag' %}</span>
+      <span>Gully Globe</span>
+    </a>
+
+    {% if section.settings.menu != blank %}
+      <nav class="site-header__nav" aria-label="{{ 'sections.header.menu' | t }}">
+        {% for link in section.settings.menu.links %}
+          {% if forloop.index <= 6 %}
+            <a{% if forloop.first %} class="site-header__shop-trigger"{% endif %} href="{{ link.url }}">{{ link.title }}</a>
+          {% endif %}
+        {% endfor %}
+        {% if section.settings.menu.links.size > 6 %}
+          <details class="site-header__more">
+            <summary>{{ 'sections.header.more' | t }} {% render 'icon', name: 'chevron-down' %}</summary>
+            <div>
+              {% for link in section.settings.menu.links offset: 6 %}
+                <a href="{{ link.url }}">{{ link.title }}</a>
+              {% endfor %}
+            </div>
+          </details>
+        {% endif %}
+      </nav>
+    {% else %}
+      <nav class="site-header__nav" aria-label="{{ 'sections.header.menu' | t }}">
+        <a class="site-header__shop-trigger" href="{{ routes.all_products_collection_url }}">Shop {% render 'icon', name: 'chevron-down' %}</a>
+        <a href="{{ routes.all_products_collection_url }}">Food</a>
+        <a href="{{ routes.all_products_collection_url }}">Fashion</a>
+        <a href="{{ routes.all_products_collection_url }}">Jewellery</a>
+        <a href="{{ routes.root_url }}">Home</a>
+        <a href="{{ routes.all_products_collection_url }}">Kitchen</a>
+        <details class="site-header__more">
+          <summary>{{ 'sections.header.more' | t }} {% render 'icon', name: 'chevron-down' %}</summary>
+          <div>
+            <a href="{{ routes.all_products_collection_url }}">Pooja</a>
+            <a href="{{ routes.all_products_collection_url }}">Festive</a>
+          </div>
+        </details>
+      </nav>
+    {% endif %}
+
+    <div class="site-header__actions">
+      <a href="{{ routes.search_url }}" aria-label="{{ 'sections.header.search' | t }}">{% render 'icon', name: 'search' %}</a>
+      <a href="{{ routes.account_url }}" aria-label="{{ 'sections.header.account' | t }}">{% render 'icon', name: 'circle-user' %}</a>
+      <a class="site-header__wishlist" href="/pages/wishlist" aria-label="{{ 'sections.header.wishlist' | t }}">{% render 'icon', name: 'heart' %}</a>
+      <a class="site-header__cart" href="#CartDrawer" aria-label="{{ 'sections.header.cart' | t }}">
+        {% render 'icon', name: 'shopping-bag' %}
+        <span>{{ cart.item_count }}</span>
+      </a>
+    </div>
+  </div>
+
+  <form class="site-header__search" action="{{ routes.search_url }}" method="get" role="search">
+    <label class="visually-hidden" for="HeaderSearch">{{ 'sections.header.search' | t }}</label>
+    {% render 'icon', name: 'search' %}
+    <input id="HeaderSearch" type="search" name="q" placeholder="{{ 'sections.header.search_placeholder' | t }}" autocomplete="off">
+  </form>
+
+  <div class="site-header__mega" aria-label="{{ 'sections.header.shop_menu' | t }}">
+    <div class="site-header__mega-inner">
+      <div class="mega-column">
+        <div class="mega-column__image"><span>Spice tins on a wooden shelf</span></div>
+        <h2><span></span>Shop food</h2>
+        <a href="{{ routes.all_products_collection_url }}">Grocery &amp; Staples</a>
+        <a href="{{ routes.all_products_collection_url }}">Snacks</a>
+        <a href="{{ routes.all_products_collection_url }}">Pickles</a>
+        <a href="{{ routes.all_products_collection_url }}">Spices</a>
+        <a href="{{ routes.all_products_collection_url }}">Tea &amp; Coffee</a>
+        <a href="{{ routes.all_products_collection_url }}">Healthy Foods</a>
+      </div>
+
+      <div class="mega-column">
+        <div class="mega-column__image"><span>Folded sarees in window light</span></div>
+        <h2><span></span>Shop style</h2>
+        <a href="{{ routes.all_products_collection_url }}">Kurtis</a>
+        <a href="{{ routes.all_products_collection_url }}">Kurta Sets</a>
+        <a href="{{ routes.all_products_collection_url }}">Sarees</a>
+        <a href="{{ routes.all_products_collection_url }}">Festive Wear</a>
+        <a href="{{ routes.all_products_collection_url }}">Jewellery</a>
+      </div>
+
+      <div class="mega-column">
+        <div class="mega-column__image"><span>Brass lota on a windowsill</span></div>
+        <h2><span></span>Shop home</h2>
+        <a href="{{ routes.all_products_collection_url }}">Kitchen</a>
+        <a href="{{ routes.all_products_collection_url }}">Bartan</a>
+        <a href="{{ routes.all_products_collection_url }}">Decor</a>
+        <a href="{{ routes.all_products_collection_url }}">Pooja</a>
+      </div>
+
+      <div class="mega-column">
+        <div class="mega-column__image"><span>Diyas on marble steps</span></div>
+        <h2><span></span>Shop occasion</h2>
+        <a href="{{ routes.all_products_collection_url }}">Diwali</a>
+        <a href="{{ routes.all_products_collection_url }}">Holi</a>
+        <a href="{{ routes.all_products_collection_url }}">Raksha Bandhan</a>
+        <a href="{{ routes.all_products_collection_url }}">Wedding</a>
+        <a href="{{ routes.all_products_collection_url }}">Gifting</a>
+      </div>
+
+      <a class="mega-feature" href="{{ routes.all_products_collection_url }}">
+        <span>Festive 2026</span>
+        <strong>The Diwali edit</strong>
+        <em>Diyas, mithai boxes, pooja thalis and festive wear, gathered in one place.</em>
+        <b>Explore the edit</b>
+      </a>
+    </div>
+  </div>
+
+  <label class="mobile-drawer__scrim" for="MobileMenuToggle"></label>
+  <aside class="mobile-drawer" aria-label="{{ 'sections.header.menu' | t }}">
+    <div class="mobile-drawer__top">
+      <label class="mobile-drawer__close" for="MobileMenuToggle" aria-label="{{ 'sections.header.close' | t }}">
+        {% render 'icon', name: 'x' %}
+      </label>
+      <a class="site-header__logo mobile-drawer__logo" href="{{ routes.root_url }}" aria-label="{{ shop.name }}">
+        <span class="site-header__mark">{% render 'icon', name: 'shopping-bag' %}</span>
+        <span>Gully Globe</span>
+      </a>
+    </div>
+
+    <div class="mobile-drawer__body mobile-drawer__main">
+      <form class="mobile-drawer__search" action="{{ routes.search_url }}" method="get" role="search">
+        <label class="visually-hidden" for="DrawerSearch">{{ 'sections.header.search' | t }}</label>
+        {% render 'icon', name: 'search' %}
+        <input id="DrawerSearch" type="search" name="q" placeholder="{{ 'sections.header.search_placeholder' | t }}" autocomplete="off">
+      </form>
+
+      <nav class="mobile-drawer__tabs" aria-label="{{ 'sections.header.shop_menu' | t }}">
+        {% if section.settings.menu != blank and section.settings.menu.links.size > 0 %}
+          {% for link in section.settings.menu.links limit: 3 %}
+            <a href="{{ link.url }}">{{ link.title }}</a>
+          {% endfor %}
+        {% else %}
+          <a href="{{ routes.all_products_collection_url }}">Food</a>
+          <a href="{{ routes.all_products_collection_url }}">Style</a>
+          <a href="{{ routes.root_url }}">Home</a>
+        {% endif %}
+      </nav>
+
+      <div class="mobile-drawer__categories">
+        {% assign drawer_links = blank %}
+        {% assign first_menu_link = section.settings.menu.links | first %}
+        {% if section.settings.menu != blank and first_menu_link.links.size > 0 %}
+          {% assign drawer_links = first_menu_link.links %}
+        {% elsif section.settings.menu != blank and section.settings.menu.links.size > 0 %}
+          {% assign drawer_links = section.settings.menu.links %}
+        {% endif %}
+
+        {% if drawer_links != blank %}
+          {% for link in drawer_links limit: 6 %}
+            {% if forloop.first %}
+              <label class="drawer-category" for="MobileFoodToggle">
+            {% else %}
+              <a class="drawer-category" href="{{ link.url }}">
+            {% endif %}
+                <span class="drawer-category__thumb">or<br>browse<br>files</span>
+                <span>
+                  <strong>{{ link.title }}</strong>
+                  {% if link.links.size > 0 %}
+                    <em>
+                      {% for child_link in link.links limit: 3 %}
+                        {{ child_link.title }}{% unless forloop.last %}, {% endunless %}
+                      {% endfor %}
+                    </em>
+                  {% endif %}
+                </span>
+                {% render 'icon', name: 'chevron-right' %}
+            {% if forloop.first %}
+              </label>
+            {% else %}
+              </a>
+            {% endif %}
+          {% endfor %}
+        {% else %}
+          <label class="drawer-category" for="MobileFoodToggle">
+            <span class="drawer-category__thumb">or<br>browse<br>files</span>
+            <span><strong>Grocery &amp; Staples</strong><em>Atta, rice, dal, ghee</em></span>
+            {% render 'icon', name: 'chevron-right' %}
+          </label>
+          <a class="drawer-category" href="{{ routes.all_products_collection_url }}">
+            <span class="drawer-category__thumb">or<br>browse<br>files</span>
+            <span><strong>Spices &amp; Masala</strong><em>Haldi, mirch, garam masala</em></span>
+            {% render 'icon', name: 'chevron-right' %}
+          </a>
+          <a class="drawer-category" href="{{ routes.all_products_collection_url }}">
+            <span class="drawer-category__thumb">or<br>browse<br>files</span>
+            <span><strong>Pickles &amp; Chutneys</strong><em>Achar, murabba, chutney</em></span>
+            {% render 'icon', name: 'chevron-right' %}
+          </a>
+          <a class="drawer-category" href="{{ routes.all_products_collection_url }}">
+            <span class="drawer-category__thumb">or<br>browse<br>files</span>
+            <span><strong>Tea &amp; Coffee</strong><em>Chai, filter coffee</em></span>
+            {% render 'icon', name: 'chevron-right' %}
+          </a>
+          <a class="drawer-category" href="{{ routes.all_products_collection_url }}">
+            <span class="drawer-category__thumb">or<br>browse<br>files</span>
+            <span><strong>Snacks &amp; Mukhwas</strong><em>Namkeen, rusk, mukhwas</em></span>
+            {% render 'icon', name: 'chevron-right' %}
+          </a>
+          <a class="drawer-category" href="{{ routes.all_products_collection_url }}">
+            <span class="drawer-category__thumb">or<br>browse<br>files</span>
+            <span><strong>Healthy Foods</strong><em>Millets, A2 ghee</em></span>
+            {% render 'icon', name: 'chevron-right' %}
+          </a>
+        {% endif %}
+      </div>
+
+      <a class="mobile-drawer__feature" href="{{ routes.all_products_collection_url }}">
+        <span>Festive 2026</span>
+        <strong>The Diwali edit {% render 'icon', name: 'chevron-right' %}</strong>
+        <em>Diyas, thalis and festive wear in one place.</em>
+      </a>
+
+      <nav class="mobile-drawer__links" aria-label="{{ 'sections.header.account_links' | t }}">
+        <a href="{{ routes.account_url }}">{% render 'icon', name: 'circle-user' %}<span>Sign in / Account</span></a>
+        <a href="/pages/wishlist">{% render 'icon', name: 'heart' %}<span>Wishlist (3)</span></a>
+        <a href="{{ routes.root_url }}">{% render 'icon', name: 'package' %}<span>Track order</span></a>
+        <a href="{{ routes.root_url }}">{% render 'icon', name: 'mail' %}<span>Contact us</span></a>
+        <a href="{{ routes.root_url }}">{% render 'icon', name: 'home' %}<span>About Gully Globe</span></a>
+      </nav>
+
+      <div class="mobile-drawer__footer">
+        <span>{% render 'icon', name: 'map-pin' %} United States &bull; USD</span>
+        <span>
+          {% render 'icon', name: 'camera' %}
+          {% render 'icon', name: 'message-circle' %}
+        </span>
+      </div>
+    </div>
+
+    <div class="mobile-drawer__body mobile-submenu">
+      <div class="mobile-submenu__top">
+        <label for="MobileFoodToggle" aria-label="{{ 'sections.header.back' | t }}">
+          {% render 'icon', name: 'chevron-left' %}
+        </label>
+        <strong>Food</strong>
+        <label for="MobileMenuToggle" aria-label="{{ 'sections.header.close' | t }}">
+          {% render 'icon', name: 'x' %}
+        </label>
+      </div>
+
+      <a class="mobile-submenu__hero" href="{{ routes.all_products_collection_url }}">
+        <span>{% render 'icon', name: 'camera' %}</span>
+        <em>Brass bowls of dal, rice and spices<br>or browse files</em>
+        <strong>Shop all food {% render 'icon', name: 'chevron-right' %}</strong>
+      </a>
+
+      <div class="mobile-submenu__group">
+        <h2>Staples</h2>
+        <a href="{{ routes.all_products_collection_url }}">Atta &amp; Flour {% render 'icon', name: 'chevron-right' %}</a>
+        <a href="{{ routes.all_products_collection_url }}">Rice {% render 'icon', name: 'chevron-right' %}</a>
+        <a href="{{ routes.all_products_collection_url }}">Dal &amp; Pulses {% render 'icon', name: 'chevron-right' %}</a>
+        <a href="{{ routes.all_products_collection_url }}">Ghee &amp; Oils {% render 'icon', name: 'chevron-right' %}</a>
+      </div>
+
+      <div class="mobile-submenu__group">
+        <h2>Pantry</h2>
+        <a href="{{ routes.all_products_collection_url }}">Spices &amp; Masala {% render 'icon', name: 'chevron-right' %}</a>
+        <a href="{{ routes.all_products_collection_url }}">Pickles &amp; Chutneys {% render 'icon', name: 'chevron-right' %}</a>
+        <a href="{{ routes.all_products_collection_url }}">Tea &amp; Coffee {% render 'icon', name: 'chevron-right' %}</a>
+        <a href="{{ routes.all_products_collection_url }}">Snacks &amp; Mukhwas {% render 'icon', name: 'chevron-right' %}</a>
+      </div>
+
+      <div class="mobile-submenu__bestsellers">
+        <h2>Bestsellers</h2>
+        <div>
+          <a href="{{ routes.all_products_collection_url }}">
+            <span>{% render 'icon', name: 'camera' %}<em>or browse files</em></span>
+            <strong>Aam ka Achar</strong>
+            <b>$12.99</b>
+          </a>
+          <a href="{{ routes.all_products_collection_url }}">
+            <span>{% render 'icon', name: 'camera' %}<em>or browse files</em></span>
+            <strong>Khapli Atta</strong>
+            <b>$18.99</b>
+          </a>
+          <a href="{{ routes.all_products_collection_url }}">
+            <span>{% render 'icon', name: 'camera' %}<em>or browse files</em></span>
+            <strong>Assam CTC Chai</strong>
+            <b>$9.49</b>
+          </a>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+</header>
+
+{% stylesheet %}
+  .shopify-section:has(> .site-header) {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .site-header {
+    position: relative;
+    z-index: 100;
+    border-bottom: 1px dashed var(--color-border);
+    background: var(--color-surface);
+  }
+
+  .site-header__drawer-toggle,
+  .site-header__food-toggle,
+  .mobile-drawer,
+  .mobile-drawer__scrim {
+    display: none;
+  }
+
+  .site-header__inner {
+    width: min(var(--content-width), var(--page-width));
+    min-height: 98px;
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: minmax(300px, 1fr) auto minmax(300px, 1fr);
+    align-items: center;
+    gap: 36px;
+  }
+
+  .site-header__menu {
+    display: none;
+  }
+
+  .site-header__logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    width: fit-content;
+    color: var(--color-primary-dark);
+    font-family: var(--font-body);
+    font-size: 1.33rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .site-header__mark {
+    width: 21px;
+    height: 21px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-primary);
+  }
+
+  .site-header__mark .icon {
+    width: 21px;
+    height: 21px;
+  }
+
+  .site-header__nav {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: 32px;
+  }
+
+  .site-header__nav a,
+  .site-header__more summary,
+  .site-header__actions a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: 0.86rem;
+    font-weight: 200;
+    line-height: 1;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .site-header__more {
+    position: relative;
+  }
+
+  .site-header__more summary {
+    list-style: none;
+    cursor: pointer;
+  }
+
+  .site-header__more summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .site-header__more > div {
+    position: absolute;
+    top: calc(100% + 18px);
+    left: 50%;
+    z-index: 40;
+    min-width: 180px;
+    display: grid;
+    gap: 16px;
+    border: 1px solid var(--color-divider);
+    border-radius: var(--radius-card);
+    padding: 18px;
+    background: var(--color-surface);
+    box-shadow: 0 14px 32px color-mix(in srgb, var(--color-primary-dark) 12%, transparent);
+    transform: translateX(-50%);
+  }
+
+  .site-header__more:not([open]) > div {
+    display: none;
+  }
+
+  .site-header__more:hover > div,
+  .site-header__more:focus-within > div {
+    display: grid;
+  }
+
+  .site-header__nav a:first-child {
+    color: var(--color-primary);
+  }
+
+  .site-header__nav .icon {
+    width: 12px;
+    height: 12px;
+    margin-left: 4px;
+    stroke-width: 2.2;
+  }
+
+  .site-header__actions {
+    justify-self: end;
+    display: flex;
+    align-items: center;
+    gap: 27px;
+  }
+
+  .site-header__actions .icon {
+    width: 25px;
+    height: 25px;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    fill: none;
+  }
+
+  .site-header__cart {
+    position: relative;
+    color: var(--color-primary-dark);
+  }
+
+  .site-header__cart span {
+    position: absolute;
+    right: -11px;
+    top: -11px;
+    min-width: 21px;
+    height: 21px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    color: var(--color-surface);
+    background: var(--color-primary);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .site-header__search {
+    display: none;
+  }
+
+  .site-header__mega {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    z-index: 30;
+    display: none;
+    border-top: 1px solid var(--color-divider);
+    border-bottom: 1px solid var(--color-divider);
+    background: var(--color-surface);
+  }
+
+  .site-header:has(.site-header__shop-trigger:hover) .site-header__mega,
+  .site-header:has(.site-header__shop-trigger:focus-visible) .site-header__mega,
+  .site-header__mega:hover,
+  .site-header__mega:focus-within {
+    display: block;
+  }
+
+  .site-header__mega-inner {
+    width: min(var(--content-width), var(--page-width));
+    min-height: 574px;
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(180px, 1fr)) 346px;
+    gap: 45px;
+    align-items: start;
+    padding: 45px 0 55px;
+  }
+
+  .mega-column {
+    display: grid;
+    gap: 16px;
+  }
+
+  .mega-column__image {
+    height: 184px;
+    display: flex;
+    align-items: end;
+    border-radius: var(--radius-card);
+    padding: 12px;
+    background: var(--color-image-ground);
+  }
+
+  .mega-column__image span {
+    color: var(--color-text-secondary);
+    font-size: 0.77rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .mega-column h2 {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin: 2px 0 3px;
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 200;
+    line-height: 1;
+    letter-spacing: 0.18em;
+  }
+
+  .mega-column h2 span {
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: var(--color-primary);
+  }
+
+  .mega-column a {
+    width: fit-content;
+    color: var(--color-text);
+    text-decoration: none;
+    font-size: 1.03rem;
+    font-weight: 200;
+  }
+
+  .mega-feature {
+    min-height: 474px;
+    display: grid;
+    align-content: center;
+    gap: 17px;
+    border-radius: 13px;
+    padding: 34px;
+    color: var(--color-background);
+    background:
+      linear-gradient(135deg, color-mix(in srgb, var(--color-primary) 92%, transparent), var(--color-primary)),
+      var(--color-primary);
+    text-decoration: none;
+  }
+
+  .mega-feature span,
+  .mega-feature b {
+    color: var(--color-secondary);
+    font-size: 0.86rem;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .mega-feature strong {
+    max-width: 10ch;
+    color: var(--color-surface);
+    font-family: var(--font-display);
+    font-size: 2.25rem;
+    font-weight: 400;
+    line-height: 0.95;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .mega-feature em {
+    max-width: 24ch;
+    color: var(--color-surface);
+    font-size: 1.05rem;
+    font-style: normal;
+  }
+
+  .mega-feature b {
+    width: fit-content;
+    padding-bottom: 7px;
+    border-bottom: 1px solid var(--color-secondary);
+  }
+
+  .icon {
+    stroke: currentColor;
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  @media (max-width: 749px) {
+    .site-header {
+      border-bottom: 1px solid var(--color-divider);
+    }
+
+    .site-header__inner {
+      width: 100%;
+      min-height: 56px;
+      padding: 0 16px;
+      grid-template-columns: 34px minmax(0, 1fr) 34px 34px;
+      gap: 8px;
+    }
+
+    .site-header__inner > *,
+    .site-header__actions > * {
+      grid-row: 1;
+    }
+
+    .site-header__menu {
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-start;
+      width: 40px;
+      height: 40px;
+      border: 0;
+      padding: 0;
+      color: var(--color-text);
+      background: transparent;
+      grid-column: 1;
+      justify-self: start;
+    }
+
+    .site-header__menu .icon {
+      width: 25px;
+      height: 25px;
+      stroke-width: 1.5;
+    }
+
+    .site-header__logo {
+      justify-self: center;
+      grid-column: 2;
+      gap: 8px;
+      min-width: 0;
+      font-size: clamp(0.95rem, 4.2vw, 1.28rem);
+      letter-spacing: 0.16em;
+      white-space: nowrap;
+    }
+
+    .site-header__logo .site-header__mark,
+    .site-header__logo .site-header__mark .icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    .site-header__nav {
+      display: none;
+    }
+
+    .site-header__actions {
+      display: contents;
+    }
+
+    .site-header__actions a[href*="/search"] {
+      display: none;
+    }
+
+    .site-header__actions a[href*="/account"] {
+      display: none;
+    }
+
+    .site-header__actions .site-header__wishlist {
+      grid-column: 3;
+      display: inline-flex;
+      justify-self: center;
+    }
+
+    .site-header__actions .icon {
+      width: 25px;
+      height: 25px;
+    }
+
+    .site-header__cart {
+      grid-column: 4;
+      display: inline-flex;
+      justify-self: end;
+    }
+
+    .site-header__cart span {
+      right: -6px;
+      top: -8px;
+      min-width: 18px;
+      height: 18px;
+      font-size: 0.62rem;
+    }
+
+    .site-header__search {
+      position: relative;
+      width: calc(100% - 32px);
+      min-height: 46px;
+      margin: 0 16px 14px;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      border: 1px solid var(--color-border);
+      border-radius: 11px;
+      padding: 0 17px;
+      background: color-mix(in srgb, var(--color-background) 64%, var(--color-surface));
+    }
+
+    .site-header__search .icon {
+      width: 23px;
+      height: 23px;
+      color: var(--color-primary-dark);
+    }
+
+    .site-header__search input {
+      min-width: 0;
+      flex: 1;
+      border: 0;
+      outline: 0;
+      color: var(--color-text);
+      background: transparent;
+      font-size: clamp(0.92rem, 4vw, 1.08rem);
+      letter-spacing: 0;
+    }
+
+    .site-header__search input::placeholder {
+      color: var(--color-text-secondary);
+      opacity: 1;
+    }
+
+    body.is-scrolled .site-header__inner {
+      min-height: 54px;
+      grid-template-columns: 34px 34px minmax(0, 1fr) 34px 34px;
+      gap: 8px;
+    }
+
+    body.is-scrolled .site-header__logo {
+      grid-column: 3;
+      font-size: clamp(0.94rem, 4vw, 1.22rem);
+    }
+
+    body.is-scrolled .site-header__actions {
+      display: contents;
+    }
+
+    body.is-scrolled .site-header__actions a[href*="/search"] {
+      grid-column: 2;
+      display: inline-flex;
+      justify-self: center;
+    }
+
+    body.is-scrolled .site-header__actions a[href*="/account"] {
+      display: none;
+    }
+
+    body.is-scrolled .site-header__actions .site-header__wishlist {
+      grid-column: 4;
+      display: inline-flex;
+      justify-self: center;
+    }
+
+    body.is-scrolled .site-header__cart {
+      grid-column: 5;
+      justify-self: end;
+    }
+
+    body.is-scrolled .site-header__search {
+      display: none;
+    }
+
+    .site-header__mega {
+      display: none;
+    }
+
+    .site-header:has(.site-header__shop-trigger:hover) .site-header__mega,
+    .site-header:has(.site-header__shop-trigger:focus-visible) .site-header__mega,
+    .site-header__mega:hover,
+    .site-header__mega:focus-within {
+      display: none;
+    }
+
+    .site-header__drawer-toggle:checked ~ .mobile-drawer__scrim {
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      display: block;
+      background: color-mix(in srgb, var(--color-primary-dark) 24%, transparent);
+    }
+
+    .mobile-drawer {
+      position: fixed;
+      inset: 0 auto 76px 0;
+      z-index: 90;
+      width: min(100vw, 390px);
+      max-width: 100vw;
+      display: block;
+      overflow-y: auto;
+      border-right: 1px solid var(--color-border);
+      border-left: 0;
+      border-radius: 0 0 22px 0;
+      background: var(--color-surface);
+      transform: translateX(-100%);
+      transition: transform 180ms ease;
+      overscroll-behavior: contain;
+    }
+
+    .site-header__drawer-toggle:checked ~ .mobile-drawer {
+      transform: translateX(0);
+    }
+
+    .site-header__drawer-toggle:checked ~ .mobile-drawer__scrim {
+      animation: menu-scrim-in 160ms ease backwards;
+    }
+
+    .mobile-drawer__top {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      min-height: 51px;
+      display: grid;
+      grid-template-columns: 48px minmax(0, 1fr) 48px;
+      align-items: center;
+      border-bottom: 1px solid var(--color-divider);
+      background: var(--color-surface);
+    }
+
+    .mobile-drawer__close {
+      width: 48px;
+      height: 51px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text);
+      cursor: pointer;
+    }
+
+    .mobile-drawer__close .icon {
+      width: 19px;
+      height: 19px;
+      stroke-width: 1.9;
+    }
+
+    .mobile-drawer__logo {
+      justify-self: center;
+      font-size: 0.98rem;
+      letter-spacing: 0.16em;
+    }
+
+    .mobile-drawer__body {
+      padding: 11px 13px 18px;
+    }
+
+    .mobile-drawer__search {
+      min-height: 36px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid var(--color-border);
+      border-radius: 7px;
+      padding: 0 12px;
+      background: color-mix(in srgb, var(--color-background) 64%, var(--color-surface));
+    }
+
+    .mobile-drawer__search .icon {
+      width: 16px;
+      height: 16px;
+      color: var(--color-primary-dark);
+    }
+
+    .mobile-drawer__search input {
+      min-width: 0;
+      flex: 1;
+      border: 0;
+      outline: 0;
+      color: var(--color-text);
+      background: transparent;
+      font-size: 0.68rem;
+    }
+
+    .mobile-drawer__search input::placeholder {
+      color: var(--color-text-secondary);
+      opacity: 1;
+    }
+
+    .mobile-drawer__tabs {
+      min-height: 58px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      align-items: end;
+      border-bottom: 2px solid var(--color-primary);
+      margin-top: 1px;
+    }
+
+    .mobile-drawer__tabs a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 45px;
+      color: var(--color-text);
+      text-decoration: none;
+      font-size: 0.72rem;
+      font-weight: 200;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .mobile-drawer__categories {
+      display: grid;
+      margin-bottom: 23px;
+    }
+
+    .drawer-category {
+      min-height: 50px;
+      display: grid;
+      grid-template-columns: 42px minmax(0, 1fr) 18px;
+      align-items: center;
+      gap: 9px;
+      border-bottom: 1px solid var(--color-divider);
+      color: var(--color-text);
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .drawer-category__thumb {
+      width: 40px;
+      height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px dashed var(--color-primary);
+      border-radius: 999px;
+      color: var(--color-text-secondary);
+      background: var(--color-image-ground);
+      font-size: 0.58rem;
+      line-height: 1.05;
+      text-align: center;
+    }
+
+    .drawer-category strong,
+    .drawer-category em {
+      display: block;
+      letter-spacing: 0;
+    }
+
+    .drawer-category strong {
+      color: var(--color-text);
+      font-size: 0.78rem;
+      font-weight: 200;
+      line-height: 1.2;
+    }
+
+    .drawer-category em {
+      margin-top: 3px;
+      color: var(--color-text-secondary);
+      font-size: 0.64rem;
+      font-style: normal;
+      line-height: 1.25;
+    }
+
+    .drawer-category > .icon {
+      width: 21px;
+      height: 21px;
+      color: var(--color-text);
+      stroke-width: 1.5;
+    }
+
+    .mobile-drawer__feature {
+      min-height: 84px;
+      display: grid;
+      align-content: center;
+      gap: 10px;
+      border-radius: 13px;
+      padding: 15px 16px;
+      color: var(--color-surface);
+      background: var(--color-primary);
+      text-decoration: none;
+    }
+
+    .mobile-drawer__feature span {
+      color: var(--color-secondary);
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .mobile-drawer__feature strong {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--color-surface);
+      font-family: var(--font-display);
+      font-size: 1.12rem;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      line-height: 0.95;
+      text-transform: uppercase;
+    }
+
+    .mobile-drawer__feature strong .icon {
+      width: 24px;
+      height: 24px;
+    }
+
+    .mobile-drawer__feature em {
+      color: var(--color-surface);
+      font-size: 0.68rem;
+      font-style: normal;
+    }
+
+    .mobile-drawer__links {
+      display: grid;
+      gap: 1px;
+      margin-top: 18px;
+    }
+
+    .mobile-drawer__links a {
+      min-height: 39px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: var(--color-text);
+      text-decoration: none;
+      font-size: 0.76rem;
+      font-weight: 200;
+      letter-spacing: 0;
+    }
+
+    .mobile-drawer__links .icon {
+      width: 23px;
+      height: 23px;
+      color: var(--color-primary);
+      stroke-width: 1.7;
+      flex: 0 0 auto;
+    }
+
+    .mobile-drawer__footer {
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      border-top: 1px solid var(--color-divider);
+      margin-top: 10px;
+      padding-top: 10px;
+      color: var(--color-text);
+      font-size: 0.67rem;
+    }
+
+    .mobile-drawer__footer span {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .mobile-drawer__footer .icon {
+      width: 19px;
+      height: 19px;
+      color: var(--color-primary);
+      stroke-width: 1.8;
+    }
+
+    .mobile-submenu {
+      display: none;
+      padding-top: 0;
+    }
+
+    .site-header__food-toggle:checked ~ .mobile-drawer .mobile-drawer__main {
+      display: none;
+    }
+
+    .site-header__food-toggle:checked ~ .mobile-drawer .mobile-submenu {
+      display: block;
+    }
+
+    .mobile-submenu__top {
+      position: sticky;
+      top: 0;
+      z-index: 3;
+      min-height: 48px;
+      display: grid;
+      grid-template-columns: 44px minmax(0, 1fr) 44px;
+      align-items: center;
+      border-bottom: 1px solid var(--color-divider);
+      margin: 0 -13px 14px;
+      background: var(--color-surface);
+    }
+
+    .mobile-submenu__top label {
+      width: 44px;
+      height: 50px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text);
+      cursor: pointer;
+    }
+
+    .mobile-submenu__top .icon {
+      width: 22px;
+      height: 22px;
+      stroke-width: 1.8;
+    }
+
+    .mobile-submenu__top strong {
+      justify-self: center;
+      color: var(--color-text);
+      font-size: 0.86rem;
+      font-weight: 200;
+    }
+
+    .mobile-submenu__hero {
+      min-height: 134px;
+      display: grid;
+      align-content: end;
+      gap: 6px;
+      overflow: hidden;
+      border-radius: 8px;
+      padding: 20px 13px 12px;
+      color: var(--color-surface);
+      background:
+        linear-gradient(180deg, color-mix(in srgb, var(--color-image-ground) 82%, transparent) 0%, color-mix(in srgb, var(--color-primary) 76%, transparent) 100%),
+        var(--color-image-ground);
+      text-decoration: none;
+    }
+
+    .mobile-submenu__hero > span {
+      justify-self: center;
+      color: color-mix(in srgb, var(--color-primary-dark) 55%, transparent);
+    }
+
+    .mobile-submenu__hero > span .icon {
+      width: 22px;
+      height: 22px;
+      stroke-width: 1.6;
+    }
+
+    .mobile-submenu__hero em {
+      justify-self: center;
+      color: var(--color-text-secondary);
+      font-size: 0.72rem;
+      font-style: normal;
+      line-height: 1.35;
+      text-align: center;
+    }
+
+    .mobile-submenu__hero strong {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--color-surface);
+      font-family: var(--font-display);
+      font-size: 1.14rem;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .mobile-submenu__hero strong .icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    .mobile-submenu__group {
+      display: grid;
+      margin-top: 18px;
+    }
+
+    .mobile-submenu h2 {
+      margin: 0 0 9px;
+      color: var(--color-primary);
+      font-size: 0.68rem;
+      font-weight: 200;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .mobile-submenu__group a {
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      border-bottom: 1px solid var(--color-divider);
+      color: var(--color-text);
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 200;
+      letter-spacing: 0;
+    }
+
+    .mobile-submenu__group a .icon {
+      width: 16px;
+      height: 16px;
+      stroke-width: 1.4;
+      flex: 0 0 auto;
+    }
+
+    .mobile-submenu__bestsellers {
+      margin-top: 24px;
+      padding-bottom: 22px;
+    }
+
+    .mobile-submenu__bestsellers > div {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: 105px;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 5px;
+      scroll-snap-type: x mandatory;
+    }
+
+    .mobile-submenu__bestsellers a {
+      display: grid;
+      gap: 11px;
+      color: var(--color-text);
+      text-decoration: none;
+      scroll-snap-align: start;
+    }
+
+    .mobile-submenu__bestsellers a > span {
+      height: 105px;
+      display: grid;
+      align-content: center;
+      justify-items: center;
+      gap: 7px;
+      border: 1px dashed var(--color-primary);
+      border-radius: 8px;
+      background: var(--color-image-ground);
+      color: var(--color-text-secondary);
+    }
+
+    .mobile-submenu__bestsellers a > span .icon {
+      width: 26px;
+      height: 26px;
+      stroke-width: 1.6;
+    }
+
+    .mobile-submenu__bestsellers a > span em {
+      border-bottom: 1px solid currentColor;
+      font-size: 0.65rem;
+      font-style: normal;
+      line-height: 1;
+    }
+
+    .mobile-submenu__bestsellers strong {
+      color: var(--color-text);
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+
+    .mobile-submenu__bestsellers b {
+      color: var(--color-text-secondary);
+      font-size: 0.8rem;
+      font-weight: 400;
+      line-height: 1;
+    }
+  }
+
+  @keyframes menu-scrim-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  document.querySelectorAll('.site-header__more').forEach(function (menu) {
+    var summary = menu.querySelector('summary');
+
+    menu.addEventListener('mouseenter', function () {
+      menu.open = true;
+    });
+
+    menu.addEventListener('mouseleave', function () {
+      menu.open = false;
+    });
+
+    if (summary) {
+      summary.addEventListener('click', function (event) {
+        event.preventDefault();
+      });
+    }
+  });
+
+  document.addEventListener('change', function (event) {
+    if (event.target && event.target.id === 'MobileMenuToggle' && !event.target.checked) {
+      var foodToggle = document.getElementById('MobileFoodToggle');
+      if (foodToggle) {
+        foodToggle.checked = false;
+      }
+    }
+  });
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "t:sections.header.name",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "t:labels.menu"
+    }
+  ]
+}
+{% endschema %}

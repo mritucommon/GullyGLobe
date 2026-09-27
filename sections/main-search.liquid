@@ -1,0 +1,216 @@
+<section class="main-search">
+  <div class="page-width">
+    <div class="main-search__header">
+      <p class="main-search__eyebrow">{{ 'sections.header.search' | t }}</p>
+      <h1>
+        {%- if search.performed -%}
+          {{ 'sections.main_search.results_for' | t }} “{{ search.terms | escape }}”
+        {%- else -%}
+          {{ 'sections.header.search' | t }}
+        {%- endif -%}
+      </h1>
+      {% if search.performed %}
+        <p class="main-search__count">{{ 'sections.main_search.results_count' | t: number: search.results_count }}</p>
+      {% endif %}
+      <form class="main-search__form" action="{{ routes.search_url }}" method="get" role="search" data-search-inline>
+        {% render 'icon', name: 'search' %}
+        <label class="visually-hidden" for="MainSearchInput">{{ 'sections.header.search' | t }}</label>
+        <input id="MainSearchInput" type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'sections.header.search_placeholder' | t }}">
+        <button type="submit" class="button">{{ 'sections.header.search' | t }}</button>
+      </form>
+    </div>
+
+    {% if search.performed %}
+      {% paginate search.results by 24 %}
+        {% if search.results_count > 0 %}
+          <div class="main-search__grid">
+            {% for item in search.results %}
+              {% if item.object_type == 'product' %}
+                {% render 'product-card', product: item, index: forloop.index %}
+              {% else %}
+                <a class="main-search__text-result" href="{{ item.url }}">
+                  <span>{{ item.object_type }}</span>
+                  <strong>{{ item.title }}</strong>
+                  {% render 'icon', name: 'arrow-right' %}
+                </a>
+              {% endif %}
+            {% endfor %}
+          </div>
+
+          {% if paginate.pages > 1 %}
+            <nav class="main-search__pagination" aria-label="{{ 'general.pagination.page' | t: number: paginate.current_page }}">
+              {{ paginate | default_pagination }}
+            </nav>
+          {% endif %}
+        {% else %}
+          <p class="main-search__empty">{{ 'sections.search_overlay.no_results' | t }} “{{ search.terms | escape }}”</p>
+        {% endif %}
+      {% endpaginate %}
+    {% endif %}
+  </div>
+</section>
+
+{% stylesheet %}
+  .main-search {
+    padding: 48px 0 64px;
+    background: var(--color-surface);
+  }
+
+  .main-search__header {
+    display: grid;
+    justify-items: start;
+    gap: 10px;
+    margin-bottom: 32px;
+  }
+
+  .main-search__eyebrow {
+    color: var(--color-primary);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .main-search h1 {
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    line-height: 1;
+  }
+
+  .main-search__count {
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+  }
+
+  .main-search__form {
+    width: min(640px, 100%);
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 10px;
+    border: 1px solid var(--color-primary-dark);
+    border-radius: 8px;
+    padding: 4px 4px 4px 16px;
+  }
+
+  .main-search__form > .icon {
+    width: 20px;
+    height: 20px;
+    flex: 0 0 auto;
+  }
+
+  .main-search__form input {
+    min-width: 0;
+    flex: 1;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    font-size: 1rem;
+  }
+
+  .main-search__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 28px 20px;
+  }
+
+  .main-search__text-result {
+    display: grid;
+    align-content: start;
+    gap: 8px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    padding: 20px;
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .main-search__text-result span {
+    color: var(--color-primary);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .main-search__text-result strong {
+    color: var(--color-primary-dark);
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 400;
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+
+  .main-search__text-result .icon {
+    width: 20px;
+    height: 20px;
+    color: var(--color-primary-dark);
+  }
+
+  .main-search__pagination {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 40px;
+    font-size: 1rem;
+  }
+
+  .main-search__pagination a,
+  .main-search__pagination .current {
+    padding: 6px 10px;
+    color: var(--color-text);
+  }
+
+  .main-search__pagination .current {
+    color: var(--color-primary);
+    font-weight: 700;
+  }
+
+  .main-search__empty {
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+  }
+
+  @media (max-width: 849px) {
+    .main-search {
+      padding: 24px 0 32px;
+    }
+
+    .main-search__header {
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .main-search h1 {
+      font-size: clamp(1.5rem, 7vw, 2rem);
+    }
+
+    .main-search__count {
+      font-size: 0.92rem;
+    }
+
+    .main-search__form .button {
+      display: none;
+    }
+
+    .main-search__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px 14px;
+    }
+
+    .main-search__text-result {
+      padding: 16px;
+    }
+
+    .main-search__text-result strong {
+      font-size: 1.1rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.main_search.name"
+}
+{% endschema %}

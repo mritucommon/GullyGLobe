@@ -1,0 +1,354 @@
+<section class="hero">
+  <div class="page-width hero__inner">
+    <div class="hero__content">
+      <p class="hero__eyebrow">{{ section.settings.eyebrow }}</p>
+      <h1>{{ section.settings.heading }}</h1>
+      <div class="hero__text">{{ section.settings.text }}</div>
+      <div
+        class="hero__actions"
+        style="
+          --hero-button-primary-bg: {{ section.settings.button_primary_bg }};
+          --hero-button-primary-text: {{ section.settings.button_primary_text }};
+          --hero-button-secondary-border: {{ section.settings.button_secondary_border }};
+          --hero-button-secondary-text: {{ section.settings.button_secondary_text }};
+        "
+      >
+        {% if section.settings.button_label != blank %}
+          <a class="button hero__button-primary" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">{{ section.settings.button_label }}</a>
+        {% endif %}
+        {% if section.settings.secondary_button_label != blank %}
+          <a class="button hero__button-secondary" href="{{ section.settings.secondary_button_link | default: routes.all_products_collection_url }}">
+            <span class="hero__button-text-full">{{ section.settings.secondary_button_label }}</span>
+            <span class="hero__button-text-short">{{ section.settings.secondary_button_mobile_label | default: section.settings.secondary_button_label }}</span>
+          </a>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="hero__media">
+      {% if section.settings.image %}
+        {{ section.settings.image | image_url: width: 1400 | image_tag: loading: 'eager', widths: '500, 750, 1000, 1400', sizes: '(min-width: 990px) 50vw, 100vw', alt: section.settings.image.alt }}
+      {% else %}
+        <div class="hero__placeholder-wrap">
+          {{ 'image' | placeholder_svg_tag: 'hero__placeholder' }}
+          <strong>{{ 'sections.hero.photo_label' | t }}</strong>
+          <span>{{ 'sections.hero.browse_files' | t }}</span>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .hero {
+    min-height: 620px;
+    display: flex;
+    align-items: center;
+    padding: 78px 0;
+    background:
+      linear-gradient(90deg, color-mix(in srgb, var(--color-primary-dark) 74%, transparent) 0%, color-mix(in srgb, var(--color-primary) 45%, var(--color-background)) 46%, var(--color-image-ground) 100%);
+  }
+
+  .hero__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    align-items: center;
+    gap: 52px;
+  }
+
+  .hero__content {
+    display: grid;
+    justify-items: start;
+    gap: 28px;
+  }
+
+  .hero__eyebrow {
+    margin: 0 0 5px;
+    color: var(--color-background);
+    font-size: 0.88rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .hero h1 {
+    margin: 0;
+    max-width: 11ch;
+    color: var(--color-surface);
+    font-size: clamp(4.4rem, 6.1vw, 6.3rem);
+    line-height: 0.96;
+  }
+
+  .hero__text {
+    margin: 0;
+    max-width: 46ch;
+    color: var(--color-surface);
+    font-size: 1.18rem;
+    line-height: 1.55;
+  }
+
+  .hero__text p {
+    margin: 0;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  .hero__actions .hero__button-primary,
+  .hero__actions .hero__button-secondary {
+    min-width: 198px;
+    min-height: 67px;
+    border-radius: 7px;
+    padding: 20px 31px;
+    font-size: 0.82rem;
+    letter-spacing: 0.16em;
+  }
+
+  .hero__actions .hero__button-primary {
+    border-color: var(--hero-button-primary-bg);
+    color: var(--hero-button-primary-text);
+    background: var(--hero-button-primary-bg);
+  }
+
+  .hero__actions .hero__button-secondary {
+    border-color: var(--hero-button-secondary-border);
+    color: var(--hero-button-secondary-text);
+    background: transparent;
+  }
+
+  .hero__button-text-short {
+    display: none;
+  }
+
+  .hero__media {
+    min-height: 260px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: color-mix(in srgb, var(--color-primary-dark) 62%, transparent);
+    background: transparent;
+  }
+
+  .hero__media img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    border-radius: var(--radius-card);
+  }
+
+  .hero__placeholder-wrap {
+    display: grid;
+    justify-items: center;
+    gap: 7px;
+    color: color-mix(in srgb, var(--color-primary-dark) 64%, transparent);
+    text-align: center;
+  }
+
+  .hero__placeholder {
+    width: 30px;
+    height: 30px;
+    color: inherit;
+  }
+
+  .hero__placeholder-wrap strong {
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0;
+  }
+
+  .hero__placeholder-wrap span {
+    border-bottom: 1px solid currentColor;
+    color: var(--color-text);
+    font-size: 0.78rem;
+  }
+
+  @media (max-width: 849px) {
+    .hero {
+      min-height: auto;
+      padding: 20px 0 24px;
+      background: var(--color-surface);
+    }
+
+    .hero__inner {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .hero__media {
+      order: -1;
+      min-height: 493px;
+      border: 1px dashed var(--color-border);
+      border-radius: 10px;
+      background: var(--color-image-ground);
+    }
+
+    .hero__placeholder-wrap {
+      max-width: 250px;
+    }
+
+    .hero__placeholder-wrap strong {
+      color: var(--color-text-secondary);
+      font-size: 0.9rem;
+      line-height: 1.35;
+    }
+
+    .hero__eyebrow {
+      margin-top: 0;
+      color: var(--color-primary);
+      font-size: 0.74rem;
+      letter-spacing: 0.2em;
+    }
+
+    .hero h1 {
+      max-width: 10ch;
+      color: var(--color-primary-dark);
+      font-size: clamp(3.15rem, 13vw, 4.2rem);
+      line-height: 0.98;
+    }
+
+    .hero__text {
+      max-width: 34ch;
+      color: var(--color-text);
+      font-size: 1rem;
+      line-height: 1.62;
+    }
+
+    .hero__actions {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .hero__actions .hero__button-primary,
+    .hero__actions .hero__button-secondary {
+      min-width: 0;
+      width: 100%;
+      min-height: 57px;
+      padding: 15px 10px;
+      font-size: 0.8rem;
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+      text-align: center;
+      white-space: normal;
+    }
+
+    .hero__button-text-full {
+      display: none;
+    }
+
+    .hero__button-text-short {
+      display: inline;
+    }
+
+    .hero__actions .hero__button-primary {
+      border-color: var(--color-primary);
+      color: var(--color-surface);
+      background: var(--color-primary);
+    }
+
+    .hero__actions .hero__button-secondary {
+      border-color: var(--color-primary);
+      color: var(--color-primary-dark);
+      background: transparent;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.hero.name",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:labels.image"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:labels.eyebrow",
+      "default": "INDIA, DELIVERED"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "t:labels.heading",
+      "default": "A little closer to home."
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "t:labels.text",
+      "default": "<p>Discover authentic food, fashion, home, jewellery and everyday favourites from India.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "t:labels.button_label",
+      "default": "Shop India"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "t:labels.button_link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_button_label",
+      "label": "t:labels.secondary_button_label",
+      "default": "Explore collections"
+    },
+    {
+      "type": "text",
+      "id": "secondary_button_mobile_label",
+      "label": "t:labels.secondary_button_mobile_label",
+      "info": "t:labels.secondary_button_mobile_label_info",
+      "default": "Collections"
+    },
+    {
+      "type": "url",
+      "id": "secondary_button_link",
+      "label": "t:labels.secondary_button_link"
+    },
+    {
+      "type": "header",
+      "content": "t:labels.button_colors"
+    },
+    {
+      "type": "color",
+      "id": "button_primary_bg",
+      "label": "t:labels.button_primary_bg",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_primary_text",
+      "label": "t:labels.button_primary_text",
+      "default": "#004A2C"
+    },
+    {
+      "type": "color",
+      "id": "button_secondary_border",
+      "label": "t:labels.button_secondary_border",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_secondary_text",
+      "label": "t:labels.button_secondary_text",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.hero.name"
+    }
+  ]
+}
+{% endschema %}

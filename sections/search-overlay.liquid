@@ -1,0 +1,973 @@
+{%- liquid
+  assign popular_terms = section.settings.popular_searches | split: ','
+-%}
+
+<div
+  class="search-overlay"
+  id="SearchOverlay"
+  data-search-overlay
+  data-state="default"
+  data-search-url="{{ routes.search_url }}"
+  data-suggest-url="{{ routes.predictive_search_url }}"
+  data-synonyms="{{ section.settings.synonyms | escape }}"
+  data-text-showing="{{ 'sections.search_overlay.showing_results' | t | escape }}"
+  data-text-and="{{ 'sections.search_overlay.and' | t | escape }}"
+  data-text-see-all="{{ 'sections.search_overlay.see_all' | t | escape }}"
+  data-text-see-all-count="{{ 'sections.search_overlay.see_all_count' | t: number: '__COUNT__' | escape }}"
+  data-text-no-results="{{ 'sections.search_overlay.no_results' | t | escape }}"
+>
+  <div class="search-overlay__scrim" data-search-close></div>
+
+  <div class="search-overlay__panel" role="dialog" aria-modal="true" aria-label="{{ 'sections.header.search' | t }}">
+    <div class="search-overlay__inner">
+      <form class="search-overlay__form" action="{{ routes.search_url }}" method="get" role="search">
+        <div class="search-overlay__field">
+          {% render 'icon', name: 'search' %}
+          <label class="visually-hidden" for="SearchOverlayInput">{{ 'sections.header.search' | t }}</label>
+          <input
+            id="SearchOverlayInput"
+            type="search"
+            name="q"
+            placeholder="{{ section.settings.placeholder | escape }}"
+            autocomplete="off"
+            autocapitalize="off"
+            spellcheck="false"
+            data-search-input
+          >
+          <button type="button" class="search-overlay__clear" data-search-clear aria-label="{{ 'sections.search_overlay.clear' | t }}">
+            {% render 'icon', name: 'x' %}
+          </button>
+        </div>
+        <button type="button" class="search-overlay__close" data-search-close aria-label="{{ 'sections.search_overlay.close' | t }}">
+          {% render 'icon', name: 'x' %}
+          <span>{{ 'sections.search_overlay.cancel' | t }}</span>
+        </button>
+      </form>
+
+      <div class="search-overlay__body">
+        <div class="search-overlay__results" aria-live="polite">
+          <p class="search-overlay__banner" data-search-banner></p>
+          <div class="search-overlay__results-content" data-search-results></div>
+          <a class="button button--secondary search-overlay__see-all" data-search-see-all href="{{ routes.search_url }}">
+            {{- 'sections.search_overlay.see_all' | t -}}
+          </a>
+        </div>
+
+        {% if popular_terms.size > 0 %}
+          <div class="search-overlay__popular">
+            <p class="search-overlay__eyebrow">{{ 'sections.search_overlay.popular' | t }}</p>
+            <div class="search-overlay__chips">
+              {% for term in popular_terms %}
+                {% assign clean_term = term | strip %}
+                {% if clean_term != blank %}
+                  <a class="search-overlay__chip" href="{{ routes.search_url }}?q={{ clean_term | url_encode }}" data-search-term="{{ clean_term | escape }}">{{ clean_term }}</a>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+
+        {% if section.settings.hint != blank %}
+          <p class="search-overlay__hint">{{ section.settings.hint }}</p>
+        {% endif %}
+
+        <div class="search-overlay__trending">
+          <p class="search-overlay__eyebrow">{{ section.settings.trending_heading }}</p>
+          <div class="search-overlay__trending-grid">
+            {% if section.settings.trending_collection != blank %}
+              {% for product in section.settings.trending_collection.products limit: 4 %}
+                <a class="search-overlay__trending-card" href="{{ product.url }}">
+                  <span class="search-thumb">
+                    {% if product.featured_image %}
+                      {{ product.featured_image | image_url: width: 160 | image_tag: loading: 'lazy', alt: product.featured_image.alt | default: product.title }}
+                    {% else %}
+                      <span class="search-thumb__placeholder">or<br><u>browse<br>files</u></span>
+                    {% endif %}
+                  </span>
+                  <span class="search-overlay__trending-text">
+                    <strong>{{ product.title }}</strong>
+                    <span>{{ product.price | money }}</span>
+                  </span>
+                </a>
+              {% endfor %}
+            {% else %}
+              {% assign sample_titles = 'Aam ka Achar|Assam CTC Chai|Khapli Atta|Oxidised Silver Jhumkas' | split: '|' %}
+              {% assign sample_prices = '$12.99|$9.49|$18.99|$42' | split: '|' %}
+              {% for title in sample_titles %}
+                <a class="search-overlay__trending-card" href="{{ routes.all_products_collection_url }}">
+                  <span class="search-thumb">
+                    <span class="search-thumb__placeholder">or<br><u>browse<br>files</u></span>
+                  </span>
+                  <span class="search-overlay__trending-text">
+                    <strong>{{ title }}</strong>
+                    <span>{{ sample_prices[forloop.index0] }}</span>
+                  </span>
+                </a>
+              {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .search-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: none;
+  }
+
+  .search-overlay.is-open {
+    display: block;
+  }
+
+  html.search-open {
+    overflow: hidden;
+  }
+
+  .search-overlay__scrim {
+    position: absolute;
+    inset: 0;
+    background: color-mix(in srgb, var(--color-primary-dark) 32%, transparent);
+  }
+
+  .search-overlay__panel {
+    position: relative;
+    max-height: 100vh;
+    overflow-y: auto;
+    background: var(--color-surface);
+    box-shadow: 0 24px 48px color-mix(in srgb, var(--color-primary-dark) 16%, transparent);
+    overscroll-behavior: contain;
+  }
+
+  .search-overlay__inner {
+    width: min(1240px, 100% - 64px);
+    margin-inline: auto;
+    padding: 36px 0 44px;
+  }
+
+  .search-overlay__form {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 0;
+    border-bottom: 1px solid var(--color-text);
+    padding-bottom: 18px;
+  }
+
+  .search-overlay__field {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .search-overlay__field > .icon {
+    width: 26px;
+    height: 26px;
+    flex: 0 0 auto;
+    color: var(--color-text);
+    stroke-width: 1.8;
+  }
+
+  .search-overlay__field input {
+    min-width: 0;
+    flex: 1;
+    border: 0;
+    outline: 0;
+    padding: 0;
+    color: var(--color-primary-dark);
+    background: transparent;
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 2.6vw, 2.5rem);
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+
+  .search-overlay__field input::placeholder {
+    color: color-mix(in srgb, var(--color-text-secondary) 80%, var(--color-surface));
+    opacity: 1;
+  }
+
+  .search-overlay__field input::-webkit-search-cancel-button {
+    display: none;
+  }
+
+  .search-overlay__clear,
+  .search-overlay__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: var(--color-text);
+    cursor: pointer;
+  }
+
+  .search-overlay__clear {
+    display: none;
+    width: 32px;
+    height: 32px;
+    color: var(--color-text-secondary);
+  }
+
+  .search-overlay.has-query .search-overlay__clear {
+    display: inline-flex;
+  }
+
+  .search-overlay__clear .icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .search-overlay__close {
+    width: 40px;
+    height: 40px;
+  }
+
+  .search-overlay__close .icon {
+    width: 26px;
+    height: 26px;
+    stroke-width: 1.7;
+  }
+
+  .search-overlay__close span {
+    display: none;
+  }
+
+  .search-overlay__eyebrow {
+    margin: 0 0 14px;
+    color: var(--color-text);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .search-overlay__popular {
+    margin-top: 40px;
+  }
+
+  .search-overlay__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .search-overlay__chip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 46px;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    padding: 0 20px;
+    color: var(--color-text);
+    background: var(--color-surface);
+    font-size: 1rem;
+    text-decoration: none;
+    transition: border-color 120ms ease, color 120ms ease;
+  }
+
+  .search-overlay__chip:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary-dark);
+  }
+
+  .search-overlay__hint {
+    margin-top: 18px;
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+  }
+
+  .search-overlay__trending {
+    margin-top: 48px;
+  }
+
+  .search-overlay__trending-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .search-overlay__trending-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 10px;
+    color: var(--color-text);
+    text-decoration: none;
+    transition: border-color 120ms ease;
+  }
+
+  .search-overlay__trending-card:hover {
+    border-color: var(--color-primary);
+  }
+
+  .search-overlay__trending-text {
+    min-width: 0;
+    display: grid;
+    gap: 4px;
+  }
+
+  .search-overlay__trending-text strong {
+    overflow: hidden;
+    font-size: 1rem;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .search-overlay__trending-text span {
+    color: var(--color-text-secondary);
+    font-size: 0.92rem;
+  }
+
+  .search-thumb {
+    position: relative;
+    width: 58px;
+    height: 58px;
+    flex: 0 0 auto;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px dashed var(--color-primary);
+    border-radius: 4px;
+    background: var(--color-image-ground);
+  }
+
+  .search-thumb img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .search-thumb__placeholder {
+    color: var(--color-text-secondary);
+    font-size: 0.72rem;
+    line-height: 1.35;
+    text-align: center;
+  }
+
+  .search-thumb__placeholder u {
+    text-underline-offset: 2px;
+  }
+
+  .search-overlay__results,
+  .search-overlay__banner {
+    display: none;
+  }
+
+  .search-overlay[data-state="results"] .search-overlay__results {
+    display: block;
+    margin-top: 28px;
+  }
+
+  .search-overlay[data-state="results"] .search-overlay__banner.is-visible {
+    display: block;
+  }
+
+  .search-overlay[data-state="results"] .search-overlay__hint,
+  .search-overlay[data-state="results"] .search-overlay__trending {
+    display: none;
+  }
+
+  .search-overlay[data-state="results"] .search-overlay__popular {
+    margin-top: 28px;
+    border-top: 1px solid var(--color-divider);
+    padding-top: 22px;
+  }
+
+  .search-overlay__chip.is-current {
+    display: none;
+  }
+
+  .search-overlay__banner {
+    margin: 0 0 20px;
+    border-radius: 6px;
+    padding: 12px 14px;
+    color: var(--color-text);
+    background: var(--color-background);
+    font-size: 0.9rem;
+  }
+
+  .search-overlay__see-all {
+    width: 100%;
+    min-height: 52px;
+    margin-top: 24px;
+    font-size: 0.82rem;
+  }
+
+  .search-overlay__see-all.is-hidden {
+    display: none;
+  }
+
+  .search-overlay.is-loading .search-overlay__results-content {
+    opacity: 0.5;
+  }
+
+  .predictive-results {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    grid-template-areas:
+      "categories products"
+      "guides products";
+    align-items: start;
+    gap: 8px 48px;
+  }
+
+  .predictive-results__group--categories {
+    grid-area: categories;
+  }
+
+  .predictive-results__group--products {
+    grid-area: products;
+  }
+
+  .predictive-results__group--guides {
+    grid-area: guides;
+    margin-top: 20px;
+  }
+
+  .predictive-results__list {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .predictive-results__category {
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    border-bottom: 1px solid var(--color-divider);
+    color: var(--color-text);
+    font-size: 1rem;
+    text-decoration: none;
+  }
+
+  .predictive-results__category .icon {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 auto;
+    color: var(--color-text-secondary);
+    stroke-width: 1.6;
+  }
+
+  .predictive-results__group--products .predictive-results__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 28px;
+  }
+
+  .predictive-results__product {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border-bottom: 1px solid var(--color-divider);
+    padding: 12px 0;
+  }
+
+  .predictive-results__product-link {
+    min-width: 0;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .predictive-results__product .search-thumb {
+    width: 62px;
+    height: 62px;
+  }
+
+  .predictive-results__product-text {
+    min-width: 0;
+    display: grid;
+    gap: 4px;
+  }
+
+  .predictive-results__product-text strong {
+    overflow: hidden;
+    font-size: 0.98rem;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .predictive-results__product-text span {
+    color: var(--color-text-secondary);
+    font-size: 0.88rem;
+  }
+
+  .predictive-results__add {
+    margin: 0;
+  }
+
+  .predictive-results__add button {
+    width: 46px;
+    height: 46px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-primary-dark);
+    border-radius: 6px;
+    padding: 0;
+    color: var(--color-primary-dark);
+    background: var(--color-surface);
+    cursor: pointer;
+  }
+
+  .predictive-results__add button:disabled {
+    border-color: var(--color-border);
+    color: var(--color-text-secondary);
+    cursor: not-allowed;
+  }
+
+  .predictive-results__add .icon {
+    width: 20px;
+    height: 20px;
+    stroke-width: 1.6;
+  }
+
+
+  .predictive-results__guide {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    color: var(--color-primary-dark);
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .predictive-results__guide .icon {
+    width: 20px;
+    height: 20px;
+    flex: 0 0 auto;
+    stroke-width: 2;
+  }
+
+  .predictive-results__empty {
+    grid-column: 1 / -1;
+    margin: 0;
+    padding: 12px 0;
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+  }
+
+  @media (max-width: 749px) {
+    .search-overlay__scrim {
+      display: none;
+    }
+
+    .search-overlay__panel {
+      position: absolute;
+      inset: 0;
+      max-height: none;
+      box-shadow: none;
+    }
+
+    .search-overlay__inner {
+      width: 100%;
+      padding: 0 0 32px;
+    }
+
+    .search-overlay__form {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      gap: 12px;
+      border-bottom: 1px solid var(--color-divider);
+      padding: 12px 18px;
+      background: var(--color-surface);
+    }
+
+    .search-overlay__field {
+      min-height: 48px;
+      gap: 10px;
+      border: 1px solid var(--color-primary-dark);
+      border-radius: 8px;
+      padding: 0 8px 0 14px;
+    }
+
+    .search-overlay__field > .icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    .search-overlay__field input {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      letter-spacing: 0;
+      text-transform: none;
+      color: var(--color-text);
+    }
+
+    .search-overlay__clear {
+      width: 30px;
+      height: 30px;
+    }
+
+    .search-overlay__clear .icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    .search-overlay__close {
+      width: auto;
+      height: 44px;
+      color: var(--color-primary);
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+
+    .search-overlay__close .icon {
+      display: none;
+    }
+
+    .search-overlay__close span {
+      display: inline;
+    }
+
+    .search-overlay__body {
+      padding: 0 18px;
+    }
+
+    .search-overlay__eyebrow {
+      margin-bottom: 10px;
+      color: var(--color-text-secondary);
+      font-size: 0.78rem;
+      letter-spacing: 0.16em;
+    }
+
+    .search-overlay__popular {
+      margin-top: 24px;
+    }
+
+    .search-overlay__chips {
+      gap: 8px;
+    }
+
+    .search-overlay__chip {
+      min-height: 40px;
+      padding: 0 16px;
+      font-size: 0.92rem;
+    }
+
+    .search-overlay__hint {
+      margin-top: 14px;
+      font-size: 0.9rem;
+    }
+
+    .search-overlay__trending {
+      margin-top: 28px;
+    }
+
+    .search-overlay__trending-grid {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .search-overlay[data-state="results"] .search-overlay__results {
+      margin-top: 16px;
+    }
+
+    .search-overlay__banner {
+      margin-bottom: 18px;
+      font-size: 0.86rem;
+    }
+
+    .predictive-results {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "categories"
+        "products"
+        "guides";
+      gap: 0;
+    }
+
+    .predictive-results__group + .predictive-results__group {
+      margin-top: 20px;
+    }
+
+    .predictive-results__group--products .predictive-results__list {
+      grid-template-columns: 1fr;
+    }
+
+    .predictive-results__guide {
+      font-size: 1.2rem;
+    }
+
+    .search-overlay__see-all {
+      margin-top: 20px;
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    function initSearchOverlay() {
+    var overlay = document.querySelector('[data-search-overlay]');
+    if (!overlay) return;
+
+    var input = overlay.querySelector('[data-search-input]');
+    var resultsEl = overlay.querySelector('[data-search-results]');
+    var bannerEl = overlay.querySelector('[data-search-banner]');
+    var seeAllEl = overlay.querySelector('[data-search-see-all]');
+    var chips = overlay.querySelectorAll('[data-search-term]');
+    var searchUrl = overlay.getAttribute('data-search-url');
+    var suggestUrl = overlay.getAttribute('data-suggest-url');
+    var synonyms = parseSynonyms(overlay.getAttribute('data-synonyms') || '');
+    var timer;
+    var requestId = 0;
+    var lastTrigger = null;
+
+    function parseSynonyms(raw) {
+      var map = {};
+      raw.split(/\r?\n/).forEach(function (line) {
+        var parts = line.split(/[=:]/);
+        if (parts.length < 2) return;
+        var a = parts[0].trim().toLowerCase();
+        var b = parts.slice(1).join('').trim().toLowerCase();
+        if (!a || !b) return;
+        map[a] = b;
+        if (!map[b]) map[b] = a;
+      });
+      return map;
+    }
+
+    function escapeHtml(value) {
+      return String(value || '').replace(/[&<>"']/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+      });
+    }
+
+    function open(initialValue) {
+      lastTrigger = document.activeElement;
+      overlay.classList.add('is-open');
+      document.documentElement.classList.add('search-open');
+      if (typeof initialValue === 'string' && initialValue) {
+        input.value = initialValue;
+      }
+      update();
+      requestAnimationFrame(function () {
+        input.focus();
+        var length = input.value.length;
+        input.setSelectionRange(length, length);
+      });
+    }
+
+    function close() {
+      overlay.classList.remove('is-open');
+      document.documentElement.classList.remove('search-open');
+      if (lastTrigger && typeof lastTrigger.focus === 'function' && !overlay.contains(lastTrigger)) {
+        lastTrigger.blur();
+      }
+    }
+
+    function setState(state) {
+      overlay.setAttribute('data-state', state);
+    }
+
+    function markCurrentChip(query) {
+      chips.forEach(function (chip) {
+        chip.classList.toggle('is-current', chip.getAttribute('data-search-term').toLowerCase() === query.toLowerCase());
+      });
+    }
+
+    function renderBanner(query) {
+      var synonym = synonyms[query.toLowerCase()];
+      if (!synonym) {
+        bannerEl.classList.remove('is-visible');
+        bannerEl.innerHTML = '';
+        return;
+      }
+      bannerEl.innerHTML = escapeHtml(overlay.getAttribute('data-text-showing')) + ' <strong>' + escapeHtml(query) + '</strong> ' + escapeHtml(overlay.getAttribute('data-text-and')) + ' <strong>' + escapeHtml(synonym) + '</strong>';
+      bannerEl.classList.add('is-visible');
+    }
+
+    function renderSeeAll(query, count) {
+      seeAllEl.href = searchUrl + '?q=' + encodeURIComponent(query);
+      if (count === 0) {
+        seeAllEl.classList.add('is-hidden');
+        return;
+      }
+      seeAllEl.classList.remove('is-hidden');
+      seeAllEl.textContent = typeof count === 'number'
+        ? overlay.getAttribute('data-text-see-all-count').replace('__COUNT__', count)
+        : overlay.getAttribute('data-text-see-all');
+    }
+
+    function update() {
+      var query = input.value.trim();
+      overlay.classList.toggle('has-query', input.value.length > 0);
+      clearTimeout(timer);
+
+      if (query.length < 2) {
+        requestId++;
+        overlay.classList.remove('is-loading');
+        setState('default');
+        markCurrentChip('');
+        return;
+      }
+
+      timer = setTimeout(function () { search(query); }, 180);
+    }
+
+    function search(query) {
+      var id = ++requestId;
+      overlay.classList.add('is-loading');
+
+      var suggest = fetch(suggestUrl + '?q=' + encodeURIComponent(query) + '&resources[type]=product,collection,article,page&resources[limit]=4&resources[limit_scope]=each&resources[options][unavailable_products]=last&section_id=predictive-search')
+        .then(function (response) { return response.text(); });
+
+      var count = fetch(searchUrl + '?q=' + encodeURIComponent(query) + '&section_id=search-count')
+        .then(function (response) { return response.text(); })
+        .then(function (html) {
+          var match = html.match(/data-search-count="(\d+)"/);
+          return match ? parseInt(match[1], 10) : null;
+        })
+        .catch(function () { return null; });
+
+      suggest
+        .then(function (html) {
+          if (id !== requestId) return;
+          var doc = new DOMParser().parseFromString(html, 'text/html');
+          var content = doc.querySelector('.predictive-results');
+          resultsEl.innerHTML = content ? content.outerHTML : '';
+          renderBanner(query);
+          renderSeeAll(query);
+          markCurrentChip(query);
+          setState('results');
+          overlay.classList.remove('is-loading');
+
+          count.then(function (total) {
+            if (id !== requestId) return;
+            renderSeeAll(query, total);
+          });
+        })
+        .catch(function () {
+          if (id !== requestId) return;
+          overlay.classList.remove('is-loading');
+        });
+    }
+
+    input.addEventListener('input', update);
+
+    overlay.querySelectorAll('[data-search-close]').forEach(function (button) {
+      button.addEventListener('click', close);
+    });
+
+    overlay.querySelector('[data-search-clear]').addEventListener('click', function () {
+      input.value = '';
+      update();
+      input.focus();
+    });
+
+    chips.forEach(function (chip) {
+      chip.addEventListener('click', function (event) {
+        event.preventDefault();
+        input.value = chip.getAttribute('data-search-term');
+        update();
+        input.focus();
+      });
+    });
+
+    document.addEventListener('cart:open', function () {
+      if (overlay.classList.contains('is-open')) close();
+    });
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && overlay.classList.contains('is-open')) close();
+    });
+
+    document.addEventListener('click', function (event) {
+      var link = event.target.closest('a[href]');
+      if (!link || overlay.contains(link)) return;
+      if (link.getAttribute('href') !== searchUrl) return;
+      event.preventDefault();
+      open();
+    });
+
+    document.addEventListener('focusin', function (event) {
+      var field = event.target;
+      if (!field.matches || !field.matches('input[name="q"]') || overlay.contains(field) || field.closest('[data-search-inline]')) return;
+      var value = field.value;
+      field.blur();
+      var drawerToggle = document.getElementById('MobileMenuToggle');
+      if (drawerToggle) drawerToggle.checked = false;
+      open(value);
+    });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initSearchOverlay);
+    } else {
+      initSearchOverlay();
+    }
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "t:sections.search_overlay.name",
+  "settings": [
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "t:labels.search_placeholder",
+      "default": "Try “atta”, “achar” or “haldi”"
+    },
+    {
+      "type": "text",
+      "id": "popular_searches",
+      "label": "t:labels.popular_searches",
+      "info": "t:labels.popular_searches_info",
+      "default": "atta, achar, chai, kurta set, diya, haldi, bartan, jhumka"
+    },
+    {
+      "type": "text",
+      "id": "hint",
+      "label": "t:labels.search_hint",
+      "default": "Search in Hindi or English: atta or flour, haldi or turmeric, bartan or cookware."
+    },
+    {
+      "type": "textarea",
+      "id": "synonyms",
+      "label": "t:labels.search_synonyms",
+      "info": "t:labels.search_synonyms_info",
+      "default": "achar = pickle\natta = flour\nhaldi = turmeric\nbartan = cookware"
+    },
+    {
+      "type": "text",
+      "id": "trending_heading",
+      "label": "t:labels.heading",
+      "default": "Trending now"
+    },
+    {
+      "type": "collection",
+      "id": "trending_collection",
+      "label": "t:labels.trending_collection"
+    }
+  ]
+}
+{% endschema %}

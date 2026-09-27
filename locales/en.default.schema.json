@@ -1,0 +1,177 @@
+{
+  "sections": {
+    "announcement": {
+      "name": "Announcement bar",
+      "text": "Free USA shipping on orders over $75"
+    },
+    "header": {
+      "name": "Header"
+    },
+    "footer": {
+      "name": "Footer"
+    },
+    "hero": {
+      "name": "Hero",
+      "heading": "A little closer to home."
+    },
+    "featured_collection": {
+      "name": "Featured collection",
+      "heading": "Featured products"
+    },
+    "explore_india": {
+      "name": "Explore India",
+      "category": "Category"
+    },
+    "most_loved": {
+      "name": "Most loved",
+      "tab": "Filter tab",
+      "product": "Product card"
+    },
+    "pantry_promo": {
+      "name": "Pantry promo"
+    },
+    "shop_by_need": {
+      "name": "Shop by need",
+      "need": "Need card"
+    },
+    "category_spotlight": {
+      "name": "Category spotlight",
+      "card": "Spotlight card"
+    },
+    "search_overlay": {
+      "name": "Search overlay"
+    },
+    "main_search": {
+      "name": "Search results"
+    },
+    "main_blog": {
+      "name": "Blog",
+      "sample_story": "Sample story"
+    },
+    "main_article": {
+      "name": "Article"
+    },
+    "cart_drawer": {
+      "name": "Cart drawer"
+    },
+    "main_product": {
+      "name": "Product",
+      "collapsible": "Collapsible row"
+    },
+    "product_why": {
+      "name": "Why this product",
+      "point": "Reason"
+    },
+    "bought_together": {
+      "name": "Frequently bought together"
+    }
+  },
+  "settings": {
+    "theme": {
+      "name": "Theme settings"
+    },
+    "colors": {
+      "primary": "Primary",
+      "primary_dark": "Primary dark",
+      "secondary": "Secondary",
+      "background": "Background",
+      "surface": "Surface",
+      "image_ground": "Image ground",
+      "border": "Border",
+      "divider": "Divider",
+      "text": "Main text",
+      "text_secondary": "Secondary text",
+      "sale": "Sale and urgency"
+    },
+    "layout": {
+      "page_width": "Page width"
+    }
+  },
+  "labels": {
+    "text": "Text",
+    "secondary_text": "Secondary text",
+    "eyebrow": "Eyebrow",
+    "heading": "Heading",
+    "image": "Image",
+    "menu": "Menu",
+    "collection": "Collection",
+    "button_label": "Button label",
+    "button_link": "Button link",
+    "secondary_button_label": "Secondary button label",
+    "secondary_button_link": "Secondary button link",
+    "secondary_button_mobile_label": "Secondary button label (mobile)",
+    "secondary_button_mobile_label_info": "Shorter label shown on small screens. Leave blank to reuse the label above.",
+    "products_to_show": "Products to show",
+    "button_colors": "Button colors",
+    "button_primary_bg": "Primary button background",
+    "button_primary_text": "Primary button text",
+    "button_secondary_border": "Secondary button border",
+    "button_secondary_text": "Secondary button text",
+    "subheading": "Subheading",
+    "see_all_link": "\"See all\" link",
+    "see_all_label": "\"See all\" label",
+    "placeholder_text": "Placeholder caption",
+    "label": "Label",
+    "link": "Link",
+    "category": "Filter category",
+    "category_info": "Matches this item to a filter tab using the same value.",
+    "product": "Product",
+    "title": "Title",
+    "title_info": "Used only when no product is selected above.",
+    "badge": "Badge",
+    "rating": "Rating",
+    "rating_info": "e.g. 4.8",
+    "rating_count": "Rating count",
+    "price": "Price",
+    "price_info": "Used only when no product is selected above.",
+    "compare_price": "Compare-at price",
+    "variant_info": "Size / variant note",
+    "show_quick_view": "Show quick view on hover",
+    "view_all_link": "\"View all\" link",
+    "view_all_label": "\"View all\" label",
+    "eyebrow_text": "Eyebrow",
+    "layout_direction": "Image position",
+    "description": "Description",
+    "search_placeholder": "Search placeholder",
+    "popular_searches": "Popular searches",
+    "popular_searches_info": "Comma-separated search terms shown as chips.",
+    "search_hint": "Hint text",
+    "search_synonyms": "Search synonyms",
+    "search_synonyms_info": "One pair per line, e.g. \"achar = pickle\". Shows a \"Showing results for\" note. Add the same synonyms in the Search & Discovery app so results actually match.",
+    "trending_collection": "Trending collection",
+    "sample_tags": "Sample filter tags",
+    "sample_info": "Shown only until the blog has published articles.",
+    "read_time": "Read time (minutes)",
+    "author": "Author",
+    "related_count": "Related stories to show",
+    "free_shipping_threshold": "Free shipping threshold",
+    "free_shipping_threshold_info": "Order total (in your store currency) needed for free shipping. Set 0 to hide the progress bar.",
+    "upsell_collection": "Suggested products collection",
+    "show_placeholder_slots": "Fill empty gallery slots with placeholders",
+    "show_placeholder_slots_info": "Shows up to 5 labelled slots (Product, Lifestyle, Video, Customer, Detail) until real media is added.",
+    "placeholder_captions": "Placeholder captions",
+    "placeholder_captions_info": "One caption per slot, separated by |",
+    "show_quantity_breaks": "Show quantity breaks",
+    "show_quantity_breaks_info": "Displays Buy 1 / 2 / 3+ savings. Create matching automatic discounts in your Shopify admin so the cart price agrees.",
+    "tier2_percent": "Buy 2 saving",
+    "tier3_percent": "Buy 3+ saving",
+    "delivery_header": "Delivery and returns",
+    "ships_in_days": "Ships in (days)",
+    "show_delivery": "Show delivery estimate",
+    "delivery_min_days": "Earliest delivery (business days)",
+    "delivery_max_days": "Latest delivery (business days)",
+    "delivery_note": "Delivery note",
+    "returns_title": "Returns title",
+    "returns_text": "Returns text",
+    "returns_text_mobile": "Returns text (mobile)",
+    "use_description": "Use product description",
+    "show_on": "Show on",
+    "open_by_default": "Open by default",
+    "metafield_key": "Product metafield",
+    "metafield_key_info": "e.g. custom.ingredients. Used when the product has a value; otherwise the text above is shown. The row hides when both are empty.",
+    "mobile_title": "Title (mobile)",
+    "mobile_text": "Text (mobile)",
+    "partners": "Products to pair",
+    "partners_info": "Taken from the product’s custom.bought_together metafield, otherwise from Shopify’s complementary (Search & Discovery) or related recommendations."
+  }
+}

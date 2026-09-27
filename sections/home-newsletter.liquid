@@ -1,0 +1,266 @@
+<section class="home-newsletter">
+  <div class="page-width">
+    <div class="home-newsletter__mark" aria-hidden="true">
+      <span></span>
+      {% render 'icon', name: 'shopping-bag' %}
+      <span></span>
+    </div>
+
+    <div class="home-newsletter__header">
+      <h2>{{ section.settings.heading }}</h2>
+      {% if section.settings.subheading != blank %}
+        <p>{{ section.settings.subheading }}</p>
+      {% endif %}
+    </div>
+
+    {% form 'customer', class: 'home-newsletter__form' %}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <div class="home-newsletter__field">
+        <label for="HomeNewsletterEmail">{{ section.settings.email_label }}</label>
+        <div>
+          <input id="HomeNewsletterEmail" type="email" name="contact[email]" placeholder="{{ section.settings.placeholder }}" autocomplete="email" required>
+          <button class="button" type="submit">{{ section.settings.button_label }}</button>
+        </div>
+      </div>
+
+      <label class="home-newsletter__check">
+        <input type="checkbox" name="contact[note][whatsapp_reminders]" value="Yes">
+        <span>{{ section.settings.checkbox_label }}</span>
+      </label>
+
+      {% if section.settings.note != blank %}
+        <p class="home-newsletter__note">{{ section.settings.note }}</p>
+      {% endif %}
+    {% endform %}
+  </div>
+</section>
+
+{% stylesheet %}
+  .home-newsletter {
+    padding: 100px 0 92px;
+    background: var(--color-surface);
+  }
+
+  .home-newsletter .page-width {
+    max-width: 720px;
+  }
+
+  .home-newsletter__mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 15px;
+    color: var(--color-secondary);
+  }
+
+  .home-newsletter__mark span {
+    width: 64px;
+    height: 1px;
+    background: currentColor;
+  }
+
+  .home-newsletter__mark .icon {
+    width: 25px;
+    height: 25px;
+    stroke-width: 1.6;
+  }
+
+  .home-newsletter__header {
+    display: grid;
+    justify-items: center;
+    gap: 17px;
+    margin-bottom: 34px;
+    text-align: center;
+  }
+
+  .home-newsletter h2 {
+    margin: 0;
+    color: var(--color-primary-dark);
+    font-size: clamp(2.7rem, 5vw, 4.05rem);
+    line-height: 0.94;
+  }
+
+  .home-newsletter__header p {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+  }
+
+  .home-newsletter__form {
+    display: grid;
+    gap: 22px;
+  }
+
+  .home-newsletter__field {
+    display: grid;
+    gap: 10px;
+  }
+
+  .home-newsletter__field label {
+    color: var(--color-text);
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+
+  .home-newsletter__field > div {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 157px;
+    gap: 10px;
+  }
+
+  .home-newsletter__field input {
+    min-height: 59px;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 0 19px;
+    background: var(--color-surface);
+    color: var(--color-text);
+    font-size: 1rem;
+  }
+
+  .home-newsletter__field input::placeholder {
+    color: var(--color-text-secondary);
+  }
+
+  .home-newsletter__field button {
+    min-height: 59px;
+  }
+
+  .home-newsletter__check {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: var(--color-text);
+    font-size: 0.95rem;
+  }
+
+  .home-newsletter__check input {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--color-primary);
+  }
+
+  .home-newsletter__note {
+    margin: 2px 0 0;
+    color: var(--color-text-secondary);
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 749px) {
+    .home-newsletter {
+      padding: 49px 0 48px;
+      background: var(--color-background);
+    }
+
+    .home-newsletter .page-width {
+      width: min(100% - 48px, var(--page-width));
+      max-width: none;
+    }
+
+    .home-newsletter__mark {
+      display: none;
+    }
+
+    .home-newsletter__header {
+      justify-items: start;
+      gap: 21px;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .home-newsletter h2 {
+      max-width: 12ch;
+      font-size: clamp(2rem, 8vw, 2.42rem);
+      line-height: 1.03;
+    }
+
+    .home-newsletter__header p {
+      font-size: 1rem;
+      line-height: 1.45;
+    }
+
+    .home-newsletter__field {
+      gap: 0;
+    }
+
+    .home-newsletter__field label,
+    .home-newsletter__check,
+    .home-newsletter__note {
+      display: none;
+    }
+
+    .home-newsletter__field > div {
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    .home-newsletter__field input {
+      min-height: 61px;
+      border-radius: 7px;
+      padding: 0 18px;
+      font-size: 1rem;
+    }
+
+    .home-newsletter__field button {
+      min-height: 64px;
+      border-radius: 7px;
+      font-size: 0.8rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Home newsletter",
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Stay connected to home."
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "New arrivals, festival collections, stories and special drops."
+    },
+    {
+      "type": "text",
+      "id": "email_label",
+      "label": "Email label",
+      "default": "Email address"
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Placeholder",
+      "default": "name@example.com"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Subscribe"
+    },
+    {
+      "type": "text",
+      "id": "checkbox_label",
+      "label": "Checkbox label",
+      "default": "Also send me festival reminders on WhatsApp"
+    },
+    {
+      "type": "text",
+      "id": "note",
+      "label": "Note",
+      "default": "Unsubscribe anytime. We never share your details."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Home newsletter"
+    }
+  ]
+}
+{% endschema %}

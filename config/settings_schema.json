@@ -1,0 +1,83 @@
+[
+  {
+    "name": "t:settings.theme.name",
+    "settings": [
+      {
+        "type": "color",
+        "id": "color_primary",
+        "label": "t:settings.colors.primary",
+        "default": "#157145"
+      },
+      {
+        "type": "color",
+        "id": "color_primary_dark",
+        "label": "t:settings.colors.primary_dark",
+        "default": "#004A2C"
+      },
+      {
+        "type": "color",
+        "id": "color_secondary",
+        "label": "t:settings.colors.secondary",
+        "default": "#8ACB88"
+      },
+      {
+        "type": "color",
+        "id": "color_background",
+        "label": "t:settings.colors.background",
+        "default": "#E4FDE1"
+      },
+      {
+        "type": "color",
+        "id": "color_surface",
+        "label": "t:settings.colors.surface",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "color_image_ground",
+        "label": "t:settings.colors.image_ground",
+        "default": "#D6F5D2"
+      },
+      {
+        "type": "color",
+        "id": "color_border",
+        "label": "t:settings.colors.border",
+        "default": "#BFE2BC"
+      },
+      {
+        "type": "color",
+        "id": "color_divider",
+        "label": "t:settings.colors.divider",
+        "default": "#D5ECCF"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "t:settings.colors.text",
+        "default": "#112F1B"
+      },
+      {
+        "type": "color",
+        "id": "color_text_secondary",
+        "label": "t:settings.colors.text_secondary",
+        "default": "#486558"
+      },
+      {
+        "type": "color",
+        "id": "color_sale",
+        "label": "t:settings.colors.sale",
+        "default": "#9D232A"
+      },
+      {
+        "type": "range",
+        "id": "page_width",
+        "min": 960,
+        "max": 1600,
+        "step": 20,
+        "unit": "px",
+        "label": "t:settings.layout.page_width",
+        "default": 1320
+      }
+    ]
+  }
+]

@@ -1,0 +1,417 @@
+<section class="stories-home">
+  <div class="page-width">
+    <div class="stories-home__header">
+      <div>
+        <h2>{{ section.settings.heading }}</h2>
+        {% if section.settings.subheading != blank %}
+          <p>{{ section.settings.subheading }}</p>
+        {% endif %}
+      </div>
+      {% if section.settings.link_label != blank %}
+        <a class="stories-home__link" href="{{ section.settings.link | default: routes.root_url }}">
+          <span class="stories-home__link-desktop">{{ section.settings.link_label }}</span>
+          <span class="stories-home__link-mobile">{{ section.settings.mobile_link_label }}</span>
+        </a>
+      {% endif %}
+    </div>
+
+    <div class="stories-home__grid">
+      {% for block in section.blocks %}
+        <article class="story-card" {{ block.shopify_attributes }}>
+          <a class="story-card__media" href="{{ block.settings.link | default: routes.root_url }}">
+            {% if block.settings.image %}
+              {{ block.settings.image | image_url: width: 850 | image_tag: loading: 'lazy', widths: '220, 360, 520, 850', sizes: '(min-width: 990px) 33vw, 128px', alt: block.settings.image.alt }}
+            {% else %}
+              <span class="story-card__placeholder">
+                {% render 'icon', name: 'camera' %}
+                {% if block.settings.placeholder_text != blank %}
+                  <strong>{{ block.settings.placeholder_text }}</strong>
+                {% endif %}
+                <em>{{ 'sections.explore_india.browse_files' | t }}</em>
+              </span>
+            {% endif %}
+          </a>
+
+          <div class="story-card__content">
+            {% if block.settings.meta != blank %}
+              <p class="story-card__meta">{{ block.settings.meta }}</p>
+            {% endif %}
+            {% if block.settings.title != blank %}
+              <h3><a href="{{ block.settings.link | default: routes.root_url }}">{{ block.settings.title }}</a></h3>
+            {% endif %}
+            {% if block.settings.excerpt != blank %}
+              <p class="story-card__excerpt">{{ block.settings.excerpt }}</p>
+            {% endif %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .stories-home {
+    padding: 92px 0 105px;
+    background: var(--color-background);
+  }
+
+  .stories-home__header {
+    display: grid;
+    justify-items: center;
+    gap: 16px;
+    margin-bottom: 55px;
+    text-align: center;
+  }
+
+  .stories-home h2 {
+    margin: 0;
+    color: var(--color-primary-dark);
+    font-size: clamp(2.25rem, 4vw, 3.28rem);
+    line-height: 0.95;
+  }
+
+  .stories-home__header p {
+    margin: 17px 0 0;
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .stories-home__link {
+    width: fit-content;
+    border-bottom: 1px solid var(--color-primary);
+    padding-bottom: 5px;
+    color: var(--color-primary);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    line-height: 1;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .stories-home__link-mobile {
+    display: none;
+  }
+
+  .stories-home__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 32px;
+  }
+
+  .story-card {
+    display: grid;
+    gap: 17px;
+  }
+
+  .story-card__media {
+    position: relative;
+    min-height: 328px;
+    display: block;
+    overflow: hidden;
+    border: 1px dashed color-mix(in srgb, var(--color-primary-dark) 34%, transparent);
+    border-radius: var(--radius-card);
+    background: var(--color-image-ground);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+  }
+
+  .story-card__media img {
+    width: 100%;
+    height: 100%;
+    min-height: 328px;
+    display: block;
+    object-fit: cover;
+  }
+
+  .story-card__placeholder {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    gap: 10px;
+    padding: 26px;
+    text-align: center;
+  }
+
+  .story-card__placeholder .icon {
+    width: 28px;
+    height: 28px;
+    color: color-mix(in srgb, var(--color-primary-dark) 52%, transparent);
+  }
+
+  .story-card__placeholder strong {
+    max-width: 34ch;
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  .story-card__placeholder em {
+    border-bottom: 1px solid currentColor;
+    color: var(--color-primary-dark);
+    font-size: 0.8rem;
+    font-style: normal;
+    line-height: 1;
+  }
+
+  .story-card__content {
+    display: grid;
+    gap: 12px;
+  }
+
+  .story-card__meta {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .story-card h3 {
+    margin: 0;
+    max-width: 20ch;
+    color: var(--color-primary-dark);
+    font-size: clamp(1.55rem, 2vw, 1.95rem);
+    line-height: 1.12;
+  }
+
+  .story-card h3 a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .story-card__excerpt {
+    margin: 0;
+    max-width: 43ch;
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  @media (max-width: 849px) {
+    .stories-home {
+      padding: 38px 0 42px;
+      background: var(--color-surface);
+    }
+
+    .stories-home__header {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      justify-items: stretch;
+      gap: 18px;
+      margin-bottom: 22px;
+      text-align: left;
+    }
+
+    .stories-home h2 {
+      font-size: clamp(1.95rem, 8vw, 2.34rem);
+      line-height: 1;
+    }
+
+    .stories-home__header p {
+      display: none;
+    }
+
+    .stories-home__link {
+      align-self: start;
+      border-bottom: 0;
+      padding: 5px 0 0;
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    .stories-home__link-desktop {
+      display: none;
+    }
+
+    .stories-home__link-mobile {
+      display: inline;
+    }
+
+    .stories-home__grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    .story-card {
+      grid-template-columns: 128px minmax(0, 1fr);
+      gap: 17px;
+      border-bottom: 1px solid var(--color-divider);
+      padding: 22px 0;
+    }
+
+    .story-card:first-child {
+      padding-top: 0;
+    }
+
+    .story-card__media {
+      min-height: 128px;
+      border-radius: 6px;
+    }
+
+    .story-card__media img {
+      min-height: 128px;
+    }
+
+    .story-card__placeholder {
+      gap: 10px;
+      padding: 12px;
+    }
+
+    .story-card__placeholder .icon {
+      width: 32px;
+      height: 32px;
+    }
+
+    .story-card__placeholder strong {
+      display: none;
+    }
+
+    .story-card__placeholder em {
+      font-size: 0.92rem;
+    }
+
+    .story-card__content {
+      align-content: center;
+      gap: 8px;
+    }
+
+    .story-card__meta {
+      color: var(--color-text-secondary);
+      font-size: 0.86rem;
+      letter-spacing: 0.16em;
+    }
+
+    .story-card h3 {
+      max-width: none;
+      font-size: clamp(1.35rem, 5vw, 1.55rem);
+      line-height: 1.18;
+    }
+
+    .story-card__excerpt {
+      display: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Stories from home",
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Stories from home"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Recipes, festival guides and the stories behind what we sell."
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Desktop link label",
+      "default": "All stories"
+    },
+    {
+      "type": "text",
+      "id": "mobile_link_label",
+      "label": "Mobile link label",
+      "default": "All"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "story",
+      "name": "Story",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "placeholder_text",
+          "label": "Placeholder text",
+          "default": "Diwali table set in a Brooklyn apartment"
+        },
+        {
+          "type": "text",
+          "id": "meta",
+          "label": "Meta",
+          "default": "Festivals · 7 min read"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "A first-timer’s guide to hosting Diwali in America"
+        },
+        {
+          "type": "textarea",
+          "id": "excerpt",
+          "label": "Excerpt",
+          "default": "Menus that travel well, where to find marigolds in October, and how to light diyas safely indoors."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Stories from home",
+      "blocks": [
+        {
+          "type": "story",
+          "settings": {
+            "placeholder_text": "Diwali table set in a Brooklyn apartment",
+            "meta": "Festivals · 7 min read",
+            "title": "A first-timer’s guide to hosting Diwali in America",
+            "excerpt": "Menus that travel well, where to find marigolds in October, and how to light diyas safely indoors."
+          }
+        },
+        {
+          "type": "story",
+          "settings": {
+            "placeholder_text": "Parathas stacked on a steel plate",
+            "meta": "Recipes · 8 min read",
+            "title": "Sunday aloo paratha, the way nani made it",
+            "excerpt": "Soft dough, a spiced potato filling and plenty of ghee. Plus which achar to serve alongside."
+          }
+        },
+        {
+          "type": "story",
+          "settings": {
+            "placeholder_text": "Three flours in brass bowls",
+            "meta": "Ingredients · 5 min read",
+            "title": "Atta, maida, besan: a guide to Indian flours",
+            "excerpt": "What each flour is, what it’s for, and how to store it so it lasts."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

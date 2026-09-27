@@ -1,0 +1,471 @@
+<section class="better-together">
+  <div class="page-width">
+    <div class="better-together__header">
+      <h2>{{ section.settings.heading }}</h2>
+      {% if section.settings.subheading != blank %}
+        <p>{{ section.settings.subheading }}</p>
+      {% endif %}
+    </div>
+
+    <div class="better-together__rail">
+      {% for block in section.blocks %}
+        <article class="better-bundle" {{ block.shopify_attributes }}>
+          <a class="better-bundle__media" href="{{ block.settings.link | default: routes.all_products_collection_url }}">
+            {% if block.settings.savings != blank %}
+              <span class="better-bundle__save">{{ block.settings.savings }}</span>
+            {% endif %}
+
+            {% if block.settings.image %}
+              {{ block.settings.image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '320, 520, 700, 900', sizes: '(min-width: 990px) 33vw, 82vw', alt: block.settings.image.alt }}
+            {% else %}
+              <span class="better-bundle__placeholder">
+                {% render 'icon', name: 'camera' %}
+                {% if block.settings.placeholder_text != blank %}
+                  <strong>{{ block.settings.placeholder_text }}</strong>
+                {% endif %}
+                <em>{{ 'sections.explore_india.browse_files' | t }}</em>
+              </span>
+            {% endif %}
+          </a>
+
+          <div class="better-bundle__content">
+            {% if block.settings.title != blank %}
+              <h3>
+                <a href="{{ block.settings.link | default: routes.all_products_collection_url }}">{{ block.settings.title }}</a>
+              </h3>
+            {% endif %}
+            {% if block.settings.description != blank %}
+              <p>{{ block.settings.description }}</p>
+            {% endif %}
+            <div class="better-bundle__price">
+              {% if block.settings.price != blank %}
+                <strong>{{ block.settings.price }}</strong>
+              {% endif %}
+              {% if block.settings.compare_price != blank %}
+                <s>{{ block.settings.compare_price }}</s>
+              {% endif %}
+            </div>
+            {% if block.settings.button_label != blank %}
+              <a class="button better-bundle__button" href="{{ block.settings.link | default: routes.all_products_collection_url }}">{{ block.settings.button_label }}</a>
+            {% endif %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .better-together {
+    padding: 68px 0 78px;
+    background: var(--color-background);
+  }
+
+  .better-together__header {
+    display: grid;
+    justify-items: center;
+    gap: 14px;
+    margin-bottom: 56px;
+    text-align: center;
+  }
+
+  .better-together h2 {
+    margin: 0;
+    color: var(--color-primary-dark);
+    font-size: clamp(2.3rem, 4vw, 3.35rem);
+    line-height: 0.95;
+  }
+
+  .better-together__header p {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .better-together__rail {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 32px;
+  }
+
+  .better-bundle {
+    display: grid;
+    gap: 18px;
+    min-width: 0;
+  }
+
+  .better-bundle__media {
+    position: relative;
+    min-height: 438px;
+    display: block;
+    overflow: hidden;
+    border: 1px dashed color-mix(in srgb, var(--color-primary-dark) 32%, transparent);
+    border-radius: var(--radius-card);
+    background: var(--color-image-ground);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+  }
+
+  .better-bundle__media img {
+    width: 100%;
+    height: 100%;
+    min-height: 438px;
+    display: block;
+    object-fit: cover;
+  }
+
+  .better-bundle__save {
+    position: absolute;
+    left: 16px;
+    top: 14px;
+    z-index: 2;
+    border-radius: 3px;
+    padding: 7px 12px;
+    color: var(--color-sale);
+    background: var(--color-surface);
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .better-bundle__placeholder {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    gap: 10px;
+    padding: 26px;
+    text-align: center;
+  }
+
+  .better-bundle__placeholder .icon {
+    width: 28px;
+    height: 28px;
+    color: color-mix(in srgb, var(--color-primary-dark) 52%, transparent);
+  }
+
+  .better-bundle__placeholder strong {
+    max-width: 38ch;
+    color: var(--color-text-secondary);
+    font-size: 0.92rem;
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  .better-bundle__placeholder em {
+    border-bottom: 1px solid currentColor;
+    color: var(--color-primary-dark);
+    font-size: 0.8rem;
+    font-style: normal;
+    line-height: 1;
+  }
+
+  .better-bundle__content {
+    display: grid;
+    justify-items: center;
+    gap: 8px;
+    text-align: center;
+  }
+
+  .better-bundle h3 {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 1.03rem;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .better-bundle h3 a {
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .better-bundle__content p {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 0.88rem;
+    line-height: 1.45;
+  }
+
+  .better-bundle__price {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 10px;
+    min-height: 25px;
+  }
+
+  .better-bundle__price strong {
+    color: var(--color-text);
+    font-size: 1.12rem;
+    font-weight: 800;
+  }
+
+  .better-bundle__price s {
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+  }
+
+  .better-bundle__button {
+    width: 100%;
+    min-height: 54px;
+    margin-top: 8px;
+    border-color: var(--color-primary);
+    color: var(--color-surface);
+    background: var(--color-primary);
+  }
+
+  @media (max-width: 849px) {
+    .better-together {
+      overflow: hidden;
+      padding: 28px 0 40px;
+      background: var(--color-surface);
+    }
+
+    .better-together .page-width {
+      width: 100%;
+    }
+
+    .better-together__header {
+      justify-items: start;
+      gap: 0;
+      margin: 0 0 22px;
+      padding: 0 23px;
+      text-align: left;
+    }
+
+    .better-together h2 {
+      font-size: clamp(2rem, 8vw, 2.45rem);
+      line-height: 1;
+    }
+
+    .better-together__header p {
+      display: none;
+    }
+
+    .better-together__rail {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(322px, 70vw);
+      grid-template-columns: none;
+      gap: 14px;
+      overflow-x: auto;
+      padding: 0 23px 4px;
+      scroll-padding-left: 23px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .better-together__rail::-webkit-scrollbar {
+      display: none;
+    }
+
+    .better-bundle {
+      gap: 14px;
+      scroll-snap-align: start;
+    }
+
+    .better-bundle__media {
+      min-height: 320px;
+    }
+
+    .better-bundle__media img {
+      min-height: 320px;
+    }
+
+    .better-bundle__save {
+      left: 13px;
+      top: 13px;
+      padding: 7px 11px;
+      font-size: 0.72rem;
+    }
+
+    .better-bundle__placeholder {
+      padding: 28px;
+    }
+
+    .better-bundle__placeholder .icon {
+      width: 34px;
+      height: 34px;
+    }
+
+    .better-bundle__placeholder strong {
+      max-width: 17ch;
+      font-size: 0.98rem;
+    }
+
+    .better-bundle__placeholder em {
+      font-size: 0.85rem;
+    }
+
+    .better-bundle__content {
+      justify-items: start;
+      gap: 8px;
+      text-align: left;
+    }
+
+    .better-bundle h3 {
+      max-width: 20ch;
+      font-size: 1.22rem;
+      line-height: 1.15;
+    }
+
+    .better-bundle__content p {
+      max-width: 24ch;
+      overflow: hidden;
+      color: var(--color-text-secondary);
+      font-size: 1rem;
+      line-height: 1.4;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .better-bundle__price {
+      justify-content: flex-start;
+      gap: 9px;
+    }
+
+    .better-bundle__price strong {
+      font-size: 1.18rem;
+    }
+
+    .better-bundle__price s {
+      font-size: 0.96rem;
+    }
+
+    .better-bundle__button {
+      min-height: 65px;
+      margin-top: 0;
+      font-size: 0.8rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Better together",
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Better together"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Bundles put together by our team, for less than buying separately."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "bundle",
+      "name": "Bundle",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "savings",
+          "label": "Savings badge",
+          "default": "Save $15.43"
+        },
+        {
+          "type": "text",
+          "id": "placeholder_text",
+          "label": "Placeholder text",
+          "default": "Pantry kit unboxed on a wooden table"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Indian Pantry Starter Kit"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description",
+          "default": "8 essentials · atta, dal, rice, ghee, haldi and more"
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Price",
+          "default": "$89"
+        },
+        {
+          "type": "text",
+          "id": "compare_price",
+          "label": "Compare price",
+          "default": "$104.43"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Buy the bundle"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Better together",
+      "blocks": [
+        {
+          "type": "bundle",
+          "settings": {
+            "savings": "Save $15.43",
+            "placeholder_text": "Pantry kit unboxed on a wooden table",
+            "title": "Indian Pantry Starter Kit",
+            "description": "8 essentials · atta, dal, rice, ghee, haldi and more",
+            "price": "$89",
+            "compare_price": "$104.43",
+            "button_label": "Buy the bundle"
+          }
+        },
+        {
+          "type": "bundle",
+          "settings": {
+            "savings": "Save $6.47",
+            "placeholder_text": "Chai tray with kulhads and rusk",
+            "title": "Chai Time Bundle",
+            "description": "4 items · CTC chai, rusk, kulhads, elaichi",
+            "price": "$32",
+            "compare_price": "$38.47",
+            "button_label": "Buy the bundle"
+          }
+        },
+        {
+          "type": "bundle",
+          "settings": {
+            "savings": "Save $5.46",
+            "placeholder_text": "Four achar jars lined up on stone",
+            "title": "Pickle Lovers Pack",
+            "description": "4 jars · mango, nimbu, mirch, mixed",
+            "price": "$39",
+            "compare_price": "$44.46",
+            "button_label": "Buy the bundle"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

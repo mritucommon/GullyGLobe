@@ -1,0 +1,167 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "why_love": {
+          "type": "collapsible",
+          "settings": {
+            "title": "Why You’ll Love It",
+            "use_description": true,
+            "show_on": "both",
+            "open": false
+          }
+        },
+        "ingredients": {
+          "type": "collapsible",
+          "settings": {
+            "title": "Ingredients",
+            "metafield": "custom.ingredients",
+            "show_on": "both"
+          }
+        },
+        "details": {
+          "type": "collapsible",
+          "settings": {
+            "title": "Product Details",
+            "metafield": "custom.product_details",
+            "show_on": "desktop"
+          }
+        },
+        "how_to_use": {
+          "type": "collapsible",
+          "settings": {
+            "title": "How to Use",
+            "metafield": "custom.how_to_use",
+            "show_on": "both"
+          }
+        },
+        "care": {
+          "type": "collapsible",
+          "settings": {
+            "title": "Care & Storage",
+            "metafield": "custom.care_storage",
+            "show_on": "desktop"
+          }
+        },
+        "shipping": {
+          "type": "collapsible",
+          "settings": {
+            "title": "Shipping",
+            "content": "<p>Free USA shipping on orders over $75. Orders ship within 1 business day and usually arrive in 2–5 business days.</p>",
+            "show_on": "desktop"
+          }
+        },
+        "returns": {
+          "type": "collapsible",
+          "settings": {
+            "title": "Returns",
+            "content": "<p>30-day returns on unopened items. If anything arrives damaged, we’ll replace it.</p>",
+            "show_on": "desktop"
+          }
+        },
+        "shipping_returns": {
+          "type": "collapsible",
+          "settings": {
+            "title": "Shipping & Returns",
+            "content": "<p>Free USA shipping on orders over $75, usually 2–5 business days. 30-day returns on unopened items; damaged on arrival? We replace it.</p>",
+            "show_on": "mobile"
+          }
+        },
+        "origin": {
+          "type": "collapsible",
+          "settings": {
+            "title": "Origin",
+            "metafield": "custom.origin",
+            "show_on": "both"
+          }
+        }
+      },
+      "block_order": [
+        "why_love",
+        "ingredients",
+        "details",
+        "how_to_use",
+        "care",
+        "shipping",
+        "returns",
+        "shipping_returns",
+        "origin"
+      ],
+      "settings": {
+        "show_placeholder_slots": true,
+        "show_quantity_breaks": true,
+        "tier2_percent": 5,
+        "tier3_percent": 10,
+        "ships_in_days": 1,
+        "show_delivery": true,
+        "delivery_min_days": 2,
+        "delivery_max_days": 5,
+        "delivery_note": "Free over $75",
+        "returns_title": "30-day returns on unopened items",
+        "returns_text": "Arrived damaged? We replace it. Secure checkout.",
+        "returns_text_mobile": "Damaged? We replace it."
+      }
+    },
+    "why": {
+      "type": "product-why",
+      "blocks": {
+        "point_1": {
+          "type": "point",
+          "settings": {
+            "title": "Sun-cured for 21 days",
+            "text": "The way it has always been done, for depth you can’t rush.",
+            "mobile_title": "Sun-cured 21 days",
+            "mobile_text": "Depth you can’t rush."
+          }
+        },
+        "point_2": {
+          "type": "point",
+          "settings": {
+            "title": "Cold-pressed mustard oil",
+            "text": "Kachi ghani oil, pungent and clean.",
+            "mobile_title": "Cold-pressed oil",
+            "mobile_text": "Kachi ghani mustard."
+          }
+        },
+        "point_3": {
+          "type": "point",
+          "settings": {
+            "title": "Hand-cut Rajapuri mango",
+            "text": "Firm, sour, and cut in large pieces.",
+            "mobile_title": "Hand-cut mango",
+            "mobile_text": "Firm Rajapuri pieces."
+          }
+        },
+        "point_4": {
+          "type": "point",
+          "settings": {
+            "title": "No vinegar, no colour",
+            "text": "Preserved with salt, oil and spice only.",
+            "mobile_title": "No vinegar",
+            "mobile_text": "Salt, oil and spice only."
+          }
+        }
+      },
+      "block_order": [
+        "point_1",
+        "point_2",
+        "point_3",
+        "point_4"
+      ]
+    },
+    "bought_together": {
+      "type": "product-bought-together",
+      "settings": {
+        "heading": "Frequently bought together",
+        "mobile_heading": "Bought together",
+        "partners": 2
+      }
+    }
+  },
+  "order": [
+    "main",
+    "why",
+    "bought_together"
+  ]
+}

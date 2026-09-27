@@ -1,0 +1,323 @@
+<section class="customer-reviews">
+  <div class="page-width">
+    <div class="customer-reviews__header">
+      <h2>{{ section.settings.heading }}</h2>
+      {% if section.settings.subheading != blank %}
+        <p>{{ section.settings.subheading }}</p>
+      {% endif %}
+    </div>
+
+    <div class="customer-reviews__rail">
+      {% for block in section.blocks %}
+        <article class="customer-review" {{ block.shopify_attributes }}>
+          <div class="customer-review__stars" aria-label="{{ block.settings.rating }} stars">
+            {% for i in (1..5) %}
+              <span>★</span>
+            {% endfor %}
+          </div>
+
+          {% if block.settings.quote != blank %}
+            <blockquote>{{ block.settings.quote }}</blockquote>
+          {% endif %}
+
+          <div class="customer-review__meta">
+            <p>
+              {% if block.settings.name != blank %}
+                <strong>{{ block.settings.name }}</strong>
+              {% endif %}
+              {% if block.settings.location != blank %}
+                <span>· {{ block.settings.location }}</span>
+              {% endif %}
+            </p>
+
+            {% if block.settings.product_label != blank %}
+              <a href="{{ block.settings.product_link | default: routes.all_products_collection_url }}">{{ block.settings.product_label }}</a>
+            {% endif %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .customer-reviews {
+    padding: 90px 0 100px;
+    background: var(--color-surface);
+  }
+
+  .customer-reviews__header {
+    display: grid;
+    justify-items: center;
+    gap: 14px;
+    margin-bottom: 52px;
+    text-align: center;
+  }
+
+  .customer-reviews h2 {
+    margin: 0;
+    color: var(--color-primary-dark);
+    font-size: clamp(2.25rem, 4vw, 3.28rem);
+    line-height: 0.95;
+  }
+
+  .customer-reviews__header p {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .customer-reviews__rail {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 32px;
+  }
+
+  .customer-review {
+    min-height: 324px;
+    display: grid;
+    align-content: start;
+    gap: 25px;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    padding: 44px 42px 39px;
+    background: var(--color-surface);
+  }
+
+  .customer-review__stars {
+    display: flex;
+    gap: 5px;
+    color: #7ac884;
+    font-size: 0.96rem;
+    line-height: 1;
+    letter-spacing: 0.08em;
+  }
+
+  .customer-review blockquote {
+    margin: 0;
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: clamp(1.12rem, 1.45vw, 1.36rem);
+    font-weight: 400;
+    line-height: 1.55;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .customer-review__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    border-top: 1px solid var(--color-divider);
+    margin-top: 4px;
+    padding-top: 21px;
+  }
+
+  .customer-review__meta p {
+    margin: 0;
+    color: var(--color-text);
+    font-size: 0.88rem;
+    line-height: 1.3;
+  }
+
+  .customer-review__meta strong {
+    font-weight: 700;
+  }
+
+  .customer-review__meta span {
+    color: var(--color-text-secondary);
+  }
+
+  .customer-review__meta a {
+    color: var(--color-primary);
+    font-size: 0.85rem;
+    line-height: 1.2;
+    text-decoration: underline;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 849px) {
+    .customer-reviews {
+      overflow: hidden;
+      padding: 32px 0 42px;
+    }
+
+    .customer-reviews .page-width {
+      width: 100%;
+    }
+
+    .customer-reviews__header {
+      justify-items: start;
+      gap: 0;
+      margin-bottom: 24px;
+      padding: 0 23px;
+      text-align: left;
+    }
+
+    .customer-reviews h2 {
+      font-size: clamp(1.95rem, 8vw, 2.32rem);
+      line-height: 1;
+    }
+
+    .customer-reviews__header p {
+      display: none;
+    }
+
+    .customer-reviews__rail {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(372px, 76vw);
+      grid-template-columns: none;
+      gap: 15px;
+      overflow-x: auto;
+      padding: 0 23px 4px;
+      scroll-padding-left: 23px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .customer-reviews__rail::-webkit-scrollbar {
+      display: none;
+    }
+
+    .customer-review {
+      min-height: 198px;
+      gap: 24px;
+      border-radius: 12px;
+      padding: 32px 28px 27px;
+      scroll-snap-align: start;
+    }
+
+    .customer-review__stars {
+      color: #c58a22;
+      font-size: 1rem;
+    }
+
+    .customer-review blockquote {
+      max-width: 28ch;
+      color: var(--color-text);
+      font-family: var(--font-body);
+      font-size: 1.16rem;
+      font-weight: 400;
+      line-height: 1.55;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    .customer-review__meta {
+      border-top: 0;
+      margin-top: -2px;
+      padding-top: 0;
+    }
+
+    .customer-review__meta p {
+      font-size: 0.92rem;
+    }
+
+    .customer-review__meta a {
+      display: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Customer reviews",
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "From our customers"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Verified reviews from homes across the US."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote",
+          "default": "The oil, the fennel, the crunch of the mango. The first jar I’ve bought here that doesn’t taste of vinegar."
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "Priya R."
+        },
+        {
+          "type": "text",
+          "id": "location",
+          "label": "Location",
+          "default": "Edison, NJ"
+        },
+        {
+          "type": "text",
+          "id": "product_label",
+          "label": "Product label",
+          "default": "Aam ka Achar"
+        },
+        {
+          "type": "url",
+          "id": "product_link",
+          "label": "Product link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Customer reviews",
+      "blocks": [
+        {
+          "type": "review",
+          "settings": {
+            "quote": "The oil, the fennel, the crunch of the mango. The first jar I’ve bought here that doesn’t taste of vinegar.",
+            "name": "Priya R.",
+            "location": "Edison, NJ",
+            "product_label": "Aam ka Achar"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "quote": "The Khapli atta makes rotis exactly like home. Soft for a whole day.",
+            "name": "Meera K.",
+            "location": "Plano, TX",
+            "product_label": "Khapli Atta"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "quote": "I set the whole thali on the table for Diwali. It looked beautiful and arrived perfectly packed.",
+            "name": "Rohan D.",
+            "location": "Seattle, WA",
+            "product_label": "Kansa Thali Set"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

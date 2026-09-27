@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="{{ settings.color_primary_dark }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    <title>
+      {{ page_title }}
+      {%- if current_tags %} &ndash; {{ current_tags | join: ', ' }}{% endif -%}
+      {%- if current_page != 1 %} &ndash; {{ 'general.pagination.page' | t: number: current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    </title>
+
+    {% if page_description %}
+      <meta name="description" content="{{ page_description | escape }}">
+    {% endif %}
+
+    {{ content_for_header }}
+
+    <style>
+      @font-face {
+        font-family: "Staatliches";
+        src: url("{{ 'staatliches-latin-400-normal.woff2' | asset_url }}") format("woff2");
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: "Satoshi";
+        src: url("{{ 'Satoshi-Regular.woff2' | asset_url }}") format("woff2");
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: "Satoshi";
+        src: url("{{ 'Satoshi-Medium.woff2' | asset_url }}") format("woff2");
+        font-weight: 500;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: "Satoshi";
+        src: url("{{ 'Satoshi-Bold.woff2' | asset_url }}") format("woff2");
+        font-weight: 700;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      :root {
+        --color-primary: {{ settings.color_primary }};
+        --color-primary-dark: {{ settings.color_primary_dark }};
+        --color-secondary: {{ settings.color_secondary }};
+        --color-background: {{ settings.color_background }};
+        --color-surface: {{ settings.color_surface }};
+        --color-image-ground: {{ settings.color_image_ground }};
+        --color-border: {{ settings.color_border }};
+        --color-divider: {{ settings.color_divider }};
+        --color-text: {{ settings.color_text }};
+        --color-text-secondary: {{ settings.color_text_secondary }};
+        --color-sale: {{ settings.color_sale }};
+        --page-width: {{ settings.page_width }}px;
+        --content-width: 85%;
+        --font-display: "Staatliches", Impact, "Arial Narrow", sans-serif;
+        --font-body: "Satoshi", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        --section-heading-size: clamp(2.7rem, 4vw, 3.35rem);
+        --section-heading-mobile-size: clamp(2rem, 8vw, 2.42rem);
+        --section-y-space: 40px;
+        --section-y-mobile-space: 28px;
+        --radius-card: 8px;
+        --radius-control: 5px;
+      }
+
+      * { box-sizing: border-box; }
+
+      p,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        margin-block-start: 0;
+        margin-block-end: 0;
+      }
+
+      body {
+        margin: 0;
+        color: var(--color-text);
+        background: var(--color-surface);
+        font-family: var(--font-body);
+        font-weight: 400;
+        line-height: 1.45;
+      }
+
+      a {
+        color: inherit;
+        text-underline-offset: 0.18em;
+      }
+
+      img, svg { max-width: 100%; height: auto; }
+
+      button, input, textarea, select {
+        font: inherit;
+        color: inherit;
+      }
+
+      h1,
+      h2,
+      h3 {
+        font-family: var(--font-display);
+        font-weight: 400;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3 {
+        color: var(--color-primary-dark);
+      }
+
+      .explore-india h2,
+      .most-loved h2,
+      .better-together h2,
+      .customer-reviews h2,
+      .stories-home h2,
+      .shop-by-need h2,
+      .pantry-promo h2,
+      .home-newsletter h2,
+      .collection-info-faq h2,
+      .collection-love-these h2 {
+        color: var(--color-primary-dark);
+        font-family: var(--font-display) !important;
+        font-size: var(--section-heading-size) !important;
+        font-weight: 400 !important;
+        line-height: 0.95 !important;
+        letter-spacing: 0.02em !important;
+        text-transform: uppercase !important;
+      }
+
+      .page-width {
+        width: min(var(--content-width), var(--page-width));
+        margin-inline: auto;
+      }
+
+      .hero,
+      .explore-india,
+      .most-loved,
+      .pantry-promo,
+      .shop-by-need,
+      .category-spotlight,
+      .better-together,
+      .customer-reviews,
+      .stories-home,
+      .home-newsletter,
+      .collection-hero,
+      .collection-products,
+      .collection-info-faq,
+      .collection-love-these,
+      .wishlist-page,
+      .account-page,
+      .main-cart,
+      .main-page,
+      .main-product {
+        padding-top: var(--section-y-space) !important;
+        padding-bottom: var(--section-y-space) !important;
+      }
+
+      .site-shell {
+        width: 100%;
+        min-height: 100vh;
+        margin-inline: auto;
+        overflow: clip;
+        background: var(--color-surface);
+      }
+
+      .skip-link {
+        position: absolute;
+        left: 16px;
+        top: 16px;
+        z-index: 100;
+        padding: 10px 14px;
+        color: var(--color-surface);
+        background: var(--color-primary-dark);
+        transform: translateY(-160%);
+      }
+
+      .skip-link:focus { transform: translateY(0); }
+
+      .button {
+        display: inline-flex;
+        min-height: 44px;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--color-primary);
+        border-radius: var(--radius-control);
+        padding: 10px 18px;
+        color: var(--color-surface);
+        background: var(--color-primary);
+        text-decoration: none;
+        cursor: pointer;
+        font-family: var(--font-body);
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .button--secondary {
+        color: var(--color-primary);
+        background: transparent;
+      }
+
+      .button:disabled,
+      .button[aria-disabled="true"] {
+        border-color: var(--color-border);
+        color: var(--color-text-secondary);
+        background: var(--color-divider);
+        cursor: not-allowed;
+      }
+
+      @media (prefers-reduced-motion: no-preference) {
+        ::view-transition-old(root),
+        ::view-transition-new(root) {
+          animation-duration: 260ms;
+          animation-timing-function: cubic-bezier(.2, .8, .2, 1);
+        }
+
+        main,
+        .site-footer,
+        .mobile-tab-bar,
+        .mobile-inner-header,
+        .mobile-page-controls {
+          animation: gg-fade-rise 320ms cubic-bezier(.2, .8, .2, 1) backwards;
+        }
+
+        .product-card,
+        .wishlist-card,
+        .better-bundle,
+        .customer-review,
+        .story-card,
+        .recent-card,
+        .collection-bundle-card {
+          transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease, opacity 180ms ease;
+        }
+
+        .product-card:hover,
+        .wishlist-card:hover,
+        .better-bundle:hover,
+        .customer-review:hover,
+        .story-card:hover,
+        .recent-card:hover {
+          transform: translateY(-3px);
+        }
+
+        .button,
+        button,
+        summary,
+        label,
+        a {
+          transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease, opacity 160ms ease, transform 160ms ease;
+        }
+
+        .button:hover,
+        button:hover,
+        .collection-hero__chips a:hover,
+        .collection-love-these__chips a:hover {
+          transform: translateY(-1px);
+        }
+
+        @keyframes gg-fade-rise {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: none;
+          }
+        }
+      }
+
+      @media (max-width: 749px) {
+        .page-width {
+          width: min(100% - 36px, var(--page-width));
+        }
+
+        .site-shell {
+          border-inline: 0;
+        }
+
+        main {
+          padding-bottom: 8px;
+        }
+
+        .hero,
+        .explore-india,
+        .most-loved,
+        .pantry-promo,
+        .shop-by-need,
+        .category-spotlight,
+        .better-together,
+        .customer-reviews,
+        .stories-home,
+        .home-newsletter,
+        .collection-hero,
+        .collection-products,
+        .collection-info-faq,
+        .collection-love-these,
+        .wishlist-page,
+        .account-page,
+        .main-cart,
+        .main-page,
+        .main-product {
+          padding-top: var(--section-y-mobile-space) !important;
+          padding-bottom: var(--section-y-mobile-space) !important;
+        }
+
+        .explore-india h2,
+        .most-loved h2,
+        .better-together h2,
+        .customer-reviews h2,
+        .stories-home h2,
+        .shop-by-need h2,
+        .pantry-promo h2,
+        .home-newsletter h2,
+        .collection-info-faq h2,
+        .collection-love-these h2 {
+          font-size: var(--section-heading-mobile-size) !important;
+          line-height: 1 !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body class="template-{{ request.page_type | handle }}">
+    <div class="site-shell">
+      <a class="skip-link" href="#MainContent">{{ 'accessibility.skip_to_content' | t }}</a>
+      {% sections 'header-group' %}
+      {% render 'mobile-navigation-system' %}
+
+      <main id="MainContent" tabindex="-1">
+        {{ content_for_layout }}
+      </main>
+
+      {% sections 'footer-group' %}
+    </div>
+    <script>
+      document.addEventListener('scroll', function () {
+        document.body.classList.toggle('is-scrolled', window.scrollY > 36);
+      }, { passive: true });
+
+      (function () {
+        var header = document.querySelector('.site-header');
+        if (!header) return;
+        function setHeaderHeight() {
+          document.documentElement.style.setProperty('--site-header-height', header.offsetHeight + 'px');
+        }
+        setHeaderHeight();
+        if ('ResizeObserver' in window) new ResizeObserver(setHeaderHeight).observe(header);
+      })();
+    </script>
+  </body>
+</html>

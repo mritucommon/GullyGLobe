@@ -1,0 +1,421 @@
+{%- liquid
+  assign max_partners = section.settings.partners
+  assign picks = product.metafields.custom.bought_together.value
+  if recommendations.performed
+    assign picks = recommendations.products
+  endif
+  assign money_format = shop.money_format | strip_html | escape
+-%}
+
+<section
+  class="fbt{% unless recommendations.performed or picks != blank %} is-loading{% endunless %}"
+  data-fbt
+  data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ max_partners | plus: 2 }}"
+  data-max="{{ max_partners }}"
+  data-money-format="{{ money_format }}"
+  data-text-count="{{ 'sections.bought_together.count' | t: number: '__N__', total: '__TOTAL__' | escape }}"
+  data-text-add-n="{{ 'sections.bought_together.add_n' | t: number: '__N__', total: '__TOTAL__' | escape }}"
+>
+  <div class="page-width">
+    <h2>
+      <span class="fbt__desktop">{{ section.settings.heading }}</span>
+      <span class="fbt__mobile">{{ section.settings.mobile_heading | default: section.settings.heading }}</span>
+    </h2>
+
+    <form class="fbt__form" action="{{ routes.cart_add_url }}" method="post" data-fbt-form>
+      <div class="fbt__list" data-fbt-list>
+        {%- unless recommendations.performed -%}
+          {% render 'fbt-card', product: product, current: true %}
+        {%- endunless -%}
+        {%- assign shown = 0 -%}
+        {%- for pick in picks -%}
+          {%- if pick.id != product.id and pick.available and shown < max_partners -%}
+            {%- assign shown = shown | plus: 1 -%}
+            {% render 'fbt-card', product: pick %}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      <div class="fbt__summary">
+        <p class="fbt__count" data-fbt-count></p>
+        <button type="submit" class="button fbt__add" data-fbt-add>
+          <span class="fbt__desktop">{{ 'sections.bought_together.add_selected' | t }}</span>
+          <span class="fbt__mobile" data-fbt-add-mobile>{{ 'sections.bought_together.add_selected' | t }}</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</section>
+
+{% stylesheet %}
+  .fbt {
+    padding: 96px 0;
+    background: var(--color-background);
+  }
+
+  .fbt.is-loading,
+  .fbt.is-empty {
+    display: none;
+  }
+
+  .fbt h2 {
+    margin-bottom: 30px;
+    color: var(--color-primary-dark);
+    font-size: clamp(2rem, 3vw, 2.6rem);
+    line-height: 1;
+  }
+
+  .fbt__mobile {
+    display: none;
+  }
+
+  .fbt__form {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin: 0;
+  }
+
+  .fbt__list {
+    min-width: 0;
+    flex: 1;
+    display: flex;
+    gap: 18px;
+  }
+
+  .fbt-card {
+    min-width: 0;
+    flex: 1 1 0;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 18px;
+    background: var(--color-surface);
+    cursor: pointer;
+    transition: border-color 120ms ease, opacity 120ms ease;
+  }
+
+  .fbt-card:hover {
+    border-color: var(--color-primary);
+  }
+
+  .fbt-card.is-unchecked {
+    opacity: 0.6;
+  }
+
+  .fbt-card__check {
+    width: 20px;
+    height: 20px;
+    flex: 0 0 auto;
+    margin: 0;
+    accent-color: var(--color-primary);
+    cursor: pointer;
+  }
+
+  .fbt-card__thumb {
+    position: relative;
+    width: 64px;
+    height: 64px;
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    border: 1px dashed color-mix(in srgb, var(--color-primary-dark) 34%, transparent);
+    border-radius: 6px;
+    background: var(--color-image-ground);
+  }
+
+  .fbt-card__thumb img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: var(--color-surface);
+  }
+
+  .fbt-card__placeholder {
+    color: var(--color-text-secondary);
+    font-size: 0.72rem;
+    line-height: 1.35;
+    text-align: center;
+  }
+
+  .fbt-card__text {
+    min-width: 0;
+    display: grid;
+    gap: 4px;
+  }
+
+  .fbt-card__text strong {
+    overflow: hidden;
+    color: var(--color-text);
+    font-size: 0.98rem;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .fbt-card__mobile-price {
+    display: none;
+  }
+
+  .fbt-card__meta {
+    overflow: hidden;
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .fbt-card__thumb:has(img) {
+    border-style: solid;
+    border-color: var(--color-border);
+    background: var(--color-surface);
+  }
+
+  .fbt__summary {
+    width: 306px;
+    flex: 0 0 auto;
+    display: grid;
+    gap: 12px;
+  }
+
+  .fbt__count {
+    color: var(--color-text-secondary);
+    font-size: 0.92rem;
+  }
+
+  .fbt__count strong {
+    color: var(--color-text);
+  }
+
+  .fbt__summary .fbt__add {
+    width: 100%;
+    min-height: 50px;
+    font-size: 0.84rem;
+  }
+
+  @media (max-width: 1100px) and (min-width: 850px) {
+    .fbt__form {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .fbt__summary {
+      width: auto;
+      grid-template-columns: 1fr 306px;
+      align-items: center;
+    }
+  }
+
+  @media (max-width: 849px) {
+    .fbt {
+      padding: 24px 0 28px;
+      background: var(--color-surface);
+    }
+
+    .fbt h2 {
+      margin-bottom: 16px;
+      font-size: clamp(1.7rem, 7.5vw, 2rem);
+    }
+
+    .fbt__desktop {
+      display: none;
+    }
+
+    .fbt__mobile {
+      display: inline;
+    }
+
+    .fbt__form,
+    .fbt__list {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+    }
+
+    .fbt-card {
+      flex: 0 0 auto;
+      gap: 12px;
+      padding: 12px 14px;
+    }
+
+    .fbt-card__thumb {
+      width: 52px;
+      height: 52px;
+      border-radius: 5px;
+    }
+
+    .fbt-card__placeholder {
+      font-size: 0.7rem;
+    }
+
+    .fbt-card__text strong {
+      white-space: normal;
+      font-size: 0.95rem;
+    }
+
+    .fbt-card__mobile-price {
+      display: inline;
+    }
+
+    .fbt-card__meta,
+    .fbt__count {
+      display: none;
+    }
+
+    .fbt__summary {
+      width: 100%;
+    }
+
+    .fbt__summary .fbt__add {
+      border-color: var(--color-primary-dark);
+      color: var(--color-primary-dark);
+      background: var(--color-surface);
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    function formatMoney(cents, template) {
+      var parts = (cents / 100).toFixed(2).split('.');
+      var whole = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      return (template || '{{amount}}').replace(/\{\{\s*(\w+)\s*\}\}/, function (match, key) {
+        if (key === 'amount_no_decimals') return whole;
+        if (key === 'amount_with_comma_separator') return parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ',' + parts[1];
+        return whole + '.' + parts[1];
+      });
+    }
+
+    function initSection(section) {
+      var list = section.querySelector('[data-fbt-list]');
+      var form = section.querySelector('[data-fbt-form]');
+      var countEl = section.querySelector('[data-fbt-count]');
+      var addButton = section.querySelector('[data-fbt-add]');
+      var addMobile = section.querySelector('[data-fbt-add-mobile]');
+      var max = parseInt(section.getAttribute('data-max'), 10) || 2;
+      var format = section.getAttribute('data-money-format');
+
+      function sync() {
+        var items = list.querySelectorAll('[data-fbt-item]');
+        var count = 0;
+        var total = 0;
+        items.forEach(function (item) {
+          var checked = item.querySelector('[data-fbt-check]').checked;
+          item.classList.toggle('is-unchecked', !checked);
+          item.querySelectorAll('[data-fbt-field]').forEach(function (field) { field.disabled = !checked; });
+          if (checked) {
+            count++;
+            total += parseInt(item.getAttribute('data-price'), 10) || 0;
+          }
+        });
+        var money = formatMoney(total, format);
+        countEl.innerHTML = section.getAttribute('data-text-count').replace('__N__', count).replace('__TOTAL__', '<strong>' + money + '</strong>');
+        addMobile.textContent = section.getAttribute('data-text-add-n').replace('__N__', count).replace('__TOTAL__', money);
+        addButton.disabled = count === 0;
+        section.classList.toggle('is-empty', items.length < 2);
+      }
+
+      function appendFrom(html) {
+        var doc = new DOMParser().parseFromString(html, 'text/html');
+        var existing = {};
+        list.querySelectorAll('[data-fbt-item]').forEach(function (item) { existing[item.getAttribute('data-product-id')] = true; });
+        var added = list.querySelectorAll('[data-fbt-item]:not([data-fbt-current])').length;
+        doc.querySelectorAll('[data-fbt-list] [data-fbt-item]').forEach(function (item) {
+          var id = item.getAttribute('data-product-id');
+          if (added >= max || existing[id]) return;
+          existing[id] = true;
+          list.appendChild(document.importNode(item, true));
+          added++;
+        });
+        return added;
+      }
+
+      list.addEventListener('change', function (event) {
+        if (event.target.matches('[data-fbt-check]')) sync();
+      });
+
+      form.addEventListener('submit', function () {
+        var index = 0;
+        list.querySelectorAll('[data-fbt-item]').forEach(function (item) {
+          if (!item.querySelector('[data-fbt-check]').checked) return;
+          var fields = item.querySelectorAll('[data-fbt-field]');
+          fields[0].name = 'items[' + index + '][id]';
+          fields[1].name = 'items[' + index + '][quantity]';
+          index++;
+        });
+      });
+
+      window.addEventListener('pageshow', function () {
+        list.querySelectorAll('[data-fbt-check]').forEach(function (check) { check.checked = true; });
+        sync();
+      });
+
+      sync();
+
+      if (!section.classList.contains('is-loading')) return;
+
+      var url = section.getAttribute('data-url');
+      fetch(url + '&intent=complementary')
+        .then(function (response) { return response.text(); })
+        .then(function (html) {
+          if (appendFrom(html) > 0) return;
+          return fetch(url + '&intent=related').then(function (response) { return response.text(); }).then(appendFrom);
+        })
+        .catch(function () {})
+        .then(function () {
+          section.classList.remove('is-loading');
+          sync();
+        });
+    }
+
+    function init() {
+      document.querySelectorAll('[data-fbt]').forEach(initSection);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "t:sections.bought_together.name",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:labels.heading",
+      "default": "Frequently bought together"
+    },
+    {
+      "type": "text",
+      "id": "mobile_heading",
+      "label": "t:labels.mobile_title",
+      "default": "Bought together"
+    },
+    {
+      "type": "range",
+      "id": "partners",
+      "label": "t:labels.partners",
+      "info": "t:labels.partners_info",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.bought_together.name"
+    }
+  ]
+}
+{% endschema %}

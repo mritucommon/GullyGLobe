@@ -1,0 +1,11 @@
+# Temporary files created while editors/tools save a file - never upload
+*.tmp.*
+assets/*.tmp.*
+blocks/*.tmp.*
+config/*.tmp.*
+layout/*.tmp.*
+locales/*.tmp.*
+sections/*.tmp.*
+snippets/*.tmp.*
+templates/*.tmp.*
+templates/customers/*.tmp.*

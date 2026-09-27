@@ -1,0 +1,80 @@
+{%- if predictive_search.performed -%}
+  {%- liquid
+    assign collections = predictive_search.resources.collections
+    assign products = predictive_search.resources.products
+    assign articles = predictive_search.resources.articles
+    assign pages = predictive_search.resources.pages
+    assign guide_count = articles.size | plus: pages.size
+  -%}
+  <div class="predictive-results">
+    {%- if collections.size > 0 -%}
+      <div class="predictive-results__group predictive-results__group--categories">
+        <p class="search-overlay__eyebrow">{{ 'sections.search_overlay.categories' | t }}</p>
+        <ul class="predictive-results__list">
+          {%- for collection in collections -%}
+            <li>
+              <a class="predictive-results__category" href="{{ collection.url }}">
+                <span>{{ collection.title }}</span>
+                {% render 'icon', name: 'chevron-right' %}
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endif -%}
+
+    {%- if products.size > 0 -%}
+      <div class="predictive-results__group predictive-results__group--products">
+        <p class="search-overlay__eyebrow">{{ 'sections.search_overlay.products' | t }}</p>
+        <ul class="predictive-results__list">
+          {%- for product in products -%}
+            {%- assign rating = product.metafields.reviews.rating.value -%}
+            <li class="predictive-results__product">
+              <a class="predictive-results__product-link" href="{{ product.url }}">
+                <span class="search-thumb">
+                  {%- if product.featured_image -%}
+                    {{ product.featured_image | image_url: width: 160 | image_tag: loading: 'lazy', alt: product.featured_image.alt | default: product.title }}
+                  {%- else -%}
+                    <span class="search-thumb__placeholder">or<br><u>browse<br>files</u></span>
+                  {%- endif -%}
+                </span>
+                <span class="predictive-results__product-text">
+                  <strong>{{ product.title }}</strong>
+                  <span>
+                    {{- product.price | money -}}
+                    {%- if rating != blank %} • ★ {{ rating.rating | round: 1 }}{% endif -%}
+                  </span>
+                </span>
+              </a>
+              <form class="predictive-results__add" action="{{ routes.cart_add_url }}" method="post" data-search-add>
+                <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit" aria-label="{{ 'sections.main_product.add_to_cart' | t }}: {{ product.title | escape }}" {% unless product.available %}disabled{% endunless %}>
+                  {% render 'icon', name: 'plus' %}
+                </button>
+              </form>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endif -%}
+
+    {%- if guide_count > 0 -%}
+      <div class="predictive-results__group predictive-results__group--guides">
+        <p class="search-overlay__eyebrow">{{ 'sections.search_overlay.guides' | t }}</p>
+        {%- for article in articles limit: 2 -%}
+          <a class="predictive-results__guide" href="{{ article.url }}">{{ article.title }} {% render 'icon', name: 'arrow-right' %}</a>
+        {%- endfor -%}
+        {%- if articles.size < 2 -%}
+          {%- for page in pages limit: 1 -%}
+            <a class="predictive-results__guide" href="{{ page.url }}">{{ page.title }} {% render 'icon', name: 'arrow-right' %}</a>
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if collections.size == 0 and products.size == 0 and guide_count == 0 -%}
+      <p class="predictive-results__empty">{{ 'sections.search_overlay.no_results' | t }} “{{ predictive_search.terms | escape }}”</p>
+    {%- endif -%}
+  </div>
+{%- endif -%}

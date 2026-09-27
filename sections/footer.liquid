@@ -1,0 +1,488 @@
+<footer class="site-footer">
+  <div class="page-width site-footer__inner">
+    <div class="site-footer__brand">
+      <a class="site-footer__logo" href="{{ routes.root_url }}" aria-label="{{ shop.name }}">
+        <span>{% render 'icon', name: 'shopping-bag' %}</span>
+        <strong>Gully Globe</strong>
+      </a>
+      <h2>{{ section.settings.heading }}</h2>
+      <p>{{ section.settings.text }}</p>
+
+      {% form 'customer', class: 'site-footer__form' %}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <label class="visually-hidden" for="FooterNewsletterEmail">{{ 'general.newsletter.email' | t }}</label>
+        <input id="FooterNewsletterEmail" type="email" name="contact[email]" placeholder="{{ section.settings.placeholder }}" autocomplete="email">
+        <button type="submit">{{ section.settings.button_label }}</button>
+      {% endform %}
+    </div>
+
+    <nav class="site-footer__desktop-links" aria-label="Footer">
+      <div>
+        <h3>Shop</h3>
+        <a href="{{ routes.all_products_collection_url }}">Food &amp; Grocery</a>
+        <a href="{{ routes.all_products_collection_url }}">Fashion</a>
+        <a href="{{ routes.all_products_collection_url }}">Jewellery</a>
+        <a href="{{ routes.all_products_collection_url }}">Kitchen &amp; Bartan</a>
+        <a href="{{ routes.all_products_collection_url }}">Home &amp; Décor</a>
+        <a href="{{ routes.all_products_collection_url }}">Pooja</a>
+        <a href="{{ routes.all_products_collection_url }}">Gifting</a>
+      </div>
+      <div>
+        <h3>Help</h3>
+        <a href="{{ routes.root_url }}">Track Order</a>
+        <a href="{{ routes.root_url }}">Shipping</a>
+        <a href="{{ routes.root_url }}">Returns</a>
+        <a href="{{ routes.root_url }}">FAQ</a>
+        <a href="{{ routes.root_url }}">Contact</a>
+      </div>
+      <div>
+        <h3>Gully Globe</h3>
+        <a href="{{ routes.root_url }}">About</a>
+        <a href="{{ routes.root_url }}">Stories From Home</a>
+        <a href="{{ routes.root_url }}">Sell with us</a>
+        <a href="{{ routes.root_url }}">Seller information</a>
+        <a href="{{ routes.root_url }}">Design system</a>
+      </div>
+      <div>
+        <h3>Follow</h3>
+        <a href="{{ routes.root_url }}">Instagram</a>
+        <a href="{{ routes.root_url }}">YouTube</a>
+        <a href="{{ routes.root_url }}">Pinterest</a>
+        <a href="{{ routes.root_url }}">WhatsApp</a>
+      </div>
+    </nav>
+
+    <div class="site-footer__mobile">
+      <details>
+        <summary>Shop {% render 'icon', name: 'plus' %}</summary>
+        <a href="{{ routes.all_products_collection_url }}">Food &amp; Grocery</a>
+        <a href="{{ routes.all_products_collection_url }}">Fashion</a>
+        <a href="{{ routes.all_products_collection_url }}">Jewellery</a>
+        <a href="{{ routes.all_products_collection_url }}">Kitchen &amp; Bartan</a>
+      </details>
+      <details>
+        <summary>Help {% render 'icon', name: 'plus' %}</summary>
+        <a href="{{ routes.root_url }}">Track Order</a>
+        <a href="{{ routes.root_url }}">Shipping</a>
+        <a href="{{ routes.root_url }}">Returns</a>
+        <a href="{{ routes.root_url }}">FAQ</a>
+      </details>
+      <details>
+        <summary>Gully Globe {% render 'icon', name: 'plus' %}</summary>
+        <a href="{{ routes.root_url }}">About</a>
+        <a href="{{ routes.root_url }}">Stories From Home</a>
+        <a href="{{ routes.root_url }}">Sell with us</a>
+      </details>
+      <details>
+        <summary>Policies {% render 'icon', name: 'plus' %}</summary>
+        <a href="{{ routes.root_url }}">Privacy</a>
+        <a href="{{ routes.root_url }}">Terms</a>
+        <a href="{{ routes.root_url }}">Policies</a>
+      </details>
+    </div>
+
+    <div class="site-footer__bottom">
+      <div class="site-footer__payments" aria-label="Payment methods">
+        <span>Visa</span>
+        <span>Mastercard</span>
+        <span>Amex</span>
+        <span>PayPal</span>
+        <span>Apple Pay</span>
+        <span>Google Pay</span>
+      </div>
+
+      <div class="site-footer__social" aria-label="Social links">
+        <a href="{{ routes.root_url }}" aria-label="Instagram">{% render 'icon', name: 'camera' %}</a>
+        <a href="{{ routes.root_url }}" aria-label="WhatsApp">{% render 'icon', name: 'message-circle' %}</a>
+        <a href="{{ routes.root_url }}" aria-label="Pinterest">P</a>
+      </div>
+
+      <div class="site-footer__legal">
+        <span>United States · USD</span>
+        <a href="{{ routes.root_url }}">Privacy</a>
+        <a href="{{ routes.root_url }}">Terms</a>
+        <a href="{{ routes.root_url }}">Policies</a>
+        <span>© 2026 Gully Globe</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% stylesheet %}
+  .site-footer {
+    position: relative;
+    overflow: hidden;
+    padding: 112px 0 38px;
+    color: var(--color-surface);
+    background:
+      linear-gradient(color-mix(in srgb, var(--color-primary-dark) 94%, transparent), color-mix(in srgb, var(--color-primary-dark) 94%, transparent)),
+      repeating-linear-gradient(135deg, transparent 0 52px, color-mix(in srgb, var(--color-surface) 7%, transparent) 52px 54px, transparent 54px 106px),
+      var(--color-primary-dark);
+  }
+
+  .site-footer__inner {
+    display: grid;
+    grid-template-columns: 420px minmax(0, 1fr);
+    gap: 86px;
+  }
+
+  .site-footer__brand {
+    display: grid;
+    align-content: start;
+    gap: 22px;
+  }
+
+  .site-footer__logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    color: var(--color-surface);
+    text-decoration: none;
+  }
+
+  .site-footer__logo span,
+  .site-footer__logo .icon {
+    width: 23px;
+    height: 23px;
+    color: var(--color-secondary);
+  }
+
+  .site-footer__logo strong {
+    font-size: 1.45rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .site-footer h2 {
+    margin: 0;
+    color: var(--color-surface);
+    font-size: 1.75rem;
+    line-height: 1;
+  }
+
+  .site-footer__brand p {
+    margin: 0;
+    max-width: 42ch;
+    color: color-mix(in srgb, var(--color-surface) 88%, transparent);
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .site-footer__form {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 81px;
+    gap: 9px;
+    margin-top: 8px;
+  }
+
+  .site-footer__form input {
+    min-height: 55px;
+    min-width: 0;
+    border: 1px solid color-mix(in srgb, var(--color-surface) 28%, transparent);
+    border-radius: 6px;
+    padding: 0 17px;
+    color: var(--color-surface);
+    background: transparent;
+    font-size: 0.94rem;
+  }
+
+  .site-footer__form input::placeholder {
+    color: color-mix(in srgb, var(--color-surface) 55%, transparent);
+  }
+
+  .site-footer__form button {
+    border: 1px solid color-mix(in srgb, var(--color-surface) 50%, transparent);
+    border-radius: 6px;
+    color: var(--color-surface);
+    background: transparent;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .site-footer__desktop-links {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(130px, 1fr));
+    gap: 44px;
+  }
+
+  .site-footer__desktop-links div {
+    display: grid;
+    align-content: start;
+    gap: 13px;
+  }
+
+  .site-footer h3 {
+    margin: 0 0 10px;
+    color: var(--color-secondary);
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .site-footer a {
+    color: var(--color-surface);
+    text-decoration: none;
+  }
+
+  .site-footer__desktop-links a {
+    color: color-mix(in srgb, var(--color-surface) 94%, transparent);
+    font-size: 0.95rem;
+  }
+
+  .site-footer__mobile {
+    display: none;
+  }
+
+  .site-footer__bottom {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 24px;
+    border-top: 1px solid color-mix(in srgb, var(--color-surface) 18%, transparent);
+    margin-top: 76px;
+    padding-top: 28px;
+  }
+
+  .site-footer__payments {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .site-footer__payments span,
+  .site-footer__legal > span:first-child {
+    min-height: 33px;
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid color-mix(in srgb, var(--color-surface) 28%, transparent);
+    border-radius: 4px;
+    padding: 0 12px;
+    color: var(--color-surface);
+    font-size: 0.74rem;
+    font-weight: 700;
+  }
+
+  .site-footer__social {
+    display: none;
+  }
+
+  .site-footer__legal {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    gap: 22px;
+    color: color-mix(in srgb, var(--color-surface) 82%, transparent);
+    font-size: 0.82rem;
+  }
+
+  .site-footer__legal a {
+    color: inherit;
+  }
+
+  @media (max-width: 749px) {
+    .site-footer {
+      padding: 24px 0 27px;
+      background: var(--color-primary-dark);
+    }
+
+    .site-footer .page-width {
+      width: min(100% - 48px, var(--page-width));
+    }
+
+    .site-footer__inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    .site-footer__brand {
+      gap: 20px;
+      padding-bottom: 31px;
+    }
+
+    .site-footer__logo {
+      gap: 11px;
+    }
+
+    .site-footer__logo span,
+    .site-footer__logo .icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    .site-footer__logo strong {
+      font-size: 1.28rem;
+      letter-spacing: 0.17em;
+    }
+
+    .site-footer h2 {
+      display: none;
+    }
+
+    .site-footer__brand p {
+      max-width: none;
+      font-size: 1rem;
+      line-height: 1.45;
+    }
+
+    .site-footer__form,
+    .site-footer__desktop-links {
+      display: none;
+    }
+
+    .site-footer__mobile {
+      display: grid;
+      border-top: 1px solid color-mix(in srgb, var(--color-surface) 14%, transparent);
+    }
+
+    .site-footer__mobile details {
+      border-bottom: 1px solid color-mix(in srgb, var(--color-surface) 14%, transparent);
+      padding: 0;
+    }
+
+    .site-footer__mobile summary {
+      min-height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--color-surface);
+      cursor: pointer;
+      font-size: 1.02rem;
+      font-weight: 700;
+      letter-spacing: 0.17em;
+      list-style: none;
+      text-transform: uppercase;
+    }
+
+    .site-footer__mobile summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .site-footer__mobile summary .icon {
+      width: 21px;
+      height: 21px;
+      color: var(--color-secondary);
+      stroke-width: 1.8;
+    }
+
+    .site-footer__mobile a {
+      display: block;
+      padding: 0 0 15px;
+      color: color-mix(in srgb, var(--color-surface) 82%, transparent);
+      font-size: 0.95rem;
+    }
+
+    .site-footer__bottom {
+      display: flex;
+      flex-direction: column;
+      border-top: 0;
+      margin-top: 30px;
+      padding-top: 0;
+    }
+
+    .site-footer__social {
+      order: 1;
+      display: flex;
+      gap: 13px;
+    }
+
+    .site-footer__social a {
+      width: 55px;
+      height: 55px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid color-mix(in srgb, var(--color-surface) 16%, transparent);
+      border-radius: 999px;
+      color: var(--color-surface);
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      line-height: 1;
+    }
+
+    .site-footer__social .icon {
+      width: 22px;
+      height: 22px;
+    }
+
+    .site-footer__payments {
+      order: 2;
+      gap: 7px;
+    }
+
+    .site-footer__payments span {
+      min-height: 34px;
+      padding: 0 11px;
+      font-size: 0.76rem;
+    }
+
+    .site-footer__legal {
+      order: 3;
+      justify-content: start;
+      gap: 0;
+      color: var(--color-secondary);
+      font-size: 0.9rem;
+    }
+
+    .site-footer__legal > span:first-child {
+      min-height: 0;
+      border: 0;
+      padding: 0;
+      color: inherit;
+      font-size: inherit;
+      font-weight: 400;
+    }
+
+    .site-footer__legal a {
+      display: none;
+    }
+
+    .site-footer__legal span:last-child {
+      order: -1;
+    }
+
+    .site-footer__legal span:last-child::after {
+      content: " · ";
+      white-space: pre;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "India, a little closer to home."
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "Food, fashion, home and festival essentials from makers across India, delivered across the United States."
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Email placeholder",
+      "default": "Your email"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Join"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,94 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-contact",
+      "blocks": {
+        "email": {
+          "type": "method",
+          "settings": {
+            "icon": "mail",
+            "heading": "Email",
+            "text": "hello@gullyglobe.com. Best for orders and detailed questions.",
+            "link_label": "Write to us"
+          }
+        },
+        "whatsapp": {
+          "type": "method",
+          "settings": {
+            "icon": "message-circle",
+            "heading": "WhatsApp",
+            "text": "Chat with us, Mon - Sat. Quick questions and order updates.",
+            "link_label": "Start a chat"
+          }
+        },
+        "phone": {
+          "type": "method",
+          "settings": {
+            "icon": "phone",
+            "heading": "Phone",
+            "text": "+1 (201) 555-0148, Mon - Fri, 9am - 6pm ET.",
+            "link_label": "Call us"
+          }
+        },
+        "track": {
+          "type": "method",
+          "settings": {
+            "icon": "package",
+            "heading": "Track an order",
+            "text": "See where your parcel is without waiting for a reply.",
+            "link_label": "Track order"
+          }
+        },
+        "faq_order": {
+          "type": "faq",
+          "settings": {
+            "question": "Where is my order?",
+            "answer": "Most orders arrive in 3-6 business days. Your tracking link is in your shipping email and in your account under Orders."
+          }
+        },
+        "faq_change": {
+          "type": "faq",
+          "settings": {
+            "question": "Can I change or cancel my order?",
+            "answer": "Email us as soon as possible. If your order has not been packed yet, we can help adjust it."
+          }
+        },
+        "faq_damage": {
+          "type": "faq",
+          "settings": {
+            "question": "Something arrived damaged",
+            "answer": "Send us your order number and a photo of the item within 48 hours of delivery so we can make it right."
+          }
+        },
+        "faq_returns": {
+          "type": "faq",
+          "settings": {
+            "question": "How do returns work?",
+            "answer": "Most unopened items can be returned within 14 days. Final sale and perishable items are not eligible."
+          }
+        },
+        "faq_wholesale": {
+          "type": "faq",
+          "settings": {
+            "question": "Do you sell wholesale?",
+            "answer": "Yes. Use the wholesale topic in the contact form and our team will reply with next steps."
+          }
+        }
+      },
+      "block_order": [
+        "email",
+        "whatsapp",
+        "phone",
+        "track",
+        "faq_order",
+        "faq_change",
+        "faq_damage",
+        "faq_returns",
+        "faq_wholesale"
+      ]
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

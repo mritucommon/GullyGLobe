@@ -1,0 +1,25 @@
+{
+  "name": "gullyglobe",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mritucommon/gullyglobe_front.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/mritucommon/gullyglobe_front/issues"
+  },
+  "homepage": "https://github.com/mritucommon/gullyglobe_front#readme",
+  "devDependencies": {
+    "@fontsource/staatliches": "^5.3.0",
+    "lucide-static": "^1.48.0"
+  }
+}

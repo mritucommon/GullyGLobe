@@ -1,0 +1,16 @@
+{
+  "current": {
+    "color_primary": "#157145",
+    "color_primary_dark": "#004A2C",
+    "color_secondary": "#8ACB88",
+    "color_background": "#E4FDE1",
+    "color_surface": "#ffffff",
+    "color_image_ground": "#D6F5D2",
+    "color_border": "#BFE2BC",
+    "color_divider": "#D5ECCF",
+    "color_text": "#112F1B",
+    "color_text_secondary": "#486558",
+    "color_sale": "#9D232A",
+    "page_width": 1320
+  }
+}

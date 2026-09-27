@@ -1,0 +1,40 @@
+{% doc %}
+Renders one selectable product card for the "Frequently bought together" section.
+@param {product} product - Product to render
+@param {boolean} [current] - Whether this is the product being viewed
+@example
+{% render 'fbt-card', product: product, current: true %}
+{% enddoc %}
+
+{%- liquid
+  assign variant = product.selected_or_first_available_variant
+  assign detail = blank
+  unless product.has_only_default_variant
+    assign detail = variant.title
+  endunless
+  if detail == blank and variant.weight > 0
+    assign detail = variant.weight | weight_with_unit
+  endif
+  assign price = variant.price | money
+-%}
+
+{%- if product.available -%}
+  <label class="fbt-card" data-fbt-item data-price="{{ variant.price }}" data-product-id="{{ product.id }}"{% if current %} data-fbt-current{% endif %}>
+    <input type="checkbox" class="fbt-card__check" checked autocomplete="off" data-fbt-check aria-label="{{ product.title | escape }}">
+    <input type="hidden" name="items[][id]" value="{{ variant.id }}" data-fbt-field>
+    <input type="hidden" name="items[][quantity]" value="1" data-fbt-field>
+    <span class="fbt-card__thumb">
+      {%- if product.featured_image -%}
+        {{ product.featured_image | image_url: width: 160 | image_tag: loading: 'lazy', alt: '' }}
+      {%- else -%}
+        <span class="fbt-card__placeholder">or<br><u>browse<br>files</u></span>
+      {%- endif -%}
+    </span>
+    <span class="fbt-card__text">
+      <strong>
+        <span class="fbt-card__title">{{ product.title }}</span><span class="fbt-card__mobile-price"> • {{ price }}</span>
+      </strong>
+      <span class="fbt-card__meta">{{ price }}{% if detail != blank %} • {{ detail }}{% endif %}</span>
+    </span>
+  </label>
+{%- endif -%}

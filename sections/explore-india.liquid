@@ -1,0 +1,284 @@
+<section class="explore-india">
+  <div class="page-width">
+    <div class="explore-india__header">
+      <div class="explore-india__heading-group">
+        <h2>{{ section.settings.heading }}</h2>
+        {% if section.settings.subheading != blank %}
+          <p class="explore-india__subheading">{{ section.settings.subheading }}</p>
+        {% endif %}
+      </div>
+      {% if section.settings.see_all_link != blank %}
+        <a class="explore-india__see-all" href="{{ section.settings.see_all_link }}">{{ section.settings.see_all_label | default: 'sections.explore_india.see_all' | t }}</a>
+      {% endif %}
+    </div>
+
+    <div class="explore-india__row">
+      {% for block in section.blocks %}
+        <a class="explore-india__item" href="{{ block.settings.link | default: routes.all_products_collection_url }}" {{ block.shopify_attributes }}>
+          <span class="explore-india__circle">
+            {% if block.settings.image %}
+              {{ block.settings.image | image_url: width: 300 | image_tag: loading: 'lazy', widths: '150, 220, 300', sizes: '140px', alt: block.settings.image.alt | default: block.settings.label }}
+            {% else %}
+              {% render 'icon', name: 'camera' %}
+              {% if block.settings.placeholder_text != blank %}
+                <strong>{{ block.settings.placeholder_text }}</strong>
+              {% endif %}
+              <span class="explore-india__browse">{{ 'sections.explore_india.browse_files' | t }}</span>
+            {% endif %}
+          </span>
+          <span class="explore-india__label">{{ block.settings.label }}</span>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .explore-india {
+    padding: 64px 0;
+    background: var(--color-surface);
+  }
+
+  .explore-india__header {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 40px;
+  }
+
+  .explore-india__heading-group {
+    width: 100%;
+    display: grid;
+    justify-items: center;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .explore-india h2 {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    letter-spacing: 0.02em;
+  }
+
+  .explore-india__subheading {
+    margin: 0;
+    max-width: 46ch;
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+  }
+
+  .explore-india__see-all {
+    display: none;
+    flex: 0 0 auto;
+    color: var(--color-primary-dark);
+    text-decoration: none;
+    font-size: 0.86rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .explore-india__row {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 24px 20px;
+    overflow-x: auto;
+    padding: 0 2px 4px;
+    scroll-padding-left: 2px;
+  }
+
+  .explore-india__item {
+    width: 140px;
+    flex: 0 0 140px;
+    display: grid;
+    justify-items: center;
+    gap: 14px;
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .explore-india__circle {
+    width: 140px;
+    height: 140px;
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    gap: 4px;
+    border: 1px dashed var(--color-primary);
+    border-radius: 999px;
+    padding: 14px;
+    background: var(--color-image-ground);
+    text-align: center;
+  }
+
+  .explore-india__circle .icon {
+    width: 22px;
+    height: 22px;
+    color: color-mix(in srgb, var(--color-primary-dark) 55%, transparent);
+  }
+
+  .explore-india__circle strong {
+    color: var(--color-text-secondary);
+    font-size: 0.76rem;
+    font-weight: 700;
+    line-height: 1.25;
+  }
+
+  .explore-india__browse {
+    border-bottom: 1px solid currentColor;
+    color: var(--color-primary-dark);
+    font-size: 0.7rem;
+    line-height: 1;
+  }
+
+  .explore-india__label {
+    color: var(--color-text);
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+
+  @media (max-width: 849px) {
+    .explore-india {
+      padding: 24px 0;
+    }
+
+    .explore-india__header {
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .explore-india__heading-group {
+      justify-items: start;
+      gap: 4px;
+      text-align: left;
+    }
+
+    .explore-india h2 {
+      font-size: clamp(1.4rem, 6vw, 1.9rem);
+    }
+
+    .explore-india__subheading {
+      display: none;
+    }
+
+    .explore-india__see-all {
+      display: inline-flex;
+    }
+
+    .explore-india__row {
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      gap: 16px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+    }
+
+    .explore-india__item {
+      width: 92px;
+      flex: 0 0 auto;
+      gap: 10px;
+      scroll-snap-align: start;
+    }
+
+    .explore-india__circle {
+      width: 92px;
+      height: 92px;
+      padding: 8px;
+    }
+
+    .explore-india__circle strong {
+      display: none;
+    }
+
+    .explore-india__circle .icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    .explore-india__browse {
+      font-size: 0.74rem;
+    }
+
+    .explore-india__label {
+      font-size: 0.88rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.explore_india.name",
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "t:labels.heading",
+      "default": "Explore India"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "t:labels.subheading",
+      "default": "<p>Everything familiar. Everything worth discovering.</p>"
+    },
+    {
+      "type": "url",
+      "id": "see_all_link",
+      "label": "t:labels.see_all_link"
+    },
+    {
+      "type": "text",
+      "id": "see_all_label",
+      "label": "t:labels.see_all_label",
+      "default": "See all"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "t:sections.explore_india.category",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:labels.image"
+        },
+        {
+          "type": "text",
+          "id": "placeholder_text",
+          "label": "t:labels.placeholder_text"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "t:labels.label",
+          "default": "Category"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "t:labels.link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.explore_india.name",
+      "blocks": [
+        { "type": "category", "settings": { "placeholder_text": "Brass bowls of dal and rice", "label": "Food" } },
+        { "type": "category", "settings": { "placeholder_text": "Block-print kurta on a line", "label": "Fashion" } },
+        { "type": "category", "settings": { "placeholder_text": "Silver jhumkas in a palm", "label": "Jewellery" } },
+        { "type": "category", "settings": { "placeholder_text": "Copper and steel on stone", "label": "Kitchen" } },
+        { "type": "category", "settings": { "placeholder_text": "Handwoven cushion, cane chair", "label": "Home" } },
+        { "type": "category", "settings": { "placeholder_text": "Diya and marigolds", "label": "Pooja" } },
+        { "type": "category", "settings": { "placeholder_text": "Ubtan in a stone bowl", "label": "Personal Care" } },
+        { "type": "category", "settings": { "placeholder_text": "Rangoli powder, dusk", "label": "Festive" } },
+        { "type": "category", "settings": { "placeholder_text": "Wrapped box, jute twine", "label": "Gifting" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

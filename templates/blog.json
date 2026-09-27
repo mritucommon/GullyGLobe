@@ -1,0 +1,88 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-blog",
+      "blocks": {
+        "featured": {
+          "type": "story",
+          "settings": {
+            "placeholder_text": "Diwali table set in a Brooklyn apartment",
+            "category": "Festivals",
+            "read_time": 7,
+            "title": "A first-timer’s guide to hosting Diwali in America",
+            "excerpt": "Menus that travel well, where to find marigolds in October, and how to light diyas safely indoors.",
+            "author": "Ananya Iyer"
+          }
+        },
+        "paratha": {
+          "type": "story",
+          "settings": {
+            "placeholder_text": "Parathas stacked on a steel plate",
+            "category": "Recipes",
+            "read_time": 8,
+            "title": "Sunday aloo paratha, the way Nani made it",
+            "excerpt": "Soft dough, a spiced potato filling and plenty of ghee. Plus which achar to serve alongside.",
+            "author": "Ananya Iyer"
+          }
+        },
+        "flours": {
+          "type": "story",
+          "settings": {
+            "placeholder_text": "Three flours in brass bowls",
+            "category": "Ingredients",
+            "read_time": 5,
+            "title": "Atta, maida, besan: a guide to Indian flours",
+            "excerpt": "What each flour is, what it’s for, and how to store it so it lasts.",
+            "author": "Ananya Iyer"
+          }
+        },
+        "achar": {
+          "type": "story",
+          "settings": {
+            "placeholder_text": "Achar jars in the sun on a terrace",
+            "category": "Ingredients",
+            "read_time": 6,
+            "title": "Pickling season: how achar is made",
+            "excerpt": "From sun-drying mango to the three weeks in the jar, a visit to a family pickle-maker in Punjab.",
+            "author": "Ananya Iyer"
+          }
+        },
+        "sangeet": {
+          "type": "story",
+          "settings": {
+            "placeholder_text": "Sarees laid out on a bed before a sangeet",
+            "category": "Style",
+            "read_time": 6,
+            "title": "What to wear to a sangeet",
+            "excerpt": "Lehengas, kurta sets and sarees you can actually dance in, and how to pack them flat.",
+            "author": "Ananya Iyer"
+          }
+        },
+        "metals": {
+          "type": "story",
+          "settings": {
+            "placeholder_text": "Copper, brass and steel on a stone counter",
+            "category": "Home",
+            "read_time": 5,
+            "title": "Caring for copper, brass and steel",
+            "excerpt": "Tamarind, lemon and a soft cloth: how to keep everyday bartan bright for years.",
+            "author": "Ananya Iyer"
+          }
+        },
+        "mandir": {
+          "type": "story",
+          "settings": {
+            "placeholder_text": "A small home mandir on a bookshelf",
+            "category": "Festivals",
+            "read_time": 4,
+            "title": "Setting up a small home mandir",
+            "excerpt": "A calm corner in a small apartment: what you need, where it goes and how to keep it simple.",
+            "author": "Ananya Iyer"
+          }
+        }
+      },
+      "block_order": ["featured", "paratha", "flours", "achar", "sangeet", "metals", "mandir"]
+    }
+  },
+  "order": ["main"]
+}

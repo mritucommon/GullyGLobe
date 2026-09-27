@@ -1,0 +1,28 @@
+{
+  "type": "header",
+  "name": "Header group",
+  "sections": {
+    "announcement_bar": {
+      "type": "announcement-bar"
+    },
+    "header": {
+      "type": "header"
+    },
+    "search_overlay": {
+      "type": "search-overlay"
+    },
+    "cart_drawer": {
+      "type": "cart-drawer",
+      "settings": {
+        "free_shipping_threshold": 75,
+        "upsell_heading": "Goes well with your order"
+      }
+    }
+  },
+  "order": [
+    "announcement_bar",
+    "header",
+    "search_overlay",
+    "cart_drawer"
+  ]
+}

@@ -1,0 +1,442 @@
+{%- liquid
+  assign word_count = article.content | strip_html | split: ' ' | size
+  assign read_time = word_count | divided_by: 200 | at_least: 1
+  assign category = article.tags.first
+  assign caption = article.metafields.custom.image_caption.value | default: article.title
+-%}
+
+<article class="article-page">
+  <header class="article-page__header">
+    <a class="article-page__back" href="{{ blog.url }}">
+      {% render 'icon', name: 'arrow-left' %}
+      {{ 'sections.main_article.back_to_blog' | t }}
+    </a>
+    {% if category %}
+      <p class="article-page__eyebrow">{{ category }}</p>
+    {% endif %}
+    <h1>{{ article.title }}</h1>
+    <p class="article-page__byline">
+      {{ 'sections.main_article.by' | t }} {{ article.author }}
+      • <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: '%b %-d, %Y' }}</time>
+      • {{ 'sections.main_blog.min_read' | t: number: read_time }}
+    </p>
+  </header>
+
+  <div class="article-page__media">
+    {% if article.image %}
+      {{ article.image | image_url: width: 1800 | image_tag: loading: 'eager', widths: '600, 900, 1200, 1800', sizes: '(min-width: 1150px) 1100px, 100vw', alt: article.image.alt | default: article.title }}
+    {% else %}
+      <span class="article-page__placeholder">
+        {% render 'icon', name: 'camera' %}
+        <strong>{{ caption }}</strong>
+        <em>{{ 'sections.explore_india.browse_files' | t }}</em>
+      </span>
+    {% endif %}
+  </div>
+
+  <div class="article-page__body">
+    {{ article.content }}
+  </div>
+</article>
+
+{%- liquid
+  assign related_shown = 0
+  assign related_limit = section.settings.related_count
+-%}
+{% capture related_items %}
+  {% for related in blog.articles limit: 12 %}
+    {% if related.id != article.id and related_shown < related_limit %}
+      {% assign related_shown = related_shown | plus: 1 %}
+      <a class="article-related__item" href="{{ related.url }}">
+        <span class="article-related__thumb">
+          {% if related.image %}
+            {{ related.image | image_url: width: 200 | image_tag: loading: 'lazy', alt: related.image.alt | default: related.title }}
+          {% else %}
+            <span class="article-related__placeholder">
+              {% render 'icon', name: 'camera' %}
+              <em>{{ 'sections.explore_india.browse_files' | t }}</em>
+            </span>
+          {% endif %}
+        </span>
+        <strong>{{ related.title }}</strong>
+      </a>
+    {% endif %}
+  {% endfor %}
+{% endcapture %}
+
+{% if related_shown > 0 %}
+  <section class="article-related">
+    <div class="article-related__inner">
+      <h2>{{ 'sections.main_article.keep_reading' | t }}</h2>
+      <div class="article-related__list">
+        {{ related_items }}
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+{% stylesheet %}
+  .article-page {
+    padding: 56px 0 72px;
+    background: var(--color-surface);
+  }
+
+  .article-page__header,
+  .article-page__body {
+    width: min(760px, 100% - 64px);
+    margin-inline: auto;
+  }
+
+  .article-page__header {
+    display: grid;
+    justify-items: start;
+  }
+
+  .article-page__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 28px;
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+    text-decoration: none;
+  }
+
+  .article-page__back .icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .article-page__eyebrow {
+    color: var(--color-primary);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .article-page h1 {
+    margin-top: 12px;
+    color: var(--color-primary-dark);
+    font-size: clamp(2.4rem, 4.6vw, 4rem);
+    line-height: 1;
+  }
+
+  .article-page__byline {
+    margin-top: 16px;
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+  }
+
+  .article-page__media {
+    position: relative;
+    width: min(1100px, 100% - 64px);
+    margin: 40px auto 48px;
+    overflow: hidden;
+    border: 1px dashed color-mix(in srgb, var(--color-primary-dark) 34%, transparent);
+    border-radius: 12px;
+    background: var(--color-image-ground);
+  }
+
+  .article-page__media::before {
+    content: "";
+    display: block;
+    padding-top: 56.25%;
+  }
+
+  .article-page__media img,
+  .article-page__placeholder {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .article-page__media img {
+    object-fit: cover;
+  }
+
+  .article-page__placeholder {
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    gap: 10px;
+    padding: 24px;
+    text-align: center;
+  }
+
+  .article-page__placeholder .icon {
+    width: 28px;
+    height: 28px;
+    color: color-mix(in srgb, var(--color-primary-dark) 52%, transparent);
+  }
+
+  .article-page__placeholder strong {
+    max-width: 36ch;
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+
+  .article-page__placeholder em {
+    border-bottom: 1px solid currentColor;
+    color: var(--color-text-secondary);
+    font-size: 0.82rem;
+    font-style: normal;
+    line-height: 1;
+  }
+
+  .article-page__body {
+    color: var(--color-text);
+    font-size: 1.08rem;
+    line-height: 1.8;
+  }
+
+  .article-page__body > * + * {
+    margin-top: 1.1em;
+  }
+
+  .article-page__body h2,
+  .article-page__body h3 {
+    margin-top: 1.6em;
+    color: var(--color-primary-dark);
+    line-height: 1.08;
+  }
+
+  .article-page__body h2 {
+    font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+  }
+
+  .article-page__body h3 {
+    font-size: clamp(1.3rem, 2vw, 1.6rem);
+  }
+
+  .article-page__body h2 + *,
+  .article-page__body h3 + * {
+    margin-top: 0.6em;
+  }
+
+  .article-page__body blockquote {
+    margin: 1.6em 0;
+    border-left: 3px solid var(--color-secondary);
+    padding: 4px 0 4px 22px;
+    color: var(--color-primary);
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+    letter-spacing: 0.02em;
+    line-height: 1.12;
+    text-transform: uppercase;
+  }
+
+  .article-page__body blockquote p {
+    margin: 0;
+  }
+
+  .article-page__body a {
+    color: var(--color-primary);
+  }
+
+  .article-page__body ul,
+  .article-page__body ol {
+    padding-left: 1.3em;
+  }
+
+  .article-page__body li + li {
+    margin-top: 0.4em;
+  }
+
+  .article-page__body img {
+    border-radius: 8px;
+  }
+
+  .article-page__body hr {
+    border: 0;
+    border-top: 1px solid var(--color-divider);
+  }
+
+  .article-related {
+    padding: 56px 0 72px;
+    background: var(--color-background);
+  }
+
+  .article-related__inner {
+    width: min(1100px, 100% - 64px);
+    margin-inline: auto;
+  }
+
+  .article-related h2 {
+    margin-bottom: 20px;
+    color: var(--color-primary-dark);
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    line-height: 1;
+  }
+
+  .article-related__list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0 32px;
+  }
+
+  .article-related__item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border-top: 1px solid color-mix(in srgb, var(--color-primary) 18%, transparent);
+    padding: 16px 0;
+    color: var(--color-primary-dark);
+    text-decoration: none;
+  }
+
+  .article-related__item strong {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    line-height: 1.12;
+    text-transform: uppercase;
+  }
+
+  .article-related__thumb {
+    position: relative;
+    width: 64px;
+    height: 64px;
+    flex: 0 0 auto;
+    overflow: hidden;
+    border: 1px dashed color-mix(in srgb, var(--color-primary-dark) 30%, transparent);
+    border-radius: 6px;
+    background: var(--color-image-ground);
+  }
+
+  .article-related__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .article-related__placeholder {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    gap: 4px;
+    padding: 4px;
+    text-align: center;
+  }
+
+  .article-related__placeholder .icon {
+    width: 16px;
+    height: 16px;
+    color: color-mix(in srgb, var(--color-primary-dark) 52%, transparent);
+  }
+
+  .article-related__placeholder em {
+    color: var(--color-text-secondary);
+    font-size: 0.62rem;
+    font-style: normal;
+    line-height: 1.2;
+    text-decoration: underline;
+  }
+
+  @media (max-width: 749px) {
+    .article-page {
+      padding: 20px 0 32px;
+    }
+
+    .article-page__header,
+    .article-page__body {
+      width: min(100% - 36px, 760px);
+    }
+
+    .article-page__back {
+      display: none;
+    }
+
+    .article-page__eyebrow {
+      font-size: 0.78rem;
+      letter-spacing: 0.16em;
+    }
+
+    .article-page h1 {
+      margin-top: 8px;
+      font-size: clamp(1.9rem, 8.4vw, 2.4rem);
+    }
+
+    .article-page__byline {
+      margin-top: 10px;
+      font-size: 0.85rem;
+    }
+
+    .article-page__media {
+      width: 100%;
+      margin: 20px 0 24px;
+      border-inline: 0;
+      border-radius: 0;
+    }
+
+    .article-page__media::before {
+      padding-top: 70%;
+    }
+
+    .article-page__body {
+      font-size: 1rem;
+      line-height: 1.75;
+    }
+
+    .article-page__body h2 {
+      font-size: 1.5rem;
+    }
+
+    .article-page__body h3 {
+      font-size: 1.25rem;
+    }
+
+    .article-page__body blockquote {
+      padding-left: 16px;
+      font-size: 1.35rem;
+    }
+
+    .article-related {
+      padding: 24px 0 32px;
+    }
+
+    .article-related__inner {
+      width: min(100% - 36px, 1100px);
+    }
+
+    .article-related h2 {
+      margin-bottom: 8px;
+      font-size: 1.6rem;
+    }
+
+    .article-related__list {
+      grid-template-columns: 1fr;
+    }
+
+    .article-related__thumb {
+      width: 56px;
+      height: 56px;
+    }
+
+    .article-related__item strong {
+      font-size: 1rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.main_article.name",
+  "settings": [
+    {
+      "type": "range",
+      "id": "related_count",
+      "label": "t:labels.related_count",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 3
+    }
+  ]
+}
+{% endschema %}

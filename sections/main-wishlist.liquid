@@ -1,0 +1,548 @@
+<section class="wishlist-page">
+  <div class="page-width">
+    <header class="wishlist-page__header">
+      <div>
+        <h1>{{ section.settings.heading }}</h1>
+        <p class="wishlist-page__count">{{ section.settings.count_text }}</p>
+        <p class="wishlist-page__sync">{{ section.settings.sync_text }} <a href="{{ routes.account_url }}">{{ section.settings.guest_link_label }}</a></p>
+      </div>
+      <a class="wishlist-page__share" href="{{ routes.root_url }}">{{ section.settings.share_label }}</a>
+    </header>
+
+    <div class="wishlist-page__grid">
+      {% for block in section.blocks %}
+        <article class="wishlist-card" {{ block.shopify_attributes }}>
+          <a class="wishlist-card__media" href="{{ block.settings.link | default: routes.all_products_collection_url }}">
+            {% if block.settings.badge != blank %}
+              <span class="wishlist-card__badge{% if block.settings.badge == 'Sold out' %} is-dark{% endif %}">{{ block.settings.badge }}</span>
+            {% endif %}
+            <button type="button" class="wishlist-card__heart" aria-label="{{ 'sections.header.wishlist' | t }}">
+              {% render 'icon', name: 'heart' %}
+            </button>
+            <span class="wishlist-card__placeholder">
+              {% render 'icon', name: 'camera' %}
+              <strong>{{ block.settings.placeholder_text }}</strong>
+              <em>{{ 'sections.explore_india.browse_files' | t }}</em>
+            </span>
+          </a>
+
+          <div class="wishlist-card__content">
+            <h2><a href="{{ block.settings.link | default: routes.all_products_collection_url }}">{{ block.settings.title }}</a></h2>
+            <div class="wishlist-card__rating">
+              {% render 'icon', name: 'star' %}
+              <span>{{ block.settings.rating }}</span>
+              <span>({{ block.settings.rating_count }})</span>
+            </div>
+            <div class="wishlist-card__price-row">
+              <p>
+                <strong>{{ block.settings.price }}</strong>
+                {% if block.settings.compare_price != blank %}
+                  <s>{{ block.settings.compare_price }}</s>
+                {% endif %}
+              </p>
+              {% if block.settings.variant != blank %}
+                <span>{{ block.settings.variant }}</span>
+              {% endif %}
+            </div>
+            {% if block.settings.product != blank and block.settings.product.available %}
+              {% form 'product', block.settings.product, class: 'wishlist-card__form' %}
+                <input type="hidden" name="id" value="{{ block.settings.product.selected_or_first_available_variant.id }}">
+                <button type="submit" class="wishlist-card__button">{{ block.settings.button_label }}</button>
+              {% endform %}
+            {% else %}
+              <a class="wishlist-card__button{% if block.settings.button_label == 'Notify me' %} is-muted{% endif %}" href="{{ block.settings.product.url | default: block.settings.link | default: routes.all_products_collection_url }}">{{ block.settings.button_label }}</a>
+            {% endif %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+
+    <div class="wishlist-empty">
+      <p>{{ section.settings.empty_eyebrow }}</p>
+      {% render 'icon', name: 'heart' %}
+      <h2>{{ section.settings.empty_heading }}</h2>
+      <span>{{ section.settings.empty_text }}</span>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .wishlist-page {
+    padding: 62px 0 82px;
+    background: var(--color-surface);
+  }
+
+  .wishlist-page__header {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 32px;
+    margin-bottom: 30px;
+  }
+
+  .wishlist-page h1 {
+    margin: 0 0 14px;
+    color: var(--color-primary-dark);
+    font-size: clamp(4rem, 6vw, 5.5rem);
+    line-height: 0.92;
+  }
+
+  .wishlist-page__count,
+  .wishlist-page__sync {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+  }
+
+  .wishlist-page__sync {
+    margin-top: 29px;
+    color: var(--color-primary);
+  }
+
+  .wishlist-page__sync::before {
+    content: "✓";
+    margin-right: 10px;
+  }
+
+  .wishlist-page__sync a {
+    color: var(--color-text);
+  }
+
+  .wishlist-page__share {
+    border-bottom: 1px solid var(--color-primary);
+    margin-bottom: 51px;
+    padding-bottom: 8px;
+    color: var(--color-primary);
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .wishlist-page__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 32px;
+    max-width: 1100px;
+  }
+
+  .wishlist-card {
+    display: grid;
+    gap: 16px;
+  }
+
+  .wishlist-card__media {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border: 1px dashed color-mix(in srgb, var(--color-primary-dark) 34%, transparent);
+    border-radius: var(--radius-card);
+    aspect-ratio: 1 / 1.25;
+    background: var(--color-image-ground);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+  }
+
+  .wishlist-card__placeholder {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    gap: 10px;
+    padding: 24px;
+    text-align: center;
+  }
+
+  .wishlist-card__placeholder .icon {
+    width: 30px;
+    height: 30px;
+    color: color-mix(in srgb, var(--color-primary-dark) 52%, transparent);
+  }
+
+  .wishlist-card__placeholder strong {
+    max-width: 30ch;
+    font-size: 0.92rem;
+    font-weight: 700;
+  }
+
+  .wishlist-card__placeholder em {
+    border-bottom: 1px solid currentColor;
+    color: var(--color-primary-dark);
+    font-size: 0.78rem;
+    font-style: normal;
+  }
+
+  .wishlist-card__badge {
+    position: absolute;
+    left: 13px;
+    top: 13px;
+    z-index: 2;
+    border-radius: 3px;
+    padding: 6px 10px;
+    color: var(--color-primary);
+    background: var(--color-surface);
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .wishlist-card__badge.is-dark {
+    color: var(--color-surface);
+    background: var(--color-primary-dark);
+  }
+
+  .wishlist-card__heart {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 2;
+    width: 45px;
+    height: 45px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 999px;
+    color: #9b3030;
+    background: var(--color-surface);
+  }
+
+  .wishlist-card__heart .icon {
+    width: 21px;
+    height: 21px;
+    fill: currentColor;
+    stroke: currentColor;
+  }
+
+  .wishlist-card__content {
+    display: grid;
+    gap: 6px;
+  }
+
+  .wishlist-card h2 {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .wishlist-card h2 a {
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .wishlist-card__rating {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--color-text-secondary);
+    font-size: 0.85rem;
+  }
+
+  .wishlist-card__rating .icon {
+    width: 14px;
+    height: 14px;
+    color: #77c87d;
+    fill: currentColor;
+    stroke: none;
+  }
+
+  .wishlist-card__price-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 14px;
+  }
+
+  .wishlist-card__price-row p {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin: 0;
+  }
+
+  .wishlist-card__price-row strong {
+    color: var(--color-text);
+    font-size: 1rem;
+    font-weight: 800;
+  }
+
+  .wishlist-card__price-row s,
+  .wishlist-card__price-row > span {
+    color: var(--color-text-secondary);
+    font-size: 0.85rem;
+  }
+
+  .wishlist-card__form {
+    margin: 0;
+  }
+
+  button.wishlist-card__button {
+    width: 100%;
+    font-family: inherit;
+    cursor: pointer;
+  }
+
+  .wishlist-card__button {
+    min-height: 51px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-primary);
+    border-radius: 5px;
+    margin-top: 8px;
+    color: var(--color-primary);
+    background: var(--color-surface);
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .wishlist-card__button.is-muted {
+    border-color: var(--color-border);
+    background: var(--color-background);
+  }
+
+  .wishlist-empty {
+    display: none;
+  }
+
+  @media (max-width: 749px) {
+    .wishlist-page {
+      padding: 18px 0 34px;
+    }
+
+    .wishlist-page .page-width {
+      width: min(100% - 38px, var(--page-width));
+    }
+
+    .wishlist-page__header {
+      display: block;
+      margin-bottom: 16px;
+    }
+
+    .wishlist-page h1 {
+      margin-bottom: 5px;
+      font-size: clamp(2rem, 8vw, 2.35rem);
+      line-height: 1;
+    }
+
+    .wishlist-page__count,
+    .wishlist-page__share {
+      display: none;
+    }
+
+    .wishlist-page__sync {
+      margin-top: 0;
+      font-size: 0.72rem;
+    }
+
+    .wishlist-page__sync a {
+      display: none;
+    }
+
+    .wishlist-page__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 15px 12px;
+      max-width: none;
+    }
+
+    .wishlist-card {
+      gap: 8px;
+    }
+
+    .wishlist-card__media {
+      aspect-ratio: 1;
+    }
+
+    .wishlist-card__placeholder .icon {
+      width: 25px;
+      height: 25px;
+    }
+
+    .wishlist-card__placeholder strong {
+      max-width: 12ch;
+      font-size: 0.8rem;
+      line-height: 1.25;
+    }
+
+    .wishlist-card__placeholder em {
+      font-size: 0.74rem;
+    }
+
+    .wishlist-card__heart {
+      width: 33px;
+      height: 33px;
+    }
+
+    .wishlist-card__heart .icon {
+      width: 16px;
+      height: 16px;
+    }
+
+    .wishlist-card__badge {
+      left: 8px;
+      top: 7px;
+      padding: 4px 8px;
+      font-size: 0.58rem;
+    }
+
+    .wishlist-card h2 {
+      font-size: 0.9rem;
+      line-height: 1.2;
+    }
+
+    .wishlist-card__rating {
+      gap: 5px;
+      font-size: 0.76rem;
+    }
+
+    .wishlist-card__rating .icon {
+      color: #c58a22;
+    }
+
+    .wishlist-card__price-row > span {
+      display: none;
+    }
+
+    .wishlist-card__price-row strong {
+      font-size: 0.9rem;
+    }
+
+    .wishlist-card__price-row s {
+      font-size: 0.74rem;
+    }
+
+    .wishlist-card__button {
+      min-height: 38px;
+      margin-top: 4px;
+      font-size: 0.66rem;
+    }
+
+    .wishlist-empty {
+      display: grid;
+      justify-items: center;
+      gap: 12px;
+      border: 1px dashed var(--color-divider);
+      border-radius: 8px;
+      margin-top: 24px;
+      padding: 34px 20px 28px;
+      text-align: center;
+    }
+
+    .wishlist-empty p {
+      margin: 0;
+      color: var(--color-text-secondary);
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .wishlist-empty .icon {
+      width: 31px;
+      height: 31px;
+      color: var(--color-secondary);
+    }
+
+    .wishlist-empty h2 {
+      margin: 0;
+      color: var(--color-primary-dark);
+      font-size: 1.55rem;
+      line-height: 1;
+    }
+
+    .wishlist-empty span {
+      color: var(--color-text-secondary);
+      font-size: 0.78rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Wishlist",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Your wishlist" },
+    { "type": "text", "id": "count_text", "label": "Count text", "default": "3 saved items" },
+    { "type": "text", "id": "sync_text", "label": "Sync text", "default": "Synced to ananya@example.com ·" },
+    { "type": "text", "id": "guest_link_label", "label": "Guest link", "default": "View as guest" },
+    { "type": "text", "id": "share_label", "label": "Share label", "default": "Share wishlist" },
+    { "type": "text", "id": "empty_eyebrow", "label": "Empty eyebrow", "default": "Empty state" },
+    { "type": "text", "id": "empty_heading", "label": "Empty heading", "default": "Nothing saved yet" },
+    { "type": "text", "id": "empty_text", "label": "Empty text", "default": "Tap the heart on anything you love." }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Wishlist item",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Product", "info": "When set, the button adds this product to the cart." },
+        { "type": "text", "id": "badge", "label": "Badge" },
+        { "type": "text", "id": "placeholder_text", "label": "Placeholder text", "default": "Product image" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Product title" },
+        { "type": "text", "id": "rating", "label": "Rating", "default": "4.8" },
+        { "type": "text", "id": "rating_count", "label": "Rating count", "default": "214" },
+        { "type": "text", "id": "price", "label": "Price", "default": "$89" },
+        { "type": "text", "id": "compare_price", "label": "Compare price" },
+        { "type": "text", "id": "variant", "label": "Variant" },
+        { "type": "text", "id": "button_label", "label": "Button label", "default": "Add to cart" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Wishlist",
+      "blocks": [
+        {
+          "type": "item",
+          "settings": {
+            "badge": "New",
+            "placeholder_text": "Ivory kurta set on a linen hanger",
+            "title": "Chanderi Kurta Set",
+            "rating": "4.6",
+            "rating_count": "214",
+            "price": "$89",
+            "compare_price": "$110",
+            "variant": "XS — XXL",
+            "button_label": "Add to cart"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "badge": "Sold out",
+            "placeholder_text": "Golden chunda in a glass jar",
+            "title": "Gur Aam Chunda",
+            "rating": "4.8",
+            "rating_count": "556",
+            "price": "$12.49",
+            "variant": "400 g",
+            "button_label": "Notify me"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "placeholder_text": "Jhumkas on a sandstone ledge",
+            "title": "Oxidised Silver Jhumkas",
+            "rating": "4.7",
+            "rating_count": "388",
+            "price": "$42",
+            "variant": "One size",
+            "button_label": "Add to cart"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

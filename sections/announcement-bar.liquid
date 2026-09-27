@@ -1,0 +1,78 @@
+<div class="announcement-bar">
+  <div class="announcement-bar__inner">
+    <p>{{ section.settings.text }}</p>
+    <span aria-hidden="true"></span>
+    <p class="announcement-bar__secondary">{{ section.settings.secondary_text }}</p>
+  </div>
+</div>
+
+{% stylesheet %}
+  .announcement-bar {
+    background: var(--color-primary);
+    color: var(--color-surface);
+  }
+
+  .announcement-bar__inner {
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 34px;
+    padding: 0 18px;
+  }
+
+  .announcement-bar p {
+    margin: 0;
+    text-align: center;
+    font-size: 0.96rem;
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .announcement-bar span {
+    width: 5px;
+    height: 5px;
+    border-radius: 999px;
+    background: var(--color-secondary);
+  }
+
+  @media (max-width: 749px) {
+    .announcement-bar__inner {
+      min-height: 40px;
+    }
+
+    .announcement-bar p {
+      font-size: 0.92rem;
+    }
+
+    .announcement-bar span,
+    .announcement-bar__secondary {
+      display: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.announcement.name",
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "text",
+      "label": "t:labels.text",
+      "default": "t:sections.announcement.text"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "secondary_text",
+      "label": "t:labels.secondary_text",
+      "default": "Authentic products from India. Delivered across the USA."
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.announcement.name"
+    }
+  ]
+}
+{% endschema %}

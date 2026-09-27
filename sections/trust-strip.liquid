@@ -1,0 +1,165 @@
+<section class="trust-strip">
+  <div class="trust-strip__inner">
+    {% for block in section.blocks %}
+      <div class="trust-strip__item" {{ block.shopify_attributes }}>
+        {% render 'icon', name: block.settings.icon %}
+        <span class="trust-strip__text-full">{{ block.settings.text }}</span>
+        <span class="trust-strip__text-short">{{ block.settings.mobile_text | default: block.settings.text }}</span>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+{% stylesheet %}
+  .trust-strip {
+    border-bottom: 1px solid var(--color-divider);
+    background: var(--color-surface);
+  }
+
+  .trust-strip__inner {
+    width: min(var(--content-width), var(--page-width));
+    min-height: 78px;
+    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+  }
+
+  .trust-strip__item {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 14px;
+    color: var(--color-text);
+    font-size: 0.98rem;
+    font-weight: 400;
+    white-space: nowrap;
+  }
+
+  .trust-strip__item .icon {
+    width: 23px;
+    height: 23px;
+    color: var(--color-primary);
+    stroke-width: 1.8;
+    flex: 0 0 auto;
+  }
+
+  .trust-strip__text-short {
+    display: none;
+  }
+
+  @media (max-width: 849px) {
+    .trust-strip {
+      border-top: 1px solid var(--color-divider);
+    }
+
+    .trust-strip__inner {
+      width: 100%;
+      min-height: auto;
+      display: flex;
+      gap: 22px;
+      overflow-x: auto;
+      padding: 14px 18px;
+      scroll-snap-type: x proximity;
+    }
+
+    .trust-strip__item {
+      flex: 0 0 auto;
+      justify-content: flex-start;
+      gap: 8px;
+      font-size: 0.86rem;
+      white-space: nowrap;
+      scroll-snap-align: start;
+    }
+
+    .trust-strip__item .icon {
+      width: 19px;
+      height: 19px;
+    }
+
+    .trust-strip__text-full {
+      display: none;
+    }
+
+    .trust-strip__text-short {
+      display: inline;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Trust strip",
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Trust item",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "badge-check", "label": "Badge check" },
+            { "value": "truck", "label": "Truck" },
+            { "value": "shopping-bag", "label": "Bag" },
+            { "value": "lock", "label": "Lock" },
+            { "value": "undo", "label": "Return" }
+          ],
+          "default": "badge-check"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Authentic products from India"
+        },
+        {
+          "type": "text",
+          "id": "mobile_text",
+          "label": "Text (mobile, optional)",
+          "info": "Shorter version shown on small screens. Leave blank to reuse Text."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust strip",
+      "blocks": [
+        {
+          "type": "item",
+          "settings": {
+            "icon": "badge-check",
+            "text": "Authentic products from India",
+            "mobile_text": "Authentic from India"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "icon": "truck",
+            "text": "Free USA shipping over $75",
+            "mobile_text": "Free shipping over $75"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "icon": "lock",
+            "text": "Secure checkout"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "icon": "undo",
+            "text": "30-day returns on unopened items"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

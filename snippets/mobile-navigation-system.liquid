@@ -1,0 +1,381 @@
+{% doc %}
+Renders the mobile navigation system: inner page header, tab bar, page controls, and product buy bar.
+@example
+{% render 'mobile-navigation-system' %}
+{% enddoc %}
+
+{% liquid
+  assign is_product = false
+  assign is_collection = false
+  if request.page_type == 'product'
+    assign is_product = true
+  endif
+  if request.page_type == 'collection'
+    assign is_collection = true
+  endif
+%}
+
+{% if request.page_type == 'article' %}
+  {%- liquid
+    assign is_article = false
+    assign is_blog = false
+    assign back_fallback = routes.root_url
+    if request.page_type == 'article'
+      assign is_article = true
+      assign back_fallback = blog.url
+    endif
+    if request.page_type == 'blog'
+      assign is_blog = true
+    endif
+  -%}
+  <div class="mobile-inner-header{% if is_article %} mobile-inner-header--article{% endif %}{% if is_article or is_blog %} mobile-inner-header--story{% endif %}">
+    <button type="button" data-mobile-back data-fallback="{{ back_fallback }}" aria-label="{{ 'sections.mobile_nav.back' | t }}">
+      {%- if is_article or is_blog -%}
+        {% render 'icon', name: 'arrow-left' %}
+      {%- else -%}
+        {% render 'icon', name: 'chevron-left' %}
+      {%- endif -%}
+    </button>
+    <strong>
+      {% if is_product %}
+        {{ product.title }}
+      {% elsif is_collection %}
+        {{ collection.title }}
+      {% elsif is_article or is_blog %}
+        {{ blog.title }}
+      {% else %}
+        {{ page_title }}
+      {% endif %}
+    </strong>
+    {% if is_article %}
+      <button type="button" data-share data-share-url="{{ canonical_url }}" data-share-title="{{ article.title | escape }}" aria-label="{{ 'sections.mobile_nav.share' | t }}">
+        {% render 'icon', name: 'share' %}
+      </button>
+    {% else %}
+      <a href="{{ routes.search_url }}" aria-label="{{ 'sections.header.search' | t }}">{% render 'icon', name: 'search' %}</a>
+      <a href="{{ routes.cart_url }}" aria-label="{{ 'sections.header.cart' | t }}">{% render 'icon', name: 'shopping-bag' %}</a>
+    {% endif %}
+  </div>
+{% endif %}
+
+{% if is_collection %}
+  <div class="mobile-page-controls">
+    <button type="button" data-filter-open aria-controls="CollectionFilterDrawer" aria-expanded="false">{% render 'icon', name: 'sliders-horizontal' %} {{ 'sections.mobile_nav.filter' | t }} <em>2</em></button>
+    <button type="button" data-sort-open aria-controls="CollectionSortSheet" aria-expanded="false">↕ {{ 'sections.mobile_nav.sort' | t }}</button>
+  </div>
+{% endif %}
+
+{% if is_product %}
+  <div class="mobile-buy-bar">
+    <div>
+      <strong>{{ product.selected_or_first_available_variant.price | money }}</strong>
+      <span>
+        {% if product.selected_or_first_available_variant.weight > 0 %}
+          {{ product.selected_or_first_available_variant.weight | weight_with_unit }}
+        {% else %}
+          500 g
+        {% endif %}
+      </span>
+    </div>
+    {% form 'product', product %}
+      <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+      <input type="hidden" name="quantity" value="1" data-bar-qty>
+      <button type="submit">{{ 'sections.main_product.add_to_cart' | t }}</button>
+    {% endform %}
+  </div>
+{% else %}
+  <nav class="mobile-tab-bar" aria-label="{{ 'sections.mobile_nav.tabs' | t }}">
+    <a class="{% if request.page_type == 'index' %}is-active{% endif %}" href="{{ routes.root_url }}">
+      {% render 'icon', name: 'home' %}
+      <span>{{ 'sections.mobile_nav.home' | t }}</span>
+    </a>
+    <a class="{% if is_collection %}is-active{% endif %}" href="{{ routes.all_products_collection_url }}">
+      {% render 'icon', name: 'layout-grid' %}
+      <span>{{ 'sections.mobile_nav.shop' | t }}</span>
+    </a>
+    <a class="{% if request.page_type == 'search' %}is-active{% endif %}" href="{{ routes.search_url }}">
+      {% render 'icon', name: 'search' %}
+      <span>{{ 'sections.mobile_nav.search' | t }}</span>
+    </a>
+    <a class="{% if page.handle == 'wishlist' %}is-active{% endif %}" href="/pages/wishlist">
+      {% render 'icon', name: 'heart' %}
+      <span>{{ 'sections.mobile_nav.wishlist' | t }}</span>
+    </a>
+    <a class="mobile-tab-bar__bag" href="#CartDrawer">
+      {% render 'icon', name: 'shopping-bag' %}
+      <em>{{ cart.item_count }}</em>
+      <span>{{ 'sections.mobile_nav.bag' | t }}</span>
+    </a>
+  </nav>
+{% endif %}
+
+{% stylesheet %}
+  .mobile-inner-header,
+  .mobile-tab-bar,
+  .mobile-page-controls,
+  .mobile-buy-bar {
+    display: none;
+  }
+
+  @media (max-width: 749px) {
+    body {
+      padding-bottom: 76px;
+    }
+
+    .mobile-inner-header.mobile-inner-header--story {
+      min-height: 56px;
+      padding: 0 6px;
+    }
+
+    .mobile-inner-header.mobile-inner-header--article {
+      grid-template-columns: 44px minmax(0, 1fr) 44px;
+    }
+
+    .mobile-inner-header.mobile-inner-header--story button,
+    .mobile-inner-header.mobile-inner-header--story a {
+      height: 44px;
+    }
+
+    .mobile-inner-header.mobile-inner-header--story .icon {
+      width: 22px;
+      height: 22px;
+    }
+
+    .mobile-inner-header {
+      position: relative;
+      z-index: 95;
+      min-height: 34px;
+      display: grid;
+      grid-template-columns: 44px minmax(0, 1fr) 44px 44px;
+      align-items: center;
+      border-bottom: 1px solid var(--color-divider);
+      background: var(--color-surface);
+    }
+
+    .mobile-inner-header button,
+    .mobile-inner-header a {
+      width: 44px;
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      background: transparent;
+      color: var(--color-text);
+    }
+
+    .mobile-inner-header .icon {
+      width: 23px;
+      height: 23px;
+      stroke-width: 1.8;
+    }
+
+    .mobile-inner-header strong {
+      overflow: hidden;
+      color: var(--color-text);
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1;
+      text-align: center;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .mobile-tab-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 105;
+      min-height: 76px;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      border-top: 1px solid var(--color-divider);
+      background: var(--color-surface);
+    }
+
+    .mobile-tab-bar a {
+      position: relative;
+      display: grid;
+      place-items: center;
+      align-content: center;
+      gap: 5px;
+      color: var(--color-text);
+      text-decoration: none;
+      font-size: 0.78rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .mobile-tab-bar a::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      width: 62px;
+      max-width: 74%;
+      height: 4px;
+      display: block;
+      background: transparent;
+    }
+
+    .mobile-tab-bar a.is-active {
+      color: var(--color-primary);
+    }
+
+    .mobile-tab-bar a.is-active::before {
+      background: var(--color-primary);
+    }
+
+    .mobile-tab-bar .icon {
+      width: 29px;
+      height: 29px;
+      stroke-width: 1.65;
+    }
+
+    .mobile-tab-bar__bag em {
+      position: absolute;
+      top: 9px;
+      right: clamp(12px, 4vw, 27px);
+      min-width: 24px;
+      height: 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      color: var(--color-surface);
+      background: var(--color-primary);
+      font-size: 0.78rem;
+      font-style: normal;
+      font-weight: 700;
+    }
+
+    .mobile-page-controls {
+      position: sticky;
+      top: var(--site-header-height, 0px);
+      z-index: 80;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-block: 1px solid var(--color-divider);
+      background: var(--color-surface);
+    }
+
+    .mobile-page-controls button,
+    .mobile-page-controls label {
+      min-height: 68px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      border: 0;
+      border-right: 1px solid var(--color-divider);
+      background: transparent;
+      color: var(--color-text);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .mobile-page-controls button:last-child {
+      border-right: 0;
+    }
+
+    .mobile-page-controls .icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    .mobile-page-controls em {
+      min-width: 31px;
+      height: 31px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      color: var(--color-surface);
+      background: var(--color-primary);
+      font-style: normal;
+      letter-spacing: 0;
+    }
+
+    .mobile-buy-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 110;
+      min-height: 92px;
+      display: grid;
+      grid-template-columns: 104px minmax(0, 1fr);
+      gap: 16px;
+      align-items: center;
+      border-top: 1px solid var(--color-divider);
+      padding: 10px 14px;
+      background: var(--color-surface);
+    }
+
+    .mobile-buy-bar strong,
+    .mobile-buy-bar span {
+      display: block;
+      line-height: 1;
+    }
+
+    .mobile-buy-bar strong {
+      color: var(--color-text);
+      font-size: 1.55rem;
+      font-weight: 700;
+    }
+
+    .mobile-buy-bar span {
+      margin-top: 7px;
+      color: var(--color-text-secondary);
+      font-size: 0.98rem;
+    }
+
+    .mobile-buy-bar form {
+      margin: 0;
+    }
+
+    .mobile-buy-bar button {
+      width: 100%;
+      min-height: 74px;
+      border: 0;
+      border-radius: 7px;
+      color: var(--color-surface);
+      background: var(--color-primary);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+  }
+{% endstylesheet %}
+
+
+{% javascript %}
+  document.addEventListener('click', function (event) {
+    var back = event.target.closest('[data-mobile-back]');
+    if (back) {
+      var sameSiteReferrer = document.referrer && document.referrer.indexOf(window.location.host) !== -1;
+      if (sameSiteReferrer && window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = back.getAttribute('data-fallback') || '/';
+      }
+      return;
+    }
+
+    var share = event.target.closest('[data-share]');
+    if (!share) return;
+    var url = share.getAttribute('data-share-url') || window.location.href;
+    var title = share.getAttribute('data-share-title') || document.title;
+    if (navigator.share) {
+      navigator.share({ title: title, url: url }).catch(function () {});
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(url).then(function () {
+        share.classList.add('is-copied');
+        setTimeout(function () { share.classList.remove('is-copied'); }, 1600);
+      });
+    }
+  });
+{% endjavascript %}

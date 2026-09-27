@@ -1,0 +1,217 @@
+{
+  "accessibility": {
+    "skip_to_content": "Skip to content"
+  },
+  "general": {
+    "pagination": {
+      "page": "Page {{ number }}"
+    },
+    "products": {
+      "view_product": "View product",
+      "sale_price": "Sale price",
+      "regular_price": "Regular price",
+      "sold_out": "Sold out",
+      "bestseller": "Bestseller"
+    },
+    "newsletter": {
+      "email": "Email address",
+      "submit": "Subscribe"
+    }
+  },
+  "sections": {
+    "announcement": {
+      "name": "Announcement bar",
+      "text": "Free USA shipping on orders over $75"
+    },
+    "header": {
+      "name": "Header",
+      "menu": "Menu",
+      "cart": "Cart",
+      "search": "Search",
+      "account": "Account",
+      "wishlist": "Wishlist",
+      "search_placeholder": "Search atta, achar, diya...",
+      "shop_menu": "Shop menu",
+      "close": "Close menu",
+      "account_links": "Account links",
+      "back": "Back",
+      "more": "More"
+    },
+    "footer": {
+      "name": "Footer",
+      "newsletter_heading": "India, a little closer to home.",
+      "newsletter_text": "Food, fashion, home and festival essentials from makers across India, delivered across the United States."
+    },
+    "hero": {
+      "name": "Hero",
+      "heading": "A little closer to home.",
+      "text": "Discover authentic food, fashion, home, jewellery and everyday favourites from India.",
+      "button": "Shop India",
+      "photo_label": "Hero photo",
+      "browse_files": "or browse files"
+    },
+    "featured_collection": {
+      "name": "Featured collection",
+      "heading": "Featured products",
+      "button": "View all"
+    },
+    "explore_india": {
+      "name": "Explore India",
+      "see_all": "See all",
+      "browse_files": "or browse files"
+    },
+    "most_loved": {
+      "name": "Most loved",
+      "all": "All",
+      "view_all": "View all",
+      "quick_view": "Quick view"
+    },
+    "pantry_promo": {
+      "name": "Pantry promo",
+      "browse_files": "or browse files"
+    },
+    "main_product": {
+      "quantity": "Quantity",
+      "add_to_cart": "Add to cart",
+      "breadcrumb": "Breadcrumb",
+      "home": "Home",
+      "gallery": "Product images",
+      "previous": "Previous image",
+      "next": "Next image",
+      "reviews_count": "{{ number }} reviews",
+      "save": "Save {{ number }}%",
+      "buy_n": "Buy {{ number }}",
+      "buy_n_plus": "Buy {{ number }}+",
+      "standard_price": "Standard price",
+      "each": "{{ price }} each",
+      "buy_now": "Buy now",
+      "in_stock_ships": "In stock · ships in {{ days }} day",
+      "arrives_soon": "Arrives in a few days",
+      "arrives": "Arrives {{ start }} — {{ end }}",
+      "to": "To",
+      "change_zip": "Change ZIP",
+      "zip": "ZIP code",
+      "save_zip": "Save"
+    },
+    "main_collection": {
+      "empty": "No products found in this collection.",
+      "sort_by": "Sort by"
+    },
+    "cart": {
+      "heading": "Cart",
+      "quantity": "Quantity",
+      "subtotal": "Subtotal",
+      "update": "Update cart",
+      "checkout": "Checkout",
+      "empty": "Your cart is empty.",
+      "continue_shopping": "Continue shopping"
+    },
+    "mobile_nav": {
+      "back": "Back",
+      "tabs": "Mobile navigation",
+      "home": "Home",
+      "shop": "Shop",
+      "search": "Search",
+      "wishlist": "Wishlist",
+      "bag": "Bag",
+      "filter": "Filter",
+      "sort": "Sort",
+      "share": "Share"
+    },
+    "search_overlay": {
+      "name": "Search overlay",
+      "showing_results": "Showing results for",
+      "and": "and",
+      "categories": "Categories",
+      "products": "Products",
+      "guides": "Guides",
+      "see_all": "See all results",
+      "see_all_count": "See all {{ number }} results",
+      "no_results": "No results for",
+      "popular": "Popular searches",
+      "cancel": "Cancel",
+      "close": "Close search",
+      "clear": "Clear search"
+    },
+    "main_search": {
+      "name": "Search results",
+      "results_for": "Results for",
+      "results_count": "{{ number }} results"
+    },
+    "main_blog": {
+      "name": "Blog",
+      "filter": "Filter stories",
+      "all": "All",
+      "featured": "Featured",
+      "min_read": "{{ number }} min read",
+      "read_story": "Read the story"
+    },
+    "main_article": {
+      "name": "Article",
+      "by": "By",
+      "keep_reading": "Keep reading",
+      "back_to_blog": "Back to stories"
+    },
+    "cart_drawer": {
+      "name": "Cart drawer",
+      "title": "Your bag",
+      "close": "Close cart",
+      "free_shipping_remaining_html": "You’re <strong>{{ amount }}</strong> away from free shipping.",
+      "free_shipping_unlocked": "You’ve unlocked free shipping.",
+      "decrease": "Decrease quantity",
+      "increase": "Increase quantity",
+      "remove": "Remove",
+      "start_shopping": "Start shopping",
+      "add": "Add",
+      "subtotal": "Subtotal",
+      "taxes": "Taxes and shipping calculated at checkout.",
+      "checkout": "Checkout",
+      "continue": "Continue shopping",
+      "view_cart": "View cart",
+      "adding": "Adding…",
+      "added": "Added to cart",
+      "error": "Couldn’t add — try again"
+    },
+    "bought_together": {
+      "name": "Frequently bought together",
+      "count": "{{ number }} selected • {{ total }}",
+      "add_selected": "Add selected to cart",
+      "add_n": "Add {{ number }} items • {{ total }}"
+    }
+  },
+  "settings": {
+    "theme": {
+      "name": "Theme settings"
+    },
+    "colors": {
+      "primary": "Primary",
+      "primary_dark": "Primary dark",
+      "secondary": "Secondary",
+      "background": "Background",
+      "surface": "Surface",
+      "image_ground": "Image ground",
+      "border": "Border",
+      "divider": "Divider",
+      "text": "Main text",
+      "text_secondary": "Secondary text",
+      "sale": "Sale and urgency"
+    },
+    "layout": {
+      "page_width": "Page width"
+    }
+  },
+  "labels": {
+    "text": "Text",
+    "secondary_text": "Secondary text",
+    "eyebrow": "Eyebrow",
+    "heading": "Heading",
+    "image": "Image",
+    "menu": "Menu",
+    "collection": "Collection",
+    "button_label": "Button label",
+    "button_link": "Button link",
+    "secondary_button_label": "Secondary button label",
+    "secondary_button_link": "Secondary button link",
+    "products_to_show": "Products to show"
+  }
+}

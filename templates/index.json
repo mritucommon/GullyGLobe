@@ -1,0 +1,316 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero"
+    },
+    "trust_strip": {
+      "type": "trust-strip",
+      "blocks": {
+        "authentic": {
+          "type": "item",
+          "settings": {
+            "icon": "badge-check",
+            "text": "Authentic products from India",
+            "mobile_text": "Authentic from India"
+          }
+        },
+        "shipping": {
+          "type": "item",
+          "settings": {
+            "icon": "truck",
+            "text": "Free USA shipping over $75",
+            "mobile_text": "Free shipping over $75"
+          }
+        },
+        "checkout": {
+          "type": "item",
+          "settings": {
+            "icon": "lock",
+            "text": "Secure checkout"
+          }
+        },
+        "returns": {
+          "type": "item",
+          "settings": {
+            "icon": "undo",
+            "text": "30-day returns on unopened items"
+          }
+        }
+      },
+      "block_order": ["authentic", "shipping", "checkout", "returns"]
+    },
+    "explore_india": {
+      "type": "explore-india",
+      "blocks": {
+        "food": { "type": "category", "settings": { "placeholder_text": "Brass bowls of dal and rice", "label": "Food" } },
+        "fashion": { "type": "category", "settings": { "placeholder_text": "Block-print kurta on a line", "label": "Fashion" } },
+        "jewellery": { "type": "category", "settings": { "placeholder_text": "Silver jhumkas in a palm", "label": "Jewellery" } },
+        "kitchen": { "type": "category", "settings": { "placeholder_text": "Copper and steel on stone", "label": "Kitchen" } },
+        "home": { "type": "category", "settings": { "placeholder_text": "Handwoven cushion, cane chair", "label": "Home" } },
+        "pooja": { "type": "category", "settings": { "placeholder_text": "Diya and marigolds", "label": "Pooja" } },
+        "personal_care": { "type": "category", "settings": { "placeholder_text": "Ubtan in a stone bowl", "label": "Personal Care" } },
+        "festive": { "type": "category", "settings": { "placeholder_text": "Rangoli powder, dusk", "label": "Festive" } },
+        "gifting": { "type": "category", "settings": { "placeholder_text": "Wrapped box, jute twine", "label": "Gifting" } }
+      },
+      "block_order": ["food", "fashion", "jewellery", "kitchen", "home", "pooja", "personal_care", "festive", "gifting"]
+    },
+    "most_loved": {
+      "type": "most-loved",
+      "blocks": {
+        "tab_food": { "type": "tab", "settings": { "label": "Food", "category": "food" } },
+        "tab_kitchen": { "type": "tab", "settings": { "label": "Kitchen", "category": "kitchen" } },
+        "tab_fashion": { "type": "tab", "settings": { "label": "Fashion", "category": "fashion" } },
+        "tab_pooja": { "type": "tab", "settings": { "label": "Pooja", "category": "pooja" } },
+        "product_achar": {
+          "type": "product",
+          "settings": {
+            "title": "Aam ka Achar",
+            "placeholder_text": "Jar on a stone counter, soft daylight",
+            "category": "food",
+            "badge": "bestseller",
+            "rating": "4.8",
+            "rating_count": "1,284",
+            "price": "$12.99",
+            "compare_price": "$14.99",
+            "variant_info": "500 g"
+          }
+        },
+        "product_atta": {
+          "type": "product",
+          "settings": {
+            "title": "Khapli Atta",
+            "placeholder_text": "Atta, rotis and wheat on linen",
+            "category": "food",
+            "rating": "4.7",
+            "rating_count": "862",
+            "price": "$18.99",
+            "variant_info": "2 kg",
+            "show_quick_view": true
+          }
+        },
+        "product_thali": {
+          "type": "product",
+          "settings": {
+            "title": "Kansa Thali Set",
+            "placeholder_text": "Thali set on a dark wood table",
+            "category": "kitchen",
+            "rating": "4.9",
+            "rating_count": "131",
+            "price": "$64",
+            "variant_info": "6 pcs"
+          }
+        },
+        "product_kurta": {
+          "type": "product",
+          "settings": {
+            "title": "Chanderi Kurta Set",
+            "placeholder_text": "Ivory kurta set on a linen hanger",
+            "category": "fashion",
+            "badge": "new",
+            "rating": "4.6",
+            "rating_count": "214",
+            "price": "$89",
+            "compare_price": "$110",
+            "variant_info": "XS — XXL"
+          }
+        }
+      },
+      "block_order": ["tab_food", "tab_kitchen", "tab_fashion", "tab_pooja", "product_achar", "product_atta", "product_thali", "product_kurta"],
+      "settings": {
+        "view_all_link": "shopify://collections/all",
+        "view_all_label": "View all"
+      }
+    },
+    "pantry_promo": {
+      "type": "pantry-promo"
+    },
+    "shop_by_need": {
+      "type": "shop-by-need",
+      "blocks": {
+        "everyday": {
+          "type": "need",
+          "settings": {
+            "placeholder_text": "Steel dabbas of dal and rice on a pantry shelf",
+            "title": "Everyday essentials",
+            "description": "Atta, dal, rice and the daily basics"
+          }
+        },
+        "tea": {
+          "type": "need",
+          "settings": {
+            "placeholder_text": "Chai in kulhads with rusk on a tray",
+            "title": "Tea time",
+            "description": "Chai, rusk and something sweet"
+          }
+        },
+        "festive": {
+          "type": "need",
+          "settings": {
+            "placeholder_text": "Diyas and marigolds on marble steps",
+            "title": "Festive essentials",
+            "description": "Pooja, décor and diyas"
+          }
+        },
+        "gifting": {
+          "type": "need",
+          "settings": {
+            "placeholder_text": "A wrapped box with jute twine and a brass diya",
+            "title": "Gifting",
+            "description": "Boxed, wrapped, ready to give"
+          }
+        }
+      },
+      "block_order": ["everyday", "tea", "festive", "gifting"]
+    },
+    "category_spotlight": {
+      "type": "category-spotlight",
+      "blocks": {
+        "kitchen": {
+          "type": "card",
+          "settings": {
+            "placeholder_text": "Copper handi, brass lota and a steel dabba on honed stone",
+            "eyebrow": "Kitchen & Bartan",
+            "title": "The Indian kitchen",
+            "description": "Copper, brass, kansa and steel for everyday cooking.",
+            "button_label": "Shop the kitchen"
+          }
+        },
+        "fashion": {
+          "type": "card",
+          "settings": {
+            "placeholder_text": "Woman in a sage chanderi kurta set on a jharokha balcony",
+            "eyebrow": "Fashion",
+            "title": "Wear India",
+            "description": "Kurta sets, sarees and festive wear, handwoven and block printed.",
+            "button_label": "Shop fashion"
+          }
+        }
+      },
+      "block_order": ["kitchen", "fashion"]
+    },
+    "better_together": {
+      "type": "better-together",
+      "blocks": {
+        "pantry": {
+          "type": "bundle",
+          "settings": {
+            "savings": "Save $15.43",
+            "placeholder_text": "Pantry kit unboxed on a wooden table",
+            "title": "Indian Pantry Starter Kit",
+            "description": "8 essentials · atta, dal, rice, ghee, haldi and more",
+            "price": "$89",
+            "compare_price": "$104.43",
+            "button_label": "Buy the bundle"
+          }
+        },
+        "chai": {
+          "type": "bundle",
+          "settings": {
+            "savings": "Save $6.47",
+            "placeholder_text": "Chai tray with kulhads and rusk",
+            "title": "Chai Time Bundle",
+            "description": "4 items · CTC chai, rusk, kulhads, elaichi",
+            "price": "$32",
+            "compare_price": "$38.47",
+            "button_label": "Buy the bundle"
+          }
+        },
+        "pickle": {
+          "type": "bundle",
+          "settings": {
+            "savings": "Save $5.46",
+            "placeholder_text": "Four achar jars lined up on stone",
+            "title": "Pickle Lovers Pack",
+            "description": "4 jars · mango, nimbu, mirch, mixed",
+            "price": "$39",
+            "compare_price": "$44.46",
+            "button_label": "Buy the bundle"
+          }
+        }
+      },
+      "block_order": ["pantry", "chai", "pickle"]
+    },
+    "customer_reviews": {
+      "type": "customer-reviews",
+      "blocks": {
+        "priya": {
+          "type": "review",
+          "settings": {
+            "quote": "The oil, the fennel, the crunch of the mango. The first jar I’ve bought here that doesn’t taste of vinegar.",
+            "name": "Priya R.",
+            "location": "Edison, NJ",
+            "product_label": "Aam ka Achar"
+          }
+        },
+        "meera": {
+          "type": "review",
+          "settings": {
+            "quote": "The Khapli atta makes rotis exactly like home. Soft for a whole day.",
+            "name": "Meera K.",
+            "location": "Plano, TX",
+            "product_label": "Khapli Atta"
+          }
+        },
+        "rohan": {
+          "type": "review",
+          "settings": {
+            "quote": "I set the whole thali on the table for Diwali. It looked beautiful and arrived perfectly packed.",
+            "name": "Rohan D.",
+            "location": "Seattle, WA",
+            "product_label": "Kansa Thali Set"
+          }
+        }
+      },
+      "block_order": ["priya", "meera", "rohan"]
+    },
+    "stories_home": {
+      "type": "stories-from-home",
+      "blocks": {
+        "diwali": {
+          "type": "story",
+          "settings": {
+            "placeholder_text": "Diwali table set in a Brooklyn apartment",
+            "meta": "Festivals · 7 min read",
+            "title": "A first-timer’s guide to hosting Diwali in America",
+            "excerpt": "Menus that travel well, where to find marigolds in October, and how to light diyas safely indoors."
+          }
+        },
+        "paratha": {
+          "type": "story",
+          "settings": {
+            "placeholder_text": "Parathas stacked on a steel plate",
+            "meta": "Recipes · 8 min read",
+            "title": "Sunday aloo paratha, the way nani made it",
+            "excerpt": "Soft dough, a spiced potato filling and plenty of ghee. Plus which achar to serve alongside."
+          }
+        },
+        "flours": {
+          "type": "story",
+          "settings": {
+            "placeholder_text": "Three flours in brass bowls",
+            "meta": "Ingredients · 5 min read",
+            "title": "Atta, maida, besan: a guide to Indian flours",
+            "excerpt": "What each flour is, what it’s for, and how to store it so it lasts."
+          }
+        }
+      },
+      "block_order": ["diwali", "paratha", "flours"]
+    },
+    "home_newsletter": {
+      "type": "home-newsletter"
+    }
+  },
+  "order": [
+    "hero",
+    "trust_strip",
+    "explore_india",
+    "most_loved",
+    "pantry_promo",
+    "shop_by_need",
+    "category_spotlight",
+    "better_together",
+    "customer_reviews",
+    "stories_home",
+    "home_newsletter"
+  ]
+}

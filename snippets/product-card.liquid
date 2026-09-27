@@ -1,0 +1,419 @@
+{% doc %}
+Renders a product card for product grids.
+@param {product} product - Product to render
+@param {number} [index] - Product position in the grid
+@example
+{% render 'product-card', product: product %}
+{% enddoc %}
+
+{% liquid
+  assign card_index = index | default: 1
+  assign placeholder_text = product.title
+  case card_index
+    when 1
+      assign placeholder_text = 'Jar on a stone counter, soft daylight'
+    when 2
+      assign placeholder_text = 'Atta, rotis and wheat on linen'
+    when 3
+      assign placeholder_text = 'Tea tin beside a steel tumbler'
+    when 4
+      assign placeholder_text = 'Lemon pickle with cut lemons'
+    when 5
+      assign placeholder_text = 'Amla in syrup, glass jar'
+    when 6
+      assign placeholder_text = 'Green chilli pickle on stone'
+    when 7
+      assign placeholder_text = 'Mixed pickle in a ceramic barni'
+    when 8
+      assign placeholder_text = 'Golden chunda in a glass jar'
+  endcase
+%}
+
+<article class="product-card">
+  <a class="product-card__media" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
+    {% if card_index == 1 or card_index == 3 %}
+      <span class="product-card__eyebrow">Bestseller</span>
+    {% endif %}
+    <button type="button" class="product-card__wishlist" aria-label="{{ 'sections.header.wishlist' | t }}">
+      {% render 'icon', name: 'heart' %}
+    </button>
+    {% unless product.available %}
+      <span class="product-card__badge">{{ 'general.products.sold_out' | t }}</span>
+    {% endunless %}
+
+    {% if product.featured_image %}
+      {{ product.featured_image | image_url: width: 700 | image_tag: loading: 'lazy', widths: '240, 360, 520, 700', sizes: '(min-width: 990px) 25vw, 50vw', alt: product.featured_image.alt | default: product.title }}
+    {% else %}
+      <span class="product-card__placeholder">
+        {% render 'icon', name: 'camera' %}
+        <strong>{{ placeholder_text }}</strong>
+        <em>{{ 'sections.explore_india.browse_files' | t }}</em>
+      </span>
+    {% endif %}
+  </a>
+
+  <div class="product-card__content">
+    <h3 class="product-card__title">
+      <a href="{{ product.url }}">{{ product.title }}</a>
+    </h3>
+
+    <div class="product-card__rating">
+      {% render 'icon', name: 'star' %}
+      <span>4.8</span>
+      <span>({{ card_index | times: 211 | plus: 651 }})</span>
+    </div>
+
+    <div class="product-card__price-row">
+      <div class="product-card__price">
+        {% if product.compare_at_price > product.price %}
+          <span class="visually-hidden">{{ 'general.products.sale_price' | t }}</span>
+          <span>{{ product.price | money }}</span>
+          <span class="visually-hidden">{{ 'general.products.regular_price' | t }}</span>
+          <s>{{ product.compare_at_price | money }}</s>
+        {% else %}
+          <span>{{ product.price | money }}</span>
+        {% endif %}
+      </div>
+      <span class="product-card__variant">
+        {% if product.selected_or_first_available_variant.weight > 0 %}
+          {{ product.selected_or_first_available_variant.weight | weight_with_unit }}
+        {% else %}
+          {% cycle '500 g', '2 kg', '250 g', '400 g' %}
+        {% endif %}
+      </span>
+    </div>
+
+    {% if product.available %}
+      {% form 'product', product, class: 'product-card__form' %}
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+        <button type="submit">Add to cart</button>
+      {% endform %}
+    {% else %}
+      <button type="button" class="product-card__sold-button" disabled>Sold out</button>
+    {% endif %}
+  </div>
+</article>
+
+{% stylesheet %}
+  .product-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .product-card__media {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border: 1px dashed color-mix(in srgb, var(--color-primary-dark) 34%, transparent);
+    border-radius: var(--radius-card);
+    background: var(--color-image-ground);
+    text-decoration: none;
+  }
+
+  .product-card__media::before {
+    content: "";
+    display: block;
+    padding-top: 100%;
+  }
+
+  .product-card__media img,
+  .product-card__placeholder {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .product-card__media img {
+    object-fit: cover;
+    display: block;
+  }
+
+  .product-card__placeholder {
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    gap: 8px;
+    padding: 20px;
+    color: var(--color-text-secondary);
+    text-align: center;
+  }
+
+  .product-card__placeholder .icon {
+    width: 26px;
+    height: 26px;
+    color: color-mix(in srgb, var(--color-primary-dark) 55%, transparent);
+  }
+
+  .product-card__placeholder strong {
+    max-width: 24ch;
+    color: var(--color-text-secondary);
+    font-size: 0.92rem;
+    font-weight: 500;
+    line-height: 1.35;
+  }
+
+  .product-card__placeholder em {
+    border-bottom: 1px solid currentColor;
+    color: var(--color-primary-dark);
+    font-size: 0.82rem;
+    font-style: normal;
+    line-height: 1;
+  }
+
+  .product-card__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .product-card__eyebrow,
+  .product-card__badge {
+    position: absolute;
+    left: 12px;
+    top: 12px;
+    z-index: 2;
+    max-width: calc(100% - 68px);
+    overflow: hidden;
+    border-radius: 2px;
+    padding: 4px 8px;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    line-height: 1.2;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .product-card__eyebrow {
+    color: var(--color-primary-dark);
+    background: var(--color-surface);
+  }
+
+  .product-card__badge {
+    color: var(--color-surface);
+    background: var(--color-primary-dark);
+  }
+
+  .product-card__wishlist {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    z-index: 2;
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 999px;
+    padding: 0;
+    color: var(--color-text);
+    background: var(--color-surface);
+    box-shadow: 0 2px 6px color-mix(in srgb, var(--color-primary-dark) 14%, transparent);
+    cursor: pointer;
+  }
+
+  .product-card__wishlist .icon {
+    width: 17px;
+    height: 17px;
+    stroke-width: 1.8;
+  }
+
+  .product-card__title {
+    display: -webkit-box;
+    overflow: hidden;
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: 0;
+    text-transform: none;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .product-card__title a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .product-card__rating {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--color-text-secondary);
+    font-size: 0.86rem;
+    line-height: 1;
+  }
+
+  .product-card__rating span:first-of-type {
+    color: var(--color-text);
+    font-weight: 700;
+  }
+
+  .product-card__rating .icon {
+    width: 14px;
+    height: 14px;
+    color: #c58a22;
+    fill: currentColor;
+    stroke: none;
+  }
+
+  .product-card__price-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .product-card__price {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 2px 8px;
+    color: var(--color-text);
+    font-size: 1.05rem;
+    font-weight: 800;
+  }
+
+  .product-card__price s {
+    color: var(--color-text-secondary);
+    font-size: 0.86rem;
+    font-weight: 400;
+  }
+
+  .product-card__variant {
+    flex: 0 0 auto;
+    color: var(--color-text-secondary);
+    font-size: 0.82rem;
+  }
+
+  .product-card__form {
+    margin: auto 0 0;
+    padding-top: 6px;
+  }
+
+  .product-card__sold-button {
+    margin-top: auto;
+  }
+
+  .product-card__form button,
+  .product-card__sold-button {
+    width: 100%;
+    min-height: 48px;
+    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-control);
+    padding: 0 12px;
+    color: var(--color-surface);
+    background: var(--color-primary);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .product-card__sold-button {
+    border-color: var(--color-border);
+    color: var(--color-text-secondary);
+    background: var(--color-divider);
+    cursor: not-allowed;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
+  @media (max-width: 749px) {
+    .product-card {
+      gap: 10px;
+    }
+
+    .product-card__media {
+      border-radius: 7px;
+    }
+
+    .product-card__placeholder {
+      padding: 12px;
+    }
+
+    .product-card__placeholder .icon {
+      width: 22px;
+      height: 22px;
+    }
+
+    .product-card__placeholder strong {
+      max-width: 16ch;
+      font-size: 0.85rem;
+    }
+
+    .product-card__placeholder em {
+      font-size: 0.78rem;
+    }
+
+    .product-card__eyebrow,
+    .product-card__badge {
+      left: 8px;
+      top: 8px;
+      max-width: calc(100% - 52px);
+      padding: 3px 6px;
+      font-size: 0.64rem;
+      letter-spacing: 0.06em;
+    }
+
+    .product-card__wishlist {
+      right: 8px;
+      top: 8px;
+      width: 32px;
+      height: 32px;
+    }
+
+    .product-card__wishlist .icon {
+      width: 15px;
+      height: 15px;
+    }
+
+    .product-card__content {
+      gap: 5px;
+    }
+
+    .product-card__title {
+      font-size: 0.95rem;
+    }
+
+    .product-card__rating {
+      font-size: 0.8rem;
+    }
+
+    .product-card__price {
+      font-size: 0.98rem;
+    }
+
+    .product-card__price s {
+      font-size: 0.8rem;
+    }
+
+    .product-card__variant {
+      display: none;
+    }
+
+    .product-card__form button,
+    .product-card__sold-button {
+      min-height: 44px;
+      padding: 0 8px;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+    }
+  }
+{% endstylesheet %}
